@@ -1,0 +1,61 @@
+
+/* lessons.html only. Prefix: ls- */
+.ls-exif{display:grid;grid-template-columns:auto 1.2fr 1.25fr 1fr 1fr;gap:5px;margin-top:8px;width:100%;max-width:440px}
+.ls-exif > span{display:grid;gap:1px;min-width:0;padding:8px 7px 9px;border-radius:12px;background:rgba(8,12,22,.5);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.ls-exif small{font-size:11px;font-weight:700;letter-spacing:0;white-space:nowrap;overflow:hidden;text-transform:uppercase;color:#aeb8ca;line-height:1.2}
+.ls-exif b{font-family:var(--cond);font-weight:800;font-size:23px;line-height:1;color:#fff;white-space:nowrap}
+.ls-exif > span:first-child{background:var(--gold)}
+.ls-exif > span:first-child small{color:#3a2a0c}.ls-exif > span:first-child b{color:#1a1205}
+.ls-exif-cap{font-size:14.5px;font-weight:600;color:#c9d2e2;margin-top:2px}
+
+.ls-count{padding-block:44px}
+.ls-step > .in{position:relative}
+.ls-step .num{position:absolute;right:18px;top:26px;pointer-events:none}
+.ls-step h2{position:relative}
+.ls-list{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:8px;width:100%}
+.ls-list li{position:relative;display:grid;gap:2px;padding:15px 18px 16px 66px;border-radius:var(--r-s);background:var(--paper)}
+.ls-list li::before{content:"";position:absolute;left:14px;top:50%;width:38px;height:38px;margin-top:-19px;border-radius:50%;background:var(--white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a8691a'%3E%3Cpath d='M9 6.5v11l9.5-5.500z'/%3E%3C/svg%3E") center/20px no-repeat;box-shadow:var(--sh-s)}
+.ls-list b{color:var(--ink);font-size:19px;line-height:1.25}
+.ls-list span{font-size:16.5px;color:var(--soft);line-height:1.35}
+.edge.night .ls-list li{background:rgba(255,255,255,.07)}
+.edge.night .ls-list b{color:#fff}.edge.night .ls-list span{color:#aab1be}
+.edge.night .ls-list li::before{background-color:var(--gold);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%231a1205'%3E%3Cpath d='M9 6.5v11l9.5-5.500z'/%3E%3C/svg%3E");box-shadow:none}
+.ls-also{font-size:16.5px;color:var(--soft)}
+.edge.night .ls-also{color:#aab1be}
+
+/* the before and after you can drag */
+.ls-cmp{--p:52%;background:#05070b;user-select:none;-webkit-user-select:none;touch-action:pan-y}
+.ls-cmp > img{pointer-events:none}
+.ls-cmp > img.flat{filter:saturate(.34) contrast(.62) brightness(1.16);clip-path:inset(0 calc(100% - var(--p)) 0 0)}
+.ls-cmp .bar{position:absolute;top:0;bottom:0;left:var(--p);width:3px;margin-left:-1.5px;background:#fff;box-shadow:0 0 14px rgba(0,0,0,.45);pointer-events:none}
+.ls-cmp .knob{position:absolute;top:50%;left:var(--p);width:60px;height:60px;margin:-30px 0 0 -30px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:0 10px 26px -6px rgba(0,0,0,.6);pointer-events:none}
+.ls-cmp .knob svg{width:28px;height:28px;stroke:var(--ink);fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.ls-cmp .t{position:absolute;top:16px;font-size:15px;font-weight:800;border-radius:999px;padding:6px 14px;pointer-events:none}
+.ls-cmp .t.l{left:16px;background:rgba(255,255,255,.94);color:var(--ink)}
+.ls-cmp .t.r{right:16px;background:var(--gold);color:#1a1205}
+.ls-cmp input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:ew-resize;-webkit-appearance:none;appearance:none}
+.ls-cmp input:focus-visible ~ .knob{outline:3px solid var(--gold);outline-offset:4px}
+.ls-cmp .credit{left:auto;right:12px}
+@media(prefers-reduced-motion:no-preference){.ls-cmp.ls-nudge{animation:ls-nudge 1.5s cubic-bezier(.4,0,.2,1) .3s both}}
+@property --p{syntax:'<percentage>';inherits:true;initial-value:52%}
+@keyframes ls-nudge{0%{--p:52%}35%{--p:30%}70%{--p:68%}100%{--p:52%}}
+
+.band .gold{color:var(--gold-soft)}
+.ls-art{margin:0 0 30px;border-radius:var(--r-l);overflow:hidden;box-shadow:var(--sh-s)}
+.ls-art img{width:100%;height:auto}
+.steps span span{display:inline;margin:0}
+@media(min-width:760px){
+  .ls-exif{position:absolute;right:max(20px,calc((100vw - 1200px) / 2 + 20px));bottom:64px;margin:0;width:auto;max-width:none;display:flex;gap:6px}
+  .ls-exif > span{min-width:74px;padding:9px 14px 10px}
+  .ls-exif small{font-size:12.5px}.ls-exif b{font-size:27px}
+  .ls-exif-cap{position:absolute;right:max(20px,calc((100vw - 1200px) / 2 + 20px));bottom:134px;margin:0}
+  .hero .credit.ls-cr{bottom:22px}
+  .ls-count{padding-block:56px}
+}
+@media(min-width:960px){
+  .ls-step .num{right:clamp(20px,4vw,64px);top:56px}
+  .ls-art{margin-bottom:44px}
+}
+
+/* Kajabi only */
+

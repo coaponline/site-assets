@@ -14,6 +14,11 @@
 (function () {
   'use strict';
   var d = document, root = d.documentElement;
+  /* SITE MODE (Kajabi). A Kajabi page sets window.COAP_SITE before loading this file:
+     { live: true, assets: 'https://.../assets/', routes: { 'academy.html': '/new-academy', ... }, offer: 'workshop' }
+     Live mode: links follow the routes, images come from the assets host, the design preview never shows,
+     public pages are always the logged-out view, and the free offer is the one set here. Without it, the mock behaves as before. */
+  var CFG = window.COAP_SITE || null, LIVE = !!(CFG && CFG.live);
   root.classList.add('js');
   /* Embedded mode: the page is framed inside the Kajabi community, or opened with ?embed=1.
      The header, footer and tab bar are hidden in CSS; the sub-navigation stays. */
@@ -149,15 +154,23 @@
   function stored() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }
   function store(v) { try { localStorage.setItem(KEY, v); } catch (e) {} }
   var q = /[?&]view=(out|member|academy|graduate|admin)\b/.exec(location.search);
-  var view = (q && q[1]) || stored();
+  var view = LIVE ? null : ((q && q[1]) || stored());
   if (!VIEWS[view]) view = null;
   if (q) store(view);
   /* Until the body exists we don't know the area, so set what we have and settle it on ready. */
   if (view) root.setAttribute('data-view', view);
 
   var body, area, page, base;
-  function link(href) { return /^(https?:|#|mailto:)/.test(href) ? href : base + href; }
-  function asset(f) { return base + 'assets/' + f; }
+  function link(href) {
+    if (/^(https?:|#|mailto:)/.test(href)) return href;
+    if (LIVE && CFG.routes) {
+      if (CFG.routes[href] != null) return CFG.routes[href];
+      var i = href.indexOf('#'), file = i < 0 ? href : href.slice(0, i), hash = i < 0 ? '' : href.slice(i);
+      if (CFG.routes[file] != null) return CFG.routes[file] + hash;
+    }
+    return base + href;
+  }
+  function asset(f) { return LIVE && CFG.assets ? CFG.assets + f : base + 'assets/' + f; }
 
   function setView(v, go) {
     if (!VIEWS[v]) return;
@@ -240,7 +253,7 @@
   }
   function footerHTML() {
     var L = function (label, href) { return '<li><a href="' + link(href) + '">' + label + '</a></li>'; };
-    var base_ = '<div class="base"><span>&copy; 2027 COAP Online, the Centre of Aviation Photography</span><span><a href="' + link('map.html') + '">Site map for Rich and Tom</a></span></div>';
+    var base_ = '<div class="base"><span>&copy; 2027 COAP Online, the Centre of Aviation Photography</span>' + (LIVE ? '' : '<span><a href="' + link('map.html') + '">Site map for Rich and Tom</a></span>') + '</div>';
     if (view !== 'out') {
       /* Member footer: The Merge's badge and line, one Find box, three short lists. The header already carries the tabs, so no tiles here. */
       var cohort = (view === 'academy' || view === 'admin') || view === 'graduate';
@@ -300,7 +313,7 @@
   };
   var OFFER_NOW = 'props';   /* 12 Nov 2026: the January workshop's sign-ups aren't open yet */
   var OKEY = 'coap-offer-2';
-  function offerKey() { var k = null, m = location.search.match(/[?&]offer=([a-z-]+)/); if (m && OFFERS[m[1]]) { try { localStorage.setItem(OKEY, m[1]); } catch (e) {} return m[1]; } try { k = localStorage.getItem(OKEY); } catch (e) {} return OFFERS[k] ? k : OFFER_NOW; }
+  function offerKey() { var k = null, m = location.search.match(/[?&]offer=([a-z-]+)/); if (m && OFFERS[m[1]]) { try { localStorage.setItem(OKEY, m[1]); } catch (e) {} return m[1]; } if (LIVE) return OFFERS[CFG.offer] ? CFG.offer : OFFER_NOW; try { k = localStorage.getItem(OKEY); } catch (e) {} return OFFERS[k] ? k : OFFER_NOW; }
   function offerForm(o, cls) {
     return '<form class="of-form of-in-' + cls + '" data-offer-form data-kajabi-form="' + o.form + '" novalidate><label class="sr" for="of-' + cls + '">Your email</label>' +
       '<input id="of-' + cls + '" type="email" placeholder="Your email" autocomplete="email" required>' +
@@ -377,7 +390,7 @@
       ps.innerHTML = postHTML();
     } else if (ps) { ps.hidden = true; }
 
-    if (!body.hasAttribute('data-noswitch')) {
+    if (!LIVE && !body.hasAttribute('data-noswitch')) {
       var pv = d.querySelector('[data-site-switch]');
       if (!pv) { pv = d.createElement('details'); pv.setAttribute('data-site-switch', ''); pv.className = 'pv'; body.appendChild(pv); }
       pv.open = false; pv.innerHTML = switchHTML();
