@@ -4,7 +4,7 @@
 h1,h2,h3,h4,h5,h6{font-family:inherit}
 button,input,select,textarea{font-size:13.3333px}
 input::placeholder,textarea::placeholder{color:#757575}
-input,select,textarea{font-family:Arial,sans-serif;color:#101010;background-color:#fff}
+input,select,textarea{font-family:Arial;color:#101010;background-color:#fff}
 /* kajabi-forms.js: a designed form's missing field, and the message after Kajabi redirects back */
 form .input.bad,form input.bad,form textarea.bad{border-color:#c2410c!important;box-shadow:0 0 0 3px rgba(194,65,12,.15)}
 .kjb-done{font-weight:700;font-size:18px;line-height:1.5;color:#0f766e;padding:18px 0;margin:0}
