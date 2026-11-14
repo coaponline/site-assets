@@ -4,3 +4,4 @@
 h1,h2,h3,h4,h5,h6{font-family:inherit}
 button,input,select,textarea{font-size:13.3333px}
 input::placeholder,textarea::placeholder{color:#757575}
+input,select,textarea{font-family:Arial,sans-serif;color:#101010;background-color:#fff}

@@ -39,6 +39,8 @@
   /* Aligned comparison: matches elements by tag and class in order, then reports what's missing, extra and different.
      __check(slug) also leaves out the hero, whose height follows the window. */
   window.__check=async function(slug,keepHero){
+    var imgs=[].slice.call(document.images);imgs.forEach(function(i){i.loading='eager';});
+    await Promise.race([Promise.all(imgs.map(function(i){return i.complete?0:new Promise(function(r){i.onload=i.onerror=r;});})),new Promise(function(r){setTimeout(r,8000);})]);
     for(var y=0;y<document.body.scrollHeight;y+=600){scrollTo(0,y);await new Promise(function(r){setTimeout(r,100);});}
     scrollTo(0,0);await new Promise(function(r){setTimeout(r,1200);});
     var w=document.documentElement.clientWidth;
