@@ -279,6 +279,15 @@
     var prevA = pg.filter(function (a) { return $('.fa-angle-left', a); })[0], nextA = pg.filter(function (a) { return $('.fa-angle-right', a); })[0];
     var prev = fi > 0 ? flat[fi - 1] : null, next = fi > -1 ? flat[fi + 1] : null;
     var h = '';
+    if (parts.tut) {
+      var pvt = (prevA || prev) ? '<a href="' + esc(prevA ? rel(prevA.getAttribute('href')) : prev.href) + '"><i data-icon="prev"></i><span><small>Previous</small><b>' + esc(prev ? prev.title : 'Previous lesson') + '</b></span></a>' : '<span></span>';
+      var nvt = (nextA || next) ? '<a class="nx" href="' + esc(nextA ? rel(nextA.getAttribute('href')) : next.href) + '"><span><small>Next</small><b>' + esc(next ? next.title : 'Next lesson') + '</b></span><i data-icon="next"></i></a>' : '';
+      h = '<div class="ls-tutw"><div class="ls-tut-top"><a class="tu-back" href="' + esc(group ? group.href : '/products/learning-resources') + '"><i data-icon="prev"></i>' + esc(group ? nm(group.title) : 'Learn') + '</a></div>' +
+        '<div data-kjb-slot="body"></div>' +
+        '<div class="ls-tut-end"><div class="ls-tut-bar"><span data-kjb-slot="done"></span><nav class="ls-pn2" aria-label="Previous and next lesson">' + pvt + nvt + '</nav></div>' +
+        (parts.comments ? '<section class="ls-com" id="comments" aria-labelledby="ls-com-t"><h2 class="caps" id="ls-com-t">Questions on this tutorial</h2><div data-kjb-slot="comments"></div></section>' : '') + '</div></div>';
+      return h;
+    }
     if (parts.video) h += '<div class="el-ph ls-video kv" id="lesson" data-kjb-slot="video"></div>';
     h += '<div class="ls-head"><h1 class="caps">' + esc(title) + '</h1><div class="row">' +
       '<div class="person"><div><b>' + esc(group ? nm(group.title) : '') + '</b><span>' + esc([dur ? dur.replace(/^(\d+) minutes?$/, '$1 min') + '.' : '', where].join(' ').trim()) + '</span></div></div>' +
@@ -292,6 +301,33 @@
     h += '<div class="ls-bar">' + (dl ? '<div class="ls-dls">' + dl + '</div>' : '<span></span>') + '<nav class="ls-pn2" aria-label="Previous and next lesson">' + pv + nv + '</nav></div>';
     if (parts.comments) h += '<section class="ls-com" id="comments" aria-labelledby="ls-com-t"><h2 class="caps" id="ls-com-t">Questions on this lesson</h2><div data-kjb-slot="comments"></div></section>';
     return h;
+  }
+
+  /* ---------- a challenge tutorial's working parts: the Try it slider (the same code as the mock), and Enter ---------- */
+  function tutorial(main) {
+    /* Enter goes to the challenge on Shots. Until Shots is live, it goes to the library. */
+    [].forEach.call(main.querySelectorAll('a[href="#enter-challenge"]'), function (a) { a.setAttribute('href', ROUTE_SHOTS); });
+    var r = main.querySelector('#try-ev'); if (!r) return;
+    var img = main.querySelector('#try-img'), air = main.querySelector('#try-air'), sky = main.querySelector('#try-sky'), v = main.querySelector('#try-v');
+    var SAY = [
+      [-3, 'Three stops under.', "The aircraft has joined the pile on the left. There's nothing to recover at home without a lot of noise."],
+      [-2, 'Two stops under.', "The aircraft's hump is buried in the pile on the left. This is the shot that looked fine on the back of the camera."],
+      [-1, 'A stop under.', 'The hump is clear of the pile, only just. Lifting it at home will bring noise with it.'],
+      [-0.5, 'Nearly there.', 'The hump is clear of the pile. Half a stop more would give you room to edit.'],
+      [0, 'About right.', 'The hump sits well clear of the pile and the sky is still on the left edge, so it still looks like night.'],
+      [0.5, 'Still fine.', 'A little bright, and you can bring it down at home without losing anything.'],
+      [1, 'A stop over.', 'The sky has started to lift off the left edge. The lights on the aircraft are close to clipping.'],
+      [2, 'Two stops over.', 'The night has gone grey and the lights have clipped at the right edge. It no longer looks like night.']
+    ];
+    function set() {
+      var ev = parseFloat(r.value), line = SAY[0];
+      SAY.forEach(function (x) { if (ev >= x[0]) line = x; });
+      if (img) img.style.filter = 'brightness(' + Math.pow(1.55, ev).toFixed(2) + ')' + (ev > 0 ? ' contrast(' + (1 - ev * 0.12).toFixed(2) + ')' : '');
+      if (air) air.setAttribute('transform', 'translate(' + Math.round(ev * 74) + ' 0)');
+      if (sky) sky.setAttribute('transform', 'translate(' + Math.round(Math.max(ev, -1) * 22) + ' 0)');
+      if (v) { v.innerHTML = '<b>' + line[1] + '</b> ' + line[2]; v.className = 'tu-try-v' + (ev >= -0.5 && ev <= 0.5 ? ' ok' : ''); }
+    }
+    r.addEventListener('input', set); set();
   }
 
   /* ---------- the library (Kajabi's /library, where every login lands): library.html ---------- */
@@ -381,6 +417,8 @@
       downloads: $$('a.downloads-link'),
       comments: $('.comments .main-content-container')
     };
+    /* a challenge tutorial: the lesson body carries the tutorial's own layout (section.ch-tut), so it gets the whole width */
+    parts.tut = !!(parts.body && parts.body.querySelector('section.ch-tut'));
 
     var main = d.createElement('main'); main.id = 'coap-main';
     if (kind === 'library' || kind === 'login') {
@@ -397,7 +435,7 @@
     }
     var inner = kind === 'course' ? coursePage(o, prodTitle) : Promise.resolve(kind === 'module' ? modulePage(o, here) : lessonPage(o, here, parts));
     return inner.then(function (inn) {
-    main.innerHTML = kind === 'course' ? inn : '<div class="el">' + sideHTML(o, here, home, LR ? 'The library' : nm(prodTitle)) + '<div class="el-main">' + inn + '</div></div>';
+    main.innerHTML = kind === 'course' || (kind === 'lesson' && parts.tut) ? inn : '<div class="el">' + sideHTML(o, here, home, LR ? 'The library' : nm(prodTitle)) + '<div class="el-main">' + inn + '</div></div>';
 
     /* hide everything Kajabi drew, then show ours */
     [].forEach.call(d.body.children, function (c) { c.setAttribute('data-kjb-hide', ''); });
@@ -415,6 +453,7 @@
         var hr = slot('body').querySelector(':scope > hr:first-child'); if (hr) hr.remove();
         if (!slot('body').textContent.trim() && !slot('body').querySelector('img,iframe,audio,video')) slot('body').remove();
       }
+      if (parts.tut) tutorial(main);
       if (parts.done && slot('done')) {
         /* Kajabi swaps the label between these two attributes and keeps the state in data-post-completion-toggle */
         var b = parts.done; b.className = 'btn sm dark ls-done post-actions-complete';
@@ -467,7 +506,7 @@
 
   /* The new public pages are still drafts at these addresses. On launch day they move to /academy, /workshop and so on:
      change these and PUBLIC below (the same list as kajabi-build/build.py ROUTES). */
-  var ROUTE_ACADEMY = '/new-academy', ROUTE_WORKSHOP = '/new-workshop';
+  var ROUTE_ACADEMY = '/new-academy', ROUTE_SHOTS = '/library', ROUTE_WORKSHOP = '/new-workshop';
   var PUBLIC = {
     'academy.html': ROUTE_ACADEMY, 'workshop-optin.html': ROUTE_WORKSHOP, 'index.html': '/new-home', 'lessons.html': '/new-lessons',
     'community-preview.html': '/new-community', 'about.html': '/new-about', 'partners.html': '/new-partners', 'guides.html': '/new-guides',
@@ -489,7 +528,7 @@
     addCSS('https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@600;700;800;900&family=Instrument+Serif:ital@0;1&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap'),
     addCSS(CDN + 'site.css?v=' + VER), addCSS(CDN + 'members/el.css?v=' + VER),
     addCSS(CDN + 'members/' + ({ course: 'learn', module: 'course', lesson: 'lesson', library: 'library', login: 'login' })[kind] + '.css?v=' + VER), addCSS(CDN + 'members/members.css?v=' + VER)
-  ]);
+  ].concat(kind === 'lesson' ? [addCSS(CDN + 'members/tutorial.css?v=' + VER)] : []));
   function start() {
     css.then(function () {
       return build().then(function () { kajabiStyles(false); }).then(function () { return addJS(CDN + 'site.js?v=' + VER); }).then(function () { requestAnimationFrame(uncloak); });
