@@ -8,6 +8,7 @@
 
    window.COAP_SITE.forms maps a designed form's data-kajabi-form key to its Kajabi form:
      { id: <Kajabi form id>, need: ['name','email'], own: true, done: 'message' }
+   sel   a selector for forms that carry no data-kajabi-form in their markup
    need  fields that must be filled before it sends (default: email)
    own   the page has no submit handler of its own, so this script shows errors and the message
    done  the message shown after Kajabi redirects back with ?done=<key>
@@ -19,6 +20,9 @@
   var C = window.COAP_SITE || {}, F = C.forms || {}, d = document, SK = 'coap-kjb', bypass = false;
   var RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
   var MAP = { name: 'form_submission[name]', email: 'form_submission[email]', message: 'form_submission[custom_2]' };
+
+  /* forms tagged by selector instead of in their markup (the workshop page's two .sf forms) */
+  Object.keys(F).forEach(function (k) { if (F[k].sel) [].forEach.call(d.querySelectorAll(F[k].sel), function (f) { if (!f.hasAttribute('data-kajabi-form')) f.setAttribute('data-kajabi-form', k); }); });
 
   function nat(key) { var c = F[key]; return c ? d.querySelector('form[action*="/forms/' + c.id + '/"]') : null; }
   function kind(i) {
