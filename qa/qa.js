@@ -36,4 +36,26 @@
       return window.__qa;
     });
   };
+  /* Aligned comparison: matches elements by tag and class in order, then reports what's missing, extra and different.
+     __check(slug) also leaves out the hero, whose height follows the window. */
+  window.__check=async function(slug,keepHero){
+    for(var y=0;y<document.body.scrollHeight;y+=600){scrollTo(0,y);await new Promise(function(r){setTimeout(r,100);});}
+    scrollTo(0,0);await new Promise(function(r){setTimeout(r,1200);});
+    var w=document.documentElement.clientWidth;
+    var t=await (await fetch('https://coaponline.github.io/site-assets/qa/'+slug+'_'+w+'.txt?'+Date.now())).text();
+    var A=t.split('\n').filter(Boolean),B=probe();
+    var ka=A.map(function(x){return x.split('|').slice(0,2).join('|');}),kb=B.map(function(x){return x.split('|').slice(0,2).join('|');});
+    var n=ka.length,m=kb.length,L=[],i,j;for(i=0;i<=n;i++)L.push(new Int16Array(m+1));
+    for(i=n-1;i>=0;i--)for(j=m-1;j>=0;j--)L[i][j]=ka[i]===kb[j]?L[i+1][j+1]+1:Math.max(L[i+1][j],L[i][j+1]);
+    var hs=keepHero?-1:A.findIndex(function(l){return /^SECTION\|(hero|hm-h2|lg-stage)/.test(l);});
+    var he=hs<0?-1:A.findIndex(function(l,k){var p=l.split('|');return k>hs+1&&p[3]==='0'&&p[2]==='0'&&/^(SECTION|DIV|FOOTER|ASIDE|NAV)$/.test(p[0]);});
+    var inHero=function(k){return hs>=0&&k>=hs&&k<he;};
+    i=0;j=0;var miss=[],extra=[],bad=[];
+    while(i<n&&j<m){if(ka[i]===kb[j]){var a=A[i].split('|'),b=B[j].split('|');
+      var off=Math.abs(a[2]-b[2])>3||Math.abs(a[3]-b[3])>3||Math.abs(a[4]-b[4])>3||Math.abs(a[5]-b[5])>3||a[6]!==b[6]||a[7]!==b[7]||a[8]!==b[8]||a[9]!==b[9];
+      if(off&&!inHero(i))bad.push(i+' M '+A[i].slice(0,115)+'\n    K '+B[j].slice(0,115));i++;j++;}
+      else if(L[i+1][j]>=L[i][j+1]){miss.push(i+' '+A[i].slice(0,90));i++;}else{extra.push(j+' '+B[j].slice(0,90));j++;}}
+    while(i<n){miss.push(i+' '+A[i].slice(0,90));i++;}while(j<m){extra.push(j+' '+B[j].slice(0,90));j++;}
+    return 'width '+w+'  mock '+n+'  kajabi '+m+(hs>=0?'  (hero '+hs+'-'+he+' left out)':'')+'\nMISSING '+miss.length+'\n'+miss.slice(0,8).join('\n')+'\nEXTRA '+extra.length+'\n'+extra.slice(0,8).join('\n')+'\nDIFFERENT '+bad.length+'\n'+bad.slice(0,14).join('\n');
+  };
 })();
