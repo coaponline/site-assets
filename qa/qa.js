@@ -63,3 +63,27 @@
     return 'width '+w+'  mock '+n+'  kajabi '+m+(hs>=0?'  (hero '+hs+'-'+he+' left out)':'')+'\nBY SECTION '+JSON.stringify(per)+'\nMISSING '+miss.length+'\n'+miss.slice(0,8).join('\n')+'\nEXTRA '+extra.length+'\n'+extra.slice(0,8).join('\n')+'\nDIFFERENT '+bad.length+'\n'+bad.slice(0,14).join('\n');
   };
 })();
+
+/* Form dry run: fills each designed form, clicks it, and records what reaches the native Kajabi form.
+   The real send is blocked (submit event cancelled, form.submit stubbed), so nothing is posted. */
+window.__forms = async function () {
+  var sent = [], out = [];
+  HTMLFormElement.prototype.submit = function () { sent.push(this); };
+  HTMLFormElement.prototype.requestSubmit = function () { sent.push(this); };
+  window.addEventListener('submit', function (e) { var f = e.target; if (f.action && f.action.indexOf('/forms/') > -1) { e.preventDefault(); sent.push(f); } }, true);
+  var natives = [].map.call(document.querySelectorAll('form[action*="/forms/"]'), function (f) { return f.action.match(/forms\/(\d+)/)[1]; });
+  out.push('native forms on page: ' + natives.join(', '));
+  var forms = [].slice.call(document.querySelectorAll('form[data-kajabi-form]'));
+  for (var j = 0; j < forms.length; j++) {
+    var f = forms[j]; if (!f.isConnected) continue;
+    var key = f.getAttribute('data-kajabi-form'), before = sent.length;
+    [].forEach.call(f.querySelectorAll('input,textarea'), function (i) { if (i.type === 'hidden') return; i.value = (i.type === 'email' || /email/.test(i.name + i.id)) ? 'dryrun@example.com' : 'Dry run'; });
+    var b = f.querySelector('[type=submit]'); b.click();
+    await new Promise(function (r) { setTimeout(r, 1500); });
+    var got = sent.slice(before).filter(function (x) { return x.action && x.action.indexOf('/forms/') > -1; })[0], o = {};
+    if (got) new FormData(got).forEach(function (v, k) { if (/^form_submission\[(name|email|custom_2)\]$/.test(k) || k === 'thank_you_url') o[k.replace('form_submission', '')] = v; });
+    out.push(key + ' -> ' + (got ? got.action.match(/forms\/(\d+)/)[1] + ' ' + JSON.stringify(o) : 'NOT SENT'));
+    b.disabled = false;
+  }
+  return out.join('\n');
+};
