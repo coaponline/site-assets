@@ -13,7 +13,10 @@ Where the snippet is (installed 14 Nov 2026):
 
 - **Site theme** "Encore" 2156147178, global setting `js`. Covers /library and /login. It does nothing on any other site page.
 - **Learning Resources** product theme 2161883131, global setting `embedded_scripts`.
-- **The other 17 course themes**, in their `embedded_scripts`. The list is in `kajabi-build/README.md`.
+- **The other course themes**, in their `embedded_scripts` (added 14 Nov and checked by reading them back):
+  - Momentum: 2157873047 Lightroom masterclass, 2157872816 Photoshop masterclass, 2158190033 Aerodynamic Writing Challenge, 2157873070 Writing masterclass, 2158190022 VIP Mastermind recordings, 2157942413 3-Day Photoshop Workshop 2023, 2157942754 5-Day Lightroom Workshop 2023, 2158190014 Photoshop Fundamentals, 2158190009 3-Day Editing Workshop 2024, 2160366159 Replays Spring 2025, 2161899484 Editing Bundle, 2163223321 Replays November 2025, 2166733577 Replays July 2026.
+  - Premier: 2167645783 Replays October 2026, 2157754589 Academy Back Up, 2158185010 90-Day Editing Academy (March 31st). `boot.js` doesn't know Premier's layout yet, so it leaves these pages exactly as Kajabi draws them.
+  - No script box: 2156301938 Live Merge Meet Workshops (Premier 7.3.0). Nothing installed.
 
 When the switch is on, the snippet hides the page for a moment (at most 5 seconds) and loads `boot.js` from GitHub Pages.
 
@@ -48,4 +51,5 @@ The Lessons course's Kajabi modules sit on the mock's shelves by name (`SHELVES`
 - The header's other tabs (Shots, Challenges, High Roller, Extras) have no pages yet. They point to the library or /clifton until those pages exist. Account opens Kajabi's /settings/account and Log out is Kajabi's /logout.
 - Find a lesson (the search) isn't on these pages yet, because its index in `site.js` is still the mock's.
 - The password reset pages are still Kajabi's own.
+- Courses on Kajabi's Premier theme (the four above) keep Kajabi's look. Supporting them means reading Premier's syllabus and player, or moving those courses to Momentum in Kajabi.
 - The Academy door on the library is only built once the Cohort 3 course exists.
