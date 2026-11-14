@@ -38,7 +38,13 @@
   /* ---------- small helpers ---------- */
   function $(s, c) { return (c || d).querySelector(s); }
   function $$(s, c) { return [].slice.call((c || d).querySelectorAll(s)); }
-  function txt(e) { return e ? e.textContent.replace(/\s+/g, ' ').trim() : ''; }
+  /* text only, without the hidden titles inside Kajabi's SVG icons ("video lesson icon ... Created with Sketch.") */
+  function txt(e) {
+    if (!e) return '';
+    var t = '', w = d.createTreeWalker(e, 4, null), n;
+    while ((n = w.nextNode())) if (!(n.parentNode && n.parentNode.closest && n.parentNode.closest('svg,style,script'))) t += n.nodeValue + ' ';
+    return t.replace(/\s+/g, ' ').trim();
+  }
   function rel(h) { return (h || '').replace(/^https?:\/\/[^/]+/, ''); }
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function idOf(h, k) { var r = (h || '').match(new RegExp(k + '/(\\d+)')); return r ? r[1] : null; }
@@ -327,14 +333,20 @@
         if (!slot('body').textContent.trim() && !slot('body').querySelector('img,iframe,audio,video')) slot('body').remove();
       }
       if (parts.done && slot('done')) {
+        /* Kajabi swaps the label between these two attributes and keeps the state in data-post-completion-toggle */
         var b = parts.done; b.className = 'btn sm dark ls-done post-actions-complete';
+        b.setAttribute('data-complete-text', 'Mark as complete'); b.setAttribute('data-incomplete-text', 'Completed');
         var label = function () {
-          var on = /completed|complete\s*$/i.test(txt(b)) && !/^complete lesson$/i.test(txt(b)) || b.classList.contains('completed') || b.getAttribute('data-completed') === 'true';
-          b.setAttribute('aria-pressed', String(!!on));
+          var on = b.getAttribute('data-post-completion-toggle') === 'true';
+          b.setAttribute('aria-pressed', String(on));
+          var want = on ? 'Completed' : 'Mark as complete'; if (b.textContent.trim() !== want) b.textContent = want;
         };
         label(); slot('done').replaceWith(b);
+        if (window.MutationObserver) new MutationObserver(function () { setTimeout(label, 0); }).observe(b, { attributes: true, attributeFilter: ['data-post-completion-toggle'] });
       } else if (slot('done')) slot('done').remove();
       if (parts.comments && slot('comments')) [].slice.call(parts.comments.children).forEach(function (n) { slot('comments').appendChild(n); });
+      var ta = main.querySelector('.ls-com textarea'); if (ta) ta.setAttribute('placeholder', 'Ask a question about this lesson');
+      var cb = main.querySelector('.ls-com .comments-btn'); if (cb && /post comment/i.test(cb.textContent)) cb.textContent = 'Post';
     }
 
     d.body.setAttribute('data-area', 'member'); d.body.setAttribute('data-page', 'learn'); d.body.setAttribute('data-nosubnav', '');
