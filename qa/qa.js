@@ -87,3 +87,16 @@ window.__forms = async function () {
   }
   return out.join('\n');
 };
+
+/* Phone-width check: loads a draft in a 390x844 frame (with ?embed=0 so site.js keeps the header) and runs __check there. */
+window.__phone = async function (slug, theme) {
+  var f = document.createElement('iframe');
+  f.style.cssText = 'position:fixed;left:0;top:0;width:390px;height:844px;z-index:2147483647;background:#fff;border:0';
+  f.src = '/' + slug + '?preview_theme_id=' + theme + '&embed=0&ph=' + Date.now();
+  document.documentElement.appendChild(f);
+  await new Promise(function (r) { f.onload = r; }); await new Promise(function (r) { setTimeout(r, 2500); });
+  var w = f.contentWindow;
+  await new Promise(function (r) { var s = w.document.createElement('script'); s.src = 'https://coaponline.github.io/site-assets/qa/qa.js?' + Date.now(); s.onload = r; w.document.head.appendChild(s); });
+  var c = await w.__check(slug), sw = w.document.documentElement.scrollWidth; f.remove();
+  return 'scrollWidth ' + sw + '\n' + c;
+};

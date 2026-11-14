@@ -25,7 +25,7 @@
   var embed = /[?&]embed=1\b/.test(location.search);
   /* Framed counts as embedded only inside Kajabi or coaponline.com. In the Claude preview (also a frame) the page keeps its header. */
   try {
-    if (window.self !== window.top) {
+    if (window.self !== window.top && !/[?&]embed=0\b/.test(location.search)) {   /* ?embed=0: framed, but not embedded (the phone-width layout check) */
       var anc = (location.ancestorOrigins && location.ancestorOrigins.length ? Array.prototype.join.call(location.ancestorOrigins, ' ') : d.referrer) || '';
       if (/kajabi|coaponline/i.test(anc)) embed = true;
     }
