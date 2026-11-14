@@ -1,0 +1,6 @@
+/* Kajabi's own base styles (Tailwind's reset and the Nova theme) put back to the browser defaults the mock was designed on.
+   Loaded first, before site.css and each page's own styles, so anything those set still wins.
+   Each rule is here because the layout check found Kajabi changing it. */
+h1,h2,h3,h4,h5,h6{font-family:inherit}
+button,input,select,textarea{font-size:13.3333px}
+input::placeholder,textarea::placeholder{color:#757575}
