@@ -477,7 +477,7 @@
     live: true, assets: CDN + 'assets/', member: true,
     routes: {
       'home.html': '/library', 'learn.html': '/products/learning-resources', 'library.html': '/library', 'login.html': '/login',
-      'perks.html': '/clifton', 'account.html': '/library', 'shots.html': '/library', 'challenge.html': '/library',
+      'perks.html': '/clifton', 'account.html': '/settings/account', 'shots.html': '/library', 'challenge.html': '/library',
       'challenge-academy.html': '/library', 'high-roller.html': '/library', 'wings.html': '/library', 'my-academy.html': '/library',
       'live.html': '/products/learning-resources', 'course.html': '/products/learning-resources', 'lesson.html': '/products/learning-resources'
     }

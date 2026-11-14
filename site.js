@@ -214,7 +214,7 @@
         MEMBER_MENU.filter(function (it) { return it.key !== 'my-academy'; }).map(function (it) { var x = a(it, isCur(it, 'member'), icon(it.icon) + it.label); return it.phone ? x.replace('<a ', '<a class="m-only" ') : x; }).join('') +
         '<a href="' + link('account.html#help') + '">' + icon('help') + 'Help</a>' +
         (view === 'member' ? '<a class="up" href="' + link('my-academy.html#upgrade') + '"><i class="tier ac">Academy</i><span><b>Upgrade to the Academy</b><small>Members get \u00a3100 off</small></span></a>' : '') +
-        '<hr><a href="' + link('index.html') + '" data-set-view="out">' + icon('out') + 'Log out</a></div></details></div>';
+        '<hr>' + (LIVE ? '<a href="/logout">' : '<a href="' + link('index.html') + '" data-set-view="out">') + icon('out') + 'Log out</a></div></details></div>';   /* live: Kajabi's own log out */
     } else {
       h += '<nav aria-label="Main">' + PUBLIC_NAV.map(function (it) { return a(it, isCur(it, 'public')); }).join('') + '</nav>';
       h += '<div class="right">' + findBtn() + '<a class="login" href="' + link('login.html') + '"' + (page === 'login' ? ' aria-current="page"' : '') + '>Log in</a>' +
