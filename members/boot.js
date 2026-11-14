@@ -273,7 +273,7 @@
     var title = txt($('.post-body-title')) || (here.post || {}).title || '';
     var dur = txt($('.post-actions-duration')) || ((txt($('.post-actions')).match(/\d+\s+minutes?/) || [''])[0]);
     var group = here.sub || here.cat, list = group ? group.posts : [], i = list.indexOf(here.post);
-    var where = group ? 'Lesson ' + (i + 1) + ' of ' + list.length + ' in ' + nm(group.title) + '.' : '';
+    var where = group && i > -1 ? 'Lesson ' + (i + 1) + ' of ' + list.length + '.' : '';
     var flat = o.posts, fi = flat.indexOf(here.post);
     var pg = $$('.post-actions-pagination a');
     var prevA = pg.filter(function (a) { return $('.fa-angle-left', a); })[0], nextA = pg.filter(function (a) { return $('.fa-angle-right', a); })[0];
