@@ -3,6 +3,7 @@
 
 /* everything Kajabi drew is hidden; its working parts have been moved into #coap-main */
 [data-kjb-hide]{display:none!important}
+html.coap-nl{padding-top:0!important;margin-top:0!important}   /* Kajabi pads the page for its admin preview bar, which is hidden here */
 body.coap-nl-on{margin:0;background:var(--paper)}
 #coap-main{display:block}
 

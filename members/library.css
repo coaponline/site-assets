@@ -1,0 +1,73 @@
+/* From the site mock: library.html page styles, copied as they are. */
+/* library only. Every rule starts with .lb */
+body[data-page="library"]{background:var(--white)}
+.lib{padding-block:22px 40px}
+.lb-top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 24px;margin-bottom:18px}
+.lb-top h1{margin:0;font-size:clamp(38px,4vw,54px);line-height:.9}
+.lb-top .seg{flex-wrap:wrap;margin-top:16px}
+.lb-k{display:block;margin:0 0 10px;font-size:14px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--soft)}
+/* doors: the big two */
+.lb-doors{display:grid;gap:12px;margin-bottom:22px}
+.lb-doors .door{min-height:200px;padding:20px}
+.lb-doors .door b{font-size:clamp(32px,3.2vw,46px)}
+.lb-addr{position:absolute;top:14px;left:14px;display:inline-flex;align-items:center;gap:7px;padding:5px 11px;border-radius:999px;background:rgba(9,14,26,.5);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#fff;font-size:13.5px;font-weight:700;line-height:1.2}
+.lb-addr svg{width:15px;height:15px}
+.door.lb-cohort::before{background:linear-gradient(0deg,rgba(40,24,4,.92) 0%,rgba(40,24,4,.45) 50%,rgba(40,24,4,0) 78%)}
+.lb-tag{position:absolute;top:14px;right:14px;padding:5px 11px;border-radius:999px;background:var(--gold);color:#1a1205;font-size:13.5px;font-weight:800;line-height:1.2}
+/* everything you own: Kajabi's list as photo cards */
+.lb-own{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.lb-p{position:relative;isolation:isolate;display:flex;flex-direction:column;justify-content:flex-end;min-height:150px;padding:14px;border-radius:var(--r);overflow:hidden;color:#fff;text-decoration:none;background:var(--sky);transition:transform .25s,box-shadow .25s}
+.lb-p img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;transition:transform .6s}
+.lb-p::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(0deg,rgba(9,14,26,.88) 0%,rgba(9,14,26,.3) 55%,rgba(9,14,26,0) 80%)}
+.lb-p b{font-family:var(--cond);font-weight:800;text-transform:uppercase;font-size:clamp(22px,1.9vw,27px);line-height:.95;padding-right:40px}
+.lb-p::after{content:"";position:absolute;right:12px;bottom:12px;width:32px;height:32px;border-radius:50%;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2311141b' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E") center/15px no-repeat}
+.lb-p:hover{transform:translateY(-3px);box-shadow:var(--sh)}
+.lb-p:hover img{transform:scale(1.04)}
+/* the one card */
+.lb-more{margin-top:22px}
+.lb-more .door{min-height:150px;padding:18px 20px}
+.lb-more .door b{font-size:clamp(28px,2.6vw,38px)}
+.lb-more .door span{max-width:52ch}
+.lb-foot{display:flex;flex-wrap:wrap;gap:10px 28px;align-items:center;justify-content:space-between;margin-top:28px;font-size:16px;color:var(--soft)}
+.lb-foot .dn{margin:0;flex:1 1 100%}
+/* THE MERGE card: the patch on navy, like the rest of the Merge graphics */
+.lb-merge{position:relative;isolation:isolate;display:flex;flex-direction:column;justify-content:flex-end;gap:6px;min-height:200px;padding:20px;border-radius:var(--r);overflow:hidden;color:#fff;text-decoration:none;background:radial-gradient(60% 120% at 82% 50%,rgba(64,170,205,.45),rgba(64,170,205,0) 70%),linear-gradient(120deg,#0a1426 0%,#10233f 60%,#123156 100%);transition:transform .25s,box-shadow .25s}
+.lb-merge .patch{position:absolute;right:5%;top:50%;height:90%;max-height:250px;transform:translateY(-50%) rotate(-6deg);filter:drop-shadow(0 18px 30px rgba(0,0,0,.55));z-index:-1;transition:transform .5s}
+.lb-merge:hover .patch{transform:translateY(-50%) rotate(-2deg) scale(1.04)}
+.lb-merge b{font-family:var(--cond);font-weight:800;text-transform:uppercase;font-size:clamp(32px,3.2vw,46px);line-height:.92}
+.lb-merge > span:not(.lb-addr):not(.lb-tag){font-size:16.5px;font-weight:600;line-height:1.35;color:#dbe6f2;max-width:30ch}
+.lb-avs{display:flex;margin-top:6px}
+.lb-avs img{width:34px;height:34px;border-radius:50%;object-fit:cover;box-shadow:0 0 0 3px #10233f;margin-right:-8px}
+/* THE ACADEMY card: gold, with the 12-week route and this week lit */
+.lb-ac{position:relative;isolation:isolate;display:flex;flex-direction:column;justify-content:flex-end;gap:6px;min-height:200px;padding:20px;border-radius:var(--r);overflow:hidden;color:#fff;text-decoration:none;background:radial-gradient(70% 120% at 85% 40%,rgba(217,147,43,.4),rgba(217,147,43,0) 70%),linear-gradient(120deg,#17110a 0%,#2a1c0b 60%,#3b2609 100%);transition:transform .25s,box-shadow .25s}
+.lb-ac b{font-family:var(--cond);font-weight:800;text-transform:uppercase;font-size:clamp(32px,3.2vw,46px);line-height:.92}
+.lb-ac > span:not(.lb-addr):not(.lb-tag){font-size:16.5px;font-weight:600;line-height:1.35;color:#f1e4cf;max-width:26ch}
+.lb-route{position:absolute;right:24px;top:22px;display:grid;gap:6px;z-index:-1}
+.lb-route div{display:grid;grid-template-columns:62px repeat(4,30px);gap:6px;align-items:center}
+.lb-route em{font:800 12px/1 var(--cond);letter-spacing:.06em;text-transform:uppercase;font-style:normal;color:#d7b98a}
+.lb-route i{height:30px;border-radius:7px;background:rgba(255,255,255,.1);display:grid;place-items:center;font:800 14px/1 var(--cond);font-style:normal;color:#cdb594}
+.lb-route i.lb-d{background:rgba(255,255,255,.24);color:#fff}
+.lb-route i.lb-n{background:var(--gold);color:#1a1205;box-shadow:0 0 0 3px rgba(243,196,107,.35)}
+.lb-merge::after,.lb-ac::after{content:"";position:absolute;right:18px;bottom:18px;width:40px;height:40px;border-radius:50%;background:var(--gold) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231a1205' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E") center/18px no-repeat}
+.lb-merge:hover,.lb-ac:hover{transform:translateY(-4px);box-shadow:var(--sh)}
+/* guide tiles show the cover, like a book on a shelf */
+.lb-p.cover{background:linear-gradient(160deg,#efe9dc,#e3dccb);justify-content:center;align-items:center}
+.lb-p.cover::before{display:none}
+.lb-p.cover img{position:static;width:auto;height:132px;object-fit:contain;border-radius:2px;box-shadow:0 16px 28px -14px rgba(0,0,0,.6);transform:rotate(-3deg)}
+.lb-p.cover:hover img{transform:rotate(0) scale(1.04)}
+.lb-p.cover::after{background-color:var(--ink);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E")}
+.lb-p small{font-size:12.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--gold-soft);margin-bottom:3px}
+@media(max-width:699px){.lb-route{display:none}.lb-merge .patch{height:78%;right:-8%;opacity:.35}}
+@media(min-width:700px){.lb-merge,.lb-ac{min-height:clamp(220px,24vh,280px)}.lb-p.cover img{height:146px}}
+[data-who]:not(.on){display:none!important}
+@media(max-width:699px){.lb-cohort .lb-addr{display:none}}
+/* Someone who isn't a member: no members' tabs, live bar or members' footer (the Kajabi header script does the same check). */
+html.lb-cust .hdr nav,html.lb-cust .hdr .postbtn,html.lb-cust .annc,html.lb-cust .ftr .cols{display:none!important}
+@media(min-width:700px){
+  .lib{padding-block:30px 56px}
+  .lb-doors.two{grid-template-columns:1fr 1fr}
+  .lb-doors .door{min-height:clamp(220px,24vh,280px)}
+  .lb-own{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .lb-p{min-height:170px}
+}
+@media(min-width:1100px){.lb-own{grid-template-columns:repeat(5,minmax(0,1fr))}}

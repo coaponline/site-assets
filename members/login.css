@@ -1,0 +1,32 @@
+/* From the site mock: login.html page styles, copied as they are. */
+/* login.html only. Prefix: lg- */
+.lg-stage{position:relative;isolation:isolate;overflow:hidden;background:var(--night);color:#fff;padding-top:min(56vw,250px)}
+.lg-stage > img{position:absolute;inset:0 0 auto;width:100%;height:min(74vw,340px);object-fit:cover;object-position:50% 46%;z-index:-2}
+.lg-stage::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(13,16,23,0) 0,rgba(13,16,23,0) min(30vw,140px),var(--night) min(74vw,340px))}
+.lg-stage .credit{left:auto;right:14px;bottom:auto;top:calc(min(56vw,250px) - 46px);z-index:1;text-decoration:none}
+.lg-grid{display:grid;gap:28px;padding-bottom:52px}
+.lg-form{background:var(--white);color:var(--text);border-radius:var(--r-l);box-shadow:0 40px 80px -40px rgba(0,0,0,.8);padding:28px 22px 26px;display:grid;gap:18px;align-content:start}
+.lg-form .lg-forgot{justify-self:center;font-size:17px}
+.lg-new{background:var(--gold-tint);border-radius:var(--r);padding:20px;display:grid;gap:12px;justify-items:start;margin-top:4px}
+.lg-new b{color:var(--ink);font-size:19px}
+.lg-new p{font-size:17px}
+.lg-after{display:grid;gap:10px;align-content:end;justify-items:start}
+.lg-after .eyebrow{color:var(--gold-soft)}
+.lg-after .lede{color:#fff;max-width:17ch}
+.lg-five{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.lg-five li{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:6px 16px 6px 8px;border-radius:999px;background:rgba(255,255,255,.12);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);font-weight:700;font-size:16px;color:#fff}
+.lg-five i{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.14);display:grid;place-items:center;color:var(--gold-soft)}
+.lg-five li:first-child i{background:var(--gold);color:#1a1205}
+.lg-pv{justify-self:center;flex-wrap:wrap;justify-content:center}
+.lg-pv a{font-size:13px;font-weight:600;min-height:40px;padding:6px 9px;border-radius:5px}
+.lg-five i svg{width:17px;height:17px}
+@media(min-width:900px){
+  .lg-stage{padding-top:0;min-height:calc(100vh - var(--hdr-h));min-height:calc(100svh - var(--hdr-h));display:grid;align-items:center}
+  .lg-stage > img{inset:0;height:100%;object-position:50% 60%;animation:lg-kb 24s cubic-bezier(.2,.6,.2,1) both}
+  @keyframes lg-kb{from{transform:scale(1.08)}to{transform:scale(1)}}
+  .lg-stage::before{background:linear-gradient(90deg,rgba(8,10,15,.78) 0%,rgba(8,10,15,.42) 46%,rgba(8,10,15,.08) 72%),linear-gradient(0deg,rgba(8,10,15,.8) 0%,rgba(8,10,15,0) 46%)}
+  .lg-stage .credit{top:auto;bottom:22px;right:max(20px,env(safe-area-inset-right,0px))}
+  .lg-grid{grid-template-columns:minmax(0,460px) 1fr;gap:64px;align-items:stretch;padding-block:56px 64px;width:100%}
+  .lg-form{padding:40px 38px 34px}
+  .lg-after{padding-bottom:8px}
+}

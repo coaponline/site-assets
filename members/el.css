@@ -1,0 +1,45 @@
+/* From the site mock: shared by learn.html, course.html and lesson.html. Prefix el- */
+/* Shared by learn.html, course.html and lesson.html: the Lessons layout. Prefix: el- */
+.el{max-width:1400px;margin-inline:auto;padding:18px 16px 72px;display:grid;grid-template-columns:minmax(0,1fr);gap:18px}
+.el-side{background:var(--white);border-radius:var(--r-l);box-shadow:var(--sh-s);overflow:hidden}
+.el-side > summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:60px;padding:14px 20px;font-family:var(--cond);font-weight:800;text-transform:uppercase;font-size:26px;line-height:1;color:var(--ink)}
+.el-side > summary::-webkit-details-marker{display:none}
+.el-side > summary::after{content:"";width:12px;height:12px;border-right:3px solid var(--gold-d);border-bottom:3px solid var(--gold-d);transform:rotate(45deg);margin:0 6px 6px 0;transition:transform .2s}
+.el-side[open] > summary::after{transform:rotate(-135deg);margin:6px 6px 0 0}
+.el-out{padding:0 12px 16px;display:grid;gap:2px}
+.el-out .find{width:100%;justify-content:flex-start;gap:10px;padding:10px 16px;margin-bottom:8px;border-radius:14px}
+.el-out .find span{display:inline;font-weight:600;color:var(--soft)}
+.el-out h3{font-family:var(--body);font-size:14.5px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--gold-d);margin:16px 12px 4px}
+.el-out a,.el-out details > summary{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;min-height:44px;padding:8px 12px;border-radius:12px;text-decoration:none;color:var(--ink);font-weight:700;font-size:16.5px;line-height:1.25;cursor:pointer;list-style:none;transition:background .2s}
+.el-out details > summary::-webkit-details-marker{display:none}
+.el-out a:hover,.el-out details > summary:hover{background:var(--paper)}
+.el-out small{font-size:14px;font-weight:700;color:var(--soft);white-space:nowrap}
+.el-out [aria-current]{background:var(--ink);color:#fff}
+.el-out [aria-current]:hover{background:var(--ink)}
+.el-out [aria-current] small{color:var(--gold-soft)}
+.el-out details > summary small::after{content:"";display:inline-block;width:8px;height:8px;border-right:2.5px solid currentColor;border-bottom:2.5px solid currentColor;transform:rotate(45deg);margin:0 2px 3px 9px;transition:transform .2s}
+.el-out details[open] > summary small::after{transform:rotate(-135deg);margin-bottom:-2px}
+.el-out details > div{display:grid;gap:1px;margin:2px 0 6px 12px;padding-left:10px;box-shadow:inset 2px 0 0 var(--hair)}
+.el-out details > div a{font-weight:600;font-size:15.5px;min-height:40px;padding-block:6px}
+.el-out .home{grid-template-columns:auto 1fr;font-size:17px}
+.el-out .home svg{width:20px;height:20px;color:var(--gold-d)}
+.el-out .home[aria-current] svg{color:var(--gold-soft)}
+.el-main{min-width:0;display:grid;gap:26px;align-content:start}
+.el-bar{height:8px;border-radius:99px;background:rgba(17,20,27,.1);overflow:hidden}
+.el-bar i{display:block;height:100%;border-radius:99px;background:var(--gold)}
+.night .el-bar,.el-dark .el-bar{background:rgba(255,255,255,.18)}
+.el-tick{width:28px;height:28px;border-radius:50%;background:rgba(17,20,27,.08);flex:none;display:grid;place-items:center}
+.el-tick.done{background:var(--teal)}
+.el-tick.done::after{content:"";width:11px;height:6px;border-left:2.5px solid #fff;border-bottom:2.5px solid #fff;transform:rotate(-45deg) translate(1px,-1px)}
+.el-ph{position:relative;margin:0;overflow:hidden;background:#d9d5ca}
+.el-ph img{width:100%;height:100%;object-fit:cover;display:block}
+.el-ph .len{position:absolute;right:8px;bottom:8px;padding:3px 9px;border-radius:99px;background:rgba(9,14,26,.8);color:#fff;font-size:13.5px;font-weight:700}
+.el-playb{position:absolute;left:50%;top:50%;width:84px;height:84px;margin:-42px 0 0 -42px;border-radius:50%;background:var(--gold);color:#1a1205;display:grid;place-items:center;box-shadow:0 16px 36px -10px rgba(0,0,0,.7)}
+.el-playb svg{width:36px;height:36px}
+@media(min-width:760px){.el{padding-inline:28px}}
+@media(min-width:1040px){
+  .el{grid-template-columns:310px minmax(0,1fr);gap:36px;padding-top:28px;align-items:start}
+  .el-side{position:sticky;top:calc(var(--hdr-h) + 18px);max-height:calc(100vh - var(--hdr-h) - 36px);overflow-y:auto;scrollbar-width:thin}
+  .el-side > summary{pointer-events:none;padding-bottom:6px;font-size:34px}
+  .el-side > summary::after{display:none}
+}

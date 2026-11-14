@@ -117,36 +117,97 @@
     return h + '</nav></details>';
   }
 
-  /* ---------- course front page: learn.html's shelves of module cards ---------- */
-  function coursePage(o, prodTitle, home) {
-    var sub = txt($('.dashboard-welcome-subtitle')), p = (sub.match(/(\d+)\s*%/) || [0, 0])[1];
-    var resume = $('a.dashboard-welcome-btn'), cards = $$('a.category');
-    var img = function (a) { var i = $('img', a); return i ? i.getAttribute('src') : ''; };
-    var info = {}; cards.forEach(function (a) { info[idOf(a.getAttribute('href'), 'categories')] = { img: img(a), desc: txt($('.category-description', a)) }; });
-    var hero = cards[0] ? img(cards[0]) : '';
-    var h = '<div class="cs-top" id="top"><div class="tx"><span class="kick">Welcome back</span>' +
-      '<h1 class="caps">' + esc(nm(prodTitle)) + '</h1>' +
-      '<span class="row"><span class="el-bar"><i style="width:' + p + '%"></i></span>' + p + '% watched</span>' +
-      (resume ? '<a class="btn" href="' + esc(rel(resume.getAttribute('href'))) + '"><i data-icon="play"></i>' + (+p ? 'Carry on' : 'Start') + '</a>' : '') +
-      '</div>' + (hero ? '<figure class="el-ph"><img src="' + esc(hero) + '" alt=""></figure>' : '') + '</div>';
-    function card(c) {
-      var i = info[c.id] || {};
-      var n = c.posts.length, m_ = c.subs.length;
-      return '<a class="ln-c" href="' + esc(c.href) + '"><figure class="el-ph">' + (i.img ? '<img src="' + esc(i.img) + '" alt="" loading="lazy">' : '') + '</figure>' +
-        '<span class="pad"><b>' + esc(nm(c.title)) + '</b><span class="m">' + (m_ ? m_ + ' modules, ' : '') + n + ' lesson' + (n === 1 ? '' : 's') + '</span></span></a>';
-    }
-    if (LR) {
-      var used = [];
-      SHELVES.forEach(function (sh) {
+  /* ---------- course front page: learn.html (photo header, shelf buttons, one shelf at a time, Carry on rail) ---------- */
+  function fetchDoc(url) {
+    return fetch(url, { credentials: 'same-origin' }).then(function (r) { return r.ok ? r.text() : ''; })
+      .then(function (t) { return new DOMParser().parseFromString(t, 'text/html'); }).catch(function () { return null; });
+  }
+  function catData(doc) {
+    if (!doc) return { done: 0, total: 0, items: [] };
+    var st = txt($('.category-progress-stats', doc)).match(/(\d+)\s*\/\s*(\d+)/);
+    return {
+      done: st ? +st[1] : 0, total: st ? +st[2] : 0,
+      items: $$('.category-outline > a.category-post', doc).map(function (a) {
+        var h = a.getAttribute('href'), i = $('img', a);
+        return { href: rel(h), isSub: !/\/posts\//.test(h), title: txt($('.category-post-title', a)), img: i ? i.getAttribute('src') : '', p: pct($('.progress-icon', a)) };
+      })
+    };
+  }
+  var LSHELVES = [['shoot', 'Shoot it', /shoot/i], ['edit', 'Edit it', /edit like|create like/i], ['show', 'Show it', /showcase|write like/i], ['replays', 'Replays', /replay/i], ['guides', 'Guides', /[\s\S]/]];
+  function stateText(done, total) { return !done ? 'Not started' : done >= total ? 'Watched' : done + ' of ' + total; }
+  function coursePage(o, prodTitle) {
+    var sub = txt($('.dashboard-welcome-subtitle')), all = +((sub.match(/(\d+)\s*%/) || [0, 0])[1]);
+    var resume = $('a.dashboard-welcome-btn'), rhref = resume ? rel(resume.getAttribute('href')) : '';
+    var cimg = {}; $$('a.category').forEach(function (a) { var i = $('img', a); cimg[idOf(a.getAttribute('href'), 'categories')] = i ? i.getAttribute('src') : ''; });
+    return Promise.all(o.cats.map(function (c) { return c.href ? fetchDoc(c.href) : Promise.resolve(null); })).then(function (docs) {
+      var data = {}, imgOf = {};
+      o.cats.forEach(function (c, i) { data[c.id] = catData(docs[i]); data[c.id].items.forEach(function (x) { imgOf[x.href] = x; }); });
+      var bar = function (done, total) { var w = total ? Math.round(done / total * 100) : 0; return '<span class="p"><span class="el-bar"><i style="width:' + w + '%"></i></span>' + stateText(done, total) + '</span>'; };
+      var card = function (href, img, title, m, p) {
+        return '<a class="ln-c" href="' + esc(href) + '"><figure class="el-ph">' + (img ? '<img src="' + esc(img) + '" alt="" loading="lazy">' : '') +
+          (p >= 100 ? '<span class="el-tick done"><span class="vh">Watched</span></span>' : '') + '</figure>' +
+          '<span class="pad"><b>' + esc(title) + '</b>' + (m ? '<span class="m">' + esc(m) + '</span>' : '') + (p > 0 && p < 100 ? '<span class="p"><span class="el-bar"><i style="width:' + p + '%"></i></span>In progress</span>' : '') + '</span></a>';
+      };
+      var shelves = [], used = [];
+      (LR ? LSHELVES : [['modules', nm(prodTitle), /[\s\S]/]]).forEach(function (sh) {
         var list = o.cats.filter(function (c) { return used.indexOf(c) < 0 && sh[2].test(c.title); });
-        if (!list.length) return; list.forEach(function (c) { used.push(c); });
-        var n = list.reduce(function (t, c) { return t + c.posts.length; }, 0);
-        h += '<section id="' + sh[0] + '"><div class="ln-h"><h2 class="caps">' + sh[1] + '</h2><p>' + n + ' lessons</p></div><div class="ln-cards">' + list.map(card).join('') + '</div></section>';
+        if (list.length) { list.forEach(function (c) { used.push(c); }); shelves.push({ key: sh[0], title: sh[1], cats: list }); }
       });
-    } else {
-      h += '<section id="modules"><div class="ln-h"><h2 class="caps">In this course</h2><p>' + o.posts.length + ' lessons</p></div><div class="ln-cards">' + o.cats.map(card).join('') + '</div></section>';
+      var sec = shelves.map(function (sh) {
+        var n = sh.cats.reduce(function (t, c) { return t + c.posts.length; }, 0), body = '', note = n + ' lesson' + (n === 1 ? '' : 's');
+        if (sh.key === 'edit') {
+          note = n + ' lessons in ' + (sh.cats.length === 2 ? 'two courses' : sh.cats.length + ' courses');
+          body = '<div class="ln-wide">' + sh.cats.map(function (c) {
+            var dd = data[c.id];
+            return '<div class="ln-m"><figure class="el-ph">' + (cimg[c.id] ? '<img src="' + esc(cimg[c.id]) + '" alt="" loading="lazy">' : '') + '</figure><div class="pad">' +
+              '<h3 class="caps"><a href="' + esc(c.href) + '">' + esc(nm(c.title)) + '</a></h3><span class="m">' + c.posts.length + ' lessons' + (c.subs.length ? ' in ' + c.subs.length + ' parts' : '') + '.</span>' +
+              bar(dd.done, dd.total || c.posts.length) +
+              (c.subs.length ? '<ol>' + c.subs.map(function (s) {
+                var x = imgOf[s.href] || {};
+                return '<li><a href="' + esc(s.href) + '"><span class="el-tick' + (x.p >= 100 ? ' done' : '') + '"></span>' + esc(nm(s.title)) + '<small>' + s.posts.length + '</small></a></li>';
+              }).join('') + '</ol>' : '') + '</div></div>';
+          }).join('') + '</div>';
+        } else {
+          var cards = [];
+          sh.cats.forEach(function (c) {
+            if (c.subs.length) c.subs.forEach(function (s) { var x = imgOf[s.href] || {}; cards.push(card(s.href, x.img || cimg[c.id], nm(s.title), s.posts.length + ' ' + (sh.key === 'replays' ? 'replays' : 'lessons'), x.p || 0)); });
+            else if (sh.key === 'shoot') data[c.id].items.filter(function (x) { return !x.isSub; }).forEach(function (x) { cards.push(card(x.href, x.img, x.title, '', x.p)); });
+            else { var dd = data[c.id]; cards.push(card(c.href, cimg[c.id], nm(c.title), c.posts.length + ' ' + (/podcast/i.test(c.title) ? 'episodes' : /burner|guide/i.test(c.title) ? 'downloads' : 'lessons'), dd.total ? Math.round(dd.done / dd.total * 100) : 0)); }
+          });
+          if (sh.key === 'replays') note = sh.cats.reduce(function (t, c) { return t + c.posts.length; }, 0) + ' replays';
+          body = '<div class="ln-cards">' + cards.join('') + '</div>';
+        }
+        return '<section id="' + sh.key + '" aria-labelledby="ln-' + sh.key + '-t"><div class="ln-h"><h2 class="caps" id="ln-' + sh.key + '-t">' + esc(sh.title) + '</h2><p>' + esc(note) + '</p></div>' + body + '</section>';
+      }).join('');
+      var doors = shelves.length > 1 ? '<div class="ln-pick"><h2 class="caps" id="ln-pick-t">Browse the learning</h2><p>Pick one to see what\'s in it.</p></div><nav class="ln-doors" aria-labelledby="ln-pick-t">' + shelves.map(function (sh) {
+        var c = sh.cats[0], n = sh.cats.reduce(function (t, x) { return t + x.posts.length; }, 0);
+        return '<a href="#' + sh.key + '" data-shelf="' + sh.key + '">' + (cimg[c.id] ? '<img src="' + esc(cimg[c.id]) + '" alt="" loading="lazy">' : '') + '<span><b>' + esc(sh.title) + '</b><small>' + n + ' ' + (sh.key === 'replays' ? 'replays' : 'lessons') + '</small></span></a>';
+      }).join('') + '</nav>' : '';
+      var rp = o.posts.filter(function (p) { return p.href === rhref; })[0], rx = imgOf[rhref] || {};
+      var go = resume ? '<a class="ln-go el-dark" href="' + esc(rhref) + '" id="resume"><figure class="el-ph">' + (rx.img ? '<img src="' + esc(rx.img) + '" alt="">' : '') + '</figure>' +
+        '<span class="tx"><span class="kick">' + (all ? 'Carry on where you stopped' : 'Start here') + '</span><b>' + esc(rp ? rp.title : 'Your next lesson') + '</b>' +
+        (rp ? '<span class="m">' + esc(nm((rp.sub || rp.cat || {}).title || '')) + '</span>' : '') +
+        '<span class="row"><span class="el-bar"><i style="width:' + all + '%"></i></span>' + all + '% of the library watched</span>' +
+        '<span class="btn sm"><i data-icon="play"></i>' + (all ? 'Carry on' : 'Start') + '</span></span></a>' : '';
+      var first = o.cats[0];
+      var lib = first ? '<div class="ln-lib"><h2 class="caps">The full library</h2><p>All ' + o.posts.length + ' lessons, by course and module, with what you\'ve watched ticked off.</p><a class="btn dark sm" href="' + esc(first.href) + '"><i data-icon="grid"></i>Open the library</a></div>' : '';
+      var hero = LR ? '<section class="mh"><div class="mh-sky" aria-hidden="true"></div><img class="mh-ph" src="' + CDN + 'assets/shoot-f16.webp" alt="" fetchpriority="high"><div class="mh-in"><div class="mh-tx">' +
+          '<p class="mtag"><b>Learn</b><span>Lessons and replays</span></p><h1 class="caps">Learn to shoot it, <em>edit it and show it</em></h1>' +
+          '<p class="mh-sub">Masterclasses, Lightroom and Photoshop from Rich and Tom, plus every live replay.</p></div></div></section>'
+        : '<section class="mh"><div class="mh-sky" aria-hidden="true"></div>' + (cimg[(o.cats[0] || {}).id] ? '<img class="mh-ph" src="' + esc(cimg[o.cats[0].id]) + '" alt="">' : '') + '<div class="mh-in"><div class="mh-tx"><p class="mtag"><b>Learn</b><span>' + o.posts.length + ' lessons</span></p><h1 class="caps">' + esc(nm(prodTitle)) + '</h1></div></div></section>';
+      return hero + '<div class="el"><div class="el-main"><div class="ln-cols"><div class="ln-colmain">' + doors + sec + '</div><aside class="ln-rail" aria-label="Your lessons">' + go + lib + '</aside></div></div></div>';
+    });
+  }
+  function shelvesOneAtATime(main) {
+    var ids = $$('.ln-colmain > section[id]', main).map(function (s) { return s.id; }); if (ids.length < 2) return;
+    function show(id, jump) {
+      if (ids.indexOf(id) < 0) id = ids[0];
+      ids.forEach(function (x) { var el = d.getElementById(x); if (el) el.hidden = x !== id; });
+      $$('[data-shelf]', main).forEach(function (a) { if (a.getAttribute('data-shelf') === id) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current'); });
+      if (jump) { var dr = $('.ln-doors', main); if (dr) dr.scrollIntoView({ block: 'start' }); }
     }
-    return h;
+    main.addEventListener('click', function (e) { var a = e.target.closest ? e.target.closest('[data-shelf]') : null; if (a) { e.preventDefault(); history.replaceState(null, '', '#' + a.getAttribute('data-shelf')); show(a.getAttribute('data-shelf')); } });
+    show(location.hash.slice(1), !!location.hash);
   }
 
   /* ---------- a module (Kajabi category or sub-category): course.html ---------- */
@@ -245,8 +306,9 @@
     };
 
     var main = d.createElement('main'); main.id = 'coap-main';
-    var inner = kind === 'course' ? coursePage(o, prodTitle, home) : kind === 'module' ? modulePage(o, here) : lessonPage(o, here, parts);
-    main.innerHTML = '<div class="el">' + sideHTML(o, here, home, LR ? 'The library' : nm(prodTitle)) + '<div class="el-main">' + inner + '</div></div>';
+    var inner = kind === 'course' ? coursePage(o, prodTitle) : Promise.resolve(kind === 'module' ? modulePage(o, here) : lessonPage(o, here, parts));
+    return inner.then(function (inn) {
+    main.innerHTML = kind === 'course' ? inn : '<div class="el">' + sideHTML(o, here, home, LR ? 'The library' : nm(prodTitle)) + '<div class="el-main">' + inn + '</div></div>';
 
     /* hide everything Kajabi drew, then show ours */
     [].forEach.call(d.body.children, function (c) { c.setAttribute('data-kjb-hide', ''); });
@@ -277,9 +339,11 @@
 
     d.body.setAttribute('data-area', 'member'); d.body.setAttribute('data-page', 'learn'); d.body.setAttribute('data-nosubnav', '');
     d.body.classList.add('coap-nl-on');
-    d.title = (kind === 'lesson' ? txt($('.post-body-title', main)) || d.title : kind === 'course' ? nm(prodTitle) : txt($('h1', main))) + ' | COAP Online';
+    d.title = (kind === 'course' ? (LR ? 'Learn' : nm(prodTitle)) : txt($('.el-main h1', main)) || nm(prodTitle)) + ' | COAP Online';
     /* the outline is open on a desktop and folded on a phone, as in the mock */
     var side = $('.el-side', main); if (side && window.matchMedia && !matchMedia('(min-width:1040px)').matches) side.open = false;
+    if (kind === 'course') shelvesOneAtATime(main);
+    });
   }
 
   function kajabiStyles(on) {
@@ -312,13 +376,12 @@
 
   var css = Promise.all([
     addCSS('https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@600;700;800;900&family=Instrument+Serif:ital@0;1&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap'),
-    addCSS(CDN + 'site.css?v=' + VER), addCSS(CDN + 'members/pages.css?v=' + VER), addCSS(CDN + 'members/members.css?v=' + VER)
+    addCSS(CDN + 'site.css?v=' + VER), addCSS(CDN + 'members/el.css?v=' + VER),
+    addCSS(CDN + 'members/' + ({ course: 'learn', module: 'course', lesson: 'lesson' })[kind] + '.css?v=' + VER), addCSS(CDN + 'members/members.css?v=' + VER)
   ]);
   function start() {
     css.then(function () {
-      try { build(); kajabiStyles(false); }
-      catch (e) { undo(e); return; }
-      return addJS(CDN + 'site.js?v=' + VER).then(function () { requestAnimationFrame(uncloak); });
+      return build().then(function () { kajabiStyles(false); }).then(function () { return addJS(CDN + 'site.js?v=' + VER); }).then(function () { requestAnimationFrame(uncloak); });
     }).catch(undo);
   }
   if (d.readyState === 'loading') d.addEventListener('DOMContentLoaded', start); else start();

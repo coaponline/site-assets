@@ -1,0 +1,29 @@
+/* From the site mock: course.html page styles, copied as they are. */
+/* course.html only. Prefix: cs- */
+.cs-top{display:grid;gap:18px;border-radius:var(--r-l);overflow:hidden;background:var(--night);color:#fff;box-shadow:var(--sh-s)}
+.cs-top .el-ph{aspect-ratio:16/8}
+.cs-top .tx{padding:4px 22px 24px;display:grid;gap:12px;align-content:center}
+.cs-top .kick{color:var(--gold-soft)}
+.cs-top h1{color:#fff;font-size:clamp(44px,5vw,72px);line-height:.92}
+.cs-top .row{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;font-size:15.5px;font-weight:700;color:#c9cfda;max-width:440px}
+.cs-top .btn{justify-self:start}
+.cs-old{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;font-size:16.5px}
+.cs-list{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.cs-list a{display:grid;grid-template-columns:auto 96px 1fr;gap:14px;align-items:center;padding:8px 14px 8px 12px;border-radius:var(--r);background:var(--white);box-shadow:var(--sh-s);text-decoration:none;color:var(--ink);transition:transform .2s,box-shadow .2s}
+.cs-list a:hover{transform:translateY(-2px);box-shadow:var(--sh)}
+.cs-list .el-ph{border-radius:10px;aspect-ratio:3/2}
+.cs-list b{display:block;font-size:17.5px;line-height:1.25}
+.cs-list small{display:block;font-size:15px;color:var(--soft)}
+.cs-list .now a{background:var(--gold-tint);box-shadow:0 0 0 3px var(--gold)}
+.cs-list .now small{color:var(--gold-d);font-weight:700}
+.cs-next{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;padding:20px 22px;border-radius:var(--r-l);background:var(--white);box-shadow:var(--sh-s);text-decoration:none;color:var(--ink)}
+.cs-next small{display:block;font-size:15px;font-weight:700;color:var(--gold-d)}
+.cs-next b{font-family:var(--cond);font-weight:800;text-transform:uppercase;font-size:32px;line-height:1}
+.cs-next span span{display:block;font-size:15.5px;color:var(--soft)}
+@media(min-width:760px){
+  .cs-top{grid-template-columns:1fr 1.1fr;gap:0}
+  .cs-top .el-ph{aspect-ratio:auto;min-height:300px;order:2}
+  .cs-top .tx{padding:30px}
+  .cs-list a{grid-template-columns:auto 132px 1fr}
+}
+@media(prefers-reduced-motion:reduce){.cs-list a:hover{transform:none}}
