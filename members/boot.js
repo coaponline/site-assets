@@ -157,7 +157,7 @@
           '<span class="pad"><b>' + esc(title) + '</b>' + (m ? '<span class="m">' + esc(m) + '</span>' : '') + (p > 0 && p < 100 ? '<span class="p"><span class="el-bar"><i style="width:' + p + '%"></i></span>In progress</span>' : '') + '</span></a>';
       };
       var shelves = [], used = [];
-      (LR ? LSHELVES : [['modules', nm(prodTitle), /[\s\S]/]]).forEach(function (sh) {
+      (LR ? LSHELVES : [['modules', 'In this course', /[\s\S]/]]).forEach(function (sh) {
         var list = o.cats.filter(function (c) { return used.indexOf(c) < 0 && sh[2].test(c.title); });
         if (list.length) { list.forEach(function (c) { used.push(c); }); shelves.push({ key: sh[0], title: sh[1], cats: list }); }
       });
@@ -195,10 +195,10 @@
       var go = resume ? '<a class="ln-go el-dark" href="' + esc(rhref) + '" id="resume"><figure class="el-ph">' + (rx.img ? '<img src="' + esc(rx.img) + '" alt="">' : '') + '</figure>' +
         '<span class="tx"><span class="kick">' + (all ? 'Carry on where you stopped' : 'Start here') + '</span><b>' + esc(rp ? rp.title : 'Your next lesson') + '</b>' +
         (rp ? '<span class="m">' + esc(nm((rp.sub || rp.cat || {}).title || '')) + '</span>' : '') +
-        '<span class="row"><span class="el-bar"><i style="width:' + all + '%"></i></span>' + all + '% of the library watched</span>' +
+        '<span class="row"><span class="el-bar"><i style="width:' + all + '%"></i></span>' + all + '% of ' + (LR ? 'the library' : 'this course') + ' watched</span>' +
         '<span class="btn sm"><i data-icon="play"></i>' + (all ? 'Carry on' : 'Start') + '</span></span></a>' : '';
       var first = o.cats[0];
-      var lib = first ? '<div class="ln-lib"><h2 class="caps">The full library</h2><p>All ' + o.posts.length + ' lessons, by course and module, with what you\'ve watched ticked off.</p><a class="btn dark sm" href="' + esc(first.href) + '"><i data-icon="grid"></i>Open the library</a></div>' : '';
+      var lib = first ? '<div class="ln-lib"><h2 class="caps">' + (LR ? 'The full library' : 'Every lesson') + '</h2><p>All ' + o.posts.length + ' lessons, by ' + (LR ? 'course and ' : '') + 'module, with what you\'ve watched ticked off.</p><a class="btn dark sm" href="' + esc(first.href) + '"><i data-icon="grid"></i>' + (LR ? 'Open the library' : 'See every lesson') + '</a></div>' : '';
       var hero = LR ? '<section class="mh"><div class="mh-sky" aria-hidden="true"></div><img class="mh-ph" src="' + CDN + 'assets/shoot-f16.webp" alt="" fetchpriority="high"><div class="mh-in"><div class="mh-tx">' +
           '<p class="mtag"><b>Learn</b><span>Lessons and replays</span></p><h1 class="caps">Learn to shoot it, <em>edit it and show it</em></h1>' +
           '<p class="mh-sub">Masterclasses, Lightroom and Photoshop from Rich and Tom, plus every live replay.</p></div></div></section>'
@@ -317,7 +317,9 @@
       var h = '<div class="wrap"><div class="lb-top"><h1 class="caps">Your library</h1></div>';
       if (isMember) h += '<div id="doors" class="on" data-who="member"><div class="lb-doors on" data-who="member">' + merge + '</div></div>';
       h += '<section id="owned" aria-labelledby="lb-own-t"><h2 class="lb-k" id="lb-own-t">Everything you own</h2><ul class="lb-own on" data-who="member">' + items.map(function (x) {
-        var t = nm(x.title), small = x.p == null ? '' : x.p >= 100 ? 'Finished' : x.p > 0 ? x.p + '% watched' : 'Not started';
+        var short = x.title.match(/^Aviation Photography (.+?) (Masterclass|Fundamentals)$/i);
+        var t = short ? short[1] : nm(x.title), small = x.p == null ? '' : x.p >= 100 ? 'Finished' : x.p > 0 ? x.p + '% watched' : 'Not started';
+        if (short) small = short[2] + (small ? '. ' + small : '');
         if (/learning-resources/.test(x.href)) small = 'Every lesson';
         return '<li><a class="lb-p" href="' + esc(x.href) + '">' + (x.img ? '<img src="' + esc(x.img) + '" alt="" loading="lazy">' : '') + (small ? '<small>' + esc(small) + '</small>' : '') + '<b>' + esc(t) + '</b></a></li>';
       }).join('') + '</ul>' + (items.length ? '' : '<p>Nothing here yet. Anything you buy shows here.</p>') + '</section>';
