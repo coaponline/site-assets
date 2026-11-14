@@ -49,7 +49,7 @@
     var ka=A.map(function(x){return x.split('|').slice(0,2).join('|');}),kb=B.map(function(x){return x.split('|').slice(0,2).join('|');});
     var n=ka.length,m=kb.length,L=[],i,j;for(i=0;i<=n;i++)L.push(new Int16Array(m+1));
     for(i=n-1;i>=0;i--)for(j=m-1;j>=0;j--)L[i][j]=ka[i]===kb[j]?L[i+1][j+1]+1:Math.max(L[i+1][j],L[i][j+1]);
-    var hs=keepHero?-1:A.findIndex(function(l){return /^SECTION\|(hero|hm-h2|lg-stage)/.test(l);});
+    var hs=keepHero?-1:A.findIndex(function(l){return /^SECTION\|(hero|hm-h2|lg-stage|mh\b|gp-hero)/.test(l);});
     var he=hs<0?-1:A.findIndex(function(l,k){var p=l.split('|');return k>hs+1&&p[3]==='0'&&p[2]==='0'&&/^(SECTION|DIV|FOOTER|ASIDE|NAV)$/.test(p[0]);});
     var inHero=function(k){return hs>=0&&k>=hs&&k<he;};
     i=0;j=0;var miss=[],extra=[],bad=[];
@@ -58,6 +58,8 @@
       if(off&&!inHero(i))bad.push(i+' M '+A[i].slice(0,115)+'\n    K '+B[j].slice(0,115));i++;j++;}
       else if(L[i+1][j]>=L[i][j+1]){miss.push(i+' '+A[i].slice(0,90));i++;}else{extra.push(j+' '+B[j].slice(0,90));j++;}}
     while(i<n){miss.push(i+' '+A[i].slice(0,90));i++;}while(j<m){extra.push(j+' '+B[j].slice(0,90));j++;}
-    return 'width '+w+'  mock '+n+'  kajabi '+m+(hs>=0?'  (hero '+hs+'-'+he+' left out)':'')+'\nMISSING '+miss.length+'\n'+miss.slice(0,8).join('\n')+'\nEXTRA '+extra.length+'\n'+extra.slice(0,8).join('\n')+'\nDIFFERENT '+bad.length+'\n'+bad.slice(0,14).join('\n');
+    var roots=[];A.forEach(function(l,k){var p=l.split('|');if(p[3]==='0'&&p[2]==='0'&&/^(SECTION|DIV|FOOTER|HEADER|NAV|ASIDE|DIALOG)$/.test(p[0]))roots.push([k,p[1]||p[0]]);});
+    var per={};bad.forEach(function(b){var k=+b.split(' ')[0],r=roots.filter(function(x){return x[0]<=k;}).pop();var nm=r?r[0]+':'+r[1]:'?';per[nm]=(per[nm]||0)+1;});
+    return 'width '+w+'  mock '+n+'  kajabi '+m+(hs>=0?'  (hero '+hs+'-'+he+' left out)':'')+'\nBY SECTION '+JSON.stringify(per)+'\nMISSING '+miss.length+'\n'+miss.slice(0,8).join('\n')+'\nEXTRA '+extra.length+'\n'+extra.slice(0,8).join('\n')+'\nDIFFERENT '+bad.length+'\n'+bad.slice(0,14).join('\n');
   };
 })();
