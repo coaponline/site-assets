@@ -184,7 +184,7 @@
 
   /* ---------- builders ---------- */
   function a(item, cur, inner) {
-    return '<a href="' + link(item.href) + '"' + (cur ? ' aria-current="page"' : '') + '>' + (inner || item.label) + '</a>';
+    return '<a href="' + link(item.href) + '" data-nav="' + item.href.replace(/[#?].*$/, '').replace(/^.*\//, '') + '"' + (cur ? ' aria-current="page"' : '') + '>' + (inner || item.label) + '</a>';   /* data-nav: the badge CSS finds the tab by its page, even when Kajabi routes the link */
   }
   function findBtn() {
     return '<button class="find" type="button" data-quickfind aria-label="Quick find: search every page, lesson, live session and answer">' + icon('search') + '<span>Find</span><kbd aria-hidden="true">/</kbd></button>';
