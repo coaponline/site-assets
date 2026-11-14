@@ -60,7 +60,7 @@
     var b = f.querySelector('[type=submit]');
     if (b) { b.disabled = true; f.setAttribute('aria-busy', 'true'); setTimeout(function () { b.disabled = false; f.removeAttribute('aria-busy'); }, 10000); }
     var s = n.querySelector('[type=submit]');
-    if (s) s.click(); else if (n.requestSubmit) n.requestSubmit(); else n.submit();
+    if (s) { s.disabled = false; s.click(); }   /* Kajabi disables its button after a submit: a retry must still go */ else if (n.requestSubmit) n.requestSubmit(); else n.submit();
   }, true);
 
   function replay() {
