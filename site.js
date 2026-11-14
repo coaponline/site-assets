@@ -358,10 +358,11 @@
     var hdr = slot('[data-site-header]', 'header', 'hdr', 'first');
     hdr.setAttribute('data-site-header', ''); hdr.innerHTML = headerHTML();
     /* LIVE SOON: an announcement bar under the header, in the hours before a live evening. The tag counts down ("Live in 1 hr 14 min", then "Live now"), so it's right in every time zone. It scrolls away with the page.
-       In Kajabi the script checks today's date against the next event. Closing it hides it until the next visit. */
+       In Kajabi the script checks today's date against the next event. Closing it hides it until the next visit.
+       Live mode shows it only when COAP_SITE.annc is set: the mock's example evening never shows on the real site. */
     var an = d.querySelector('.annc'); if (an) an.parentNode.removeChild(an);
     var off = false; try { off = sessionStorage.getItem('coap-annc') === '1'; } catch (e) {}
-    if (area === 'member' && view !== 'out' && !off) hdr.insertAdjacentHTML('afterend',
+    if (area === 'member' && view !== 'out' && !off && !(LIVE && !CFG.annc)) hdr.insertAdjacentHTML('afterend',
       '<div class="annc"><div class="wrap"><p class="annc-tag"><i></i>Live in 1 hr 14 min</p>' +
       '<p class="annc-t"><b>Live workshop with Matty</b><span><time data-local datetime="2027-02-11T19:00:00Z">7pm UK</time></span></p>' +
       '<a class="btn sm" href="https://zoom.us/" target="_blank" rel="noopener">' + icon('video') + 'Join on Zoom</a>' +

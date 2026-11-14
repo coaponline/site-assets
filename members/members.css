@@ -1,0 +1,55 @@
+/* COAP new look on Kajabi's own member pages: Kajabi's working parts, restyled in their new places.
+   Loaded after site.css and members/pages.css (the mock's own page styles). Kajabi's styles are off on these pages. */
+
+/* everything Kajabi drew is hidden; its working parts have been moved into #coap-main */
+[data-kjb-hide]{display:none!important}
+body.coap-nl-on{margin:0;background:var(--paper)}
+#coap-main{display:block}
+
+/* the outline: a module's lessons under the open module */
+.el-out .el-ls{display:grid;gap:1px;margin:2px 0 6px 10px;padding-left:10px;box-shadow:inset 2px 0 0 var(--hair)}
+.el-out .el-ls a{grid-template-columns:1fr;font-weight:600;font-size:15px;min-height:38px;padding-block:6px}
+.el-out details > .el-ls{margin-left:12px}
+
+/* video: Kajabi's player (Wistia), full width in the mock's rounded frame */
+.ls-video.kv{aspect-ratio:auto;background:#0b0f18}
+.ls-video.kv::after{display:none}
+.ls-video .main-content-video,.ls-video .kjb-video-responsive{position:relative;width:100%;margin:0}
+.ls-video .kjb-video-responsive{padding-bottom:56.25%;height:0;overflow:hidden}
+.ls-video .kjb-video-responsive > *,.ls-video .kjb-video-responsive iframe,.ls-video .kjb-video-responsive .wistia_embed{position:absolute!important;inset:0;width:100%!important;height:100%!important;border:0}
+.ls-video audio{display:block;width:100%}
+
+/* Complete: Kajabi's own link, drawn as the mock's button */
+a.ls-done{display:inline-flex;align-items:center;gap:8px;text-decoration:none;white-space:nowrap}
+a.ls-done i{display:none}
+a.ls-done[aria-pressed="true"]{background:var(--teal);color:#fff}
+
+/* the lesson's body text, as Kajabi's editor wrote it */
+.ls-rich{font-size:18px;line-height:1.6;color:var(--ink);max-width:72ch}
+.ls-rich > :first-child{margin-top:0}
+.ls-rich img,.ls-rich iframe,.ls-rich video{max-width:100%;height:auto;border-radius:var(--r)}
+.ls-rich a{color:var(--gold-d);font-weight:700}
+.ls-rich h2,.ls-rich h3,.ls-rich h4{font-family:var(--cond);font-weight:800;text-transform:uppercase;line-height:1;margin:1.2em 0 .4em}
+.ls-rich ul,.ls-rich ol{padding-left:1.3em}
+
+/* downloads and previous / next */
+.ls-dls{display:flex;flex-wrap:wrap;gap:8px}
+.ls-bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px}
+
+/* comments: Kajabi's own form and list, drawn like posts in The Merge */
+.ls-com form.new_comment > div,.ls-com .new_comment .media{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;background:var(--white);border-radius:24px;padding:8px 8px 8px 12px;box-shadow:var(--sh-s)}
+.ls-com .comments-img,.ls-com .comment-img{width:40px;height:40px;border-radius:50%;object-fit:cover;display:block}
+.ls-com textarea{width:100%;min-height:44px;border:0;resize:vertical;font:inherit;font-size:17px;color:var(--ink);background:transparent;padding:10px 4px}
+.ls-com textarea:focus{outline:none}
+.ls-com .comments-btn{min-height:44px}
+.ls-com .comment{background:var(--white);border-radius:var(--r-l);box-shadow:var(--sh-s);padding:18px 20px;margin-top:12px}
+.ls-com .comment .comment{box-shadow:none;background:var(--paper);margin-top:12px;padding:14px 16px}
+.ls-com .comment .media{display:grid;grid-template-columns:40px 1fr;gap:12px;align-items:start}
+.ls-com .comment-name{font-weight:800;font-size:17px;color:var(--ink)}
+.ls-com .comment-date{font-size:14.5px;color:var(--soft)}
+.ls-com .comment-body{font-size:17px;line-height:1.55;margin-top:6px}
+.ls-com .comment-body p{margin:0 0 .5em}
+.ls-com .comment a,.ls-com .comment button{font-size:15px;font-weight:700;color:var(--soft);background:none;border:0;padding:0;cursor:pointer;text-decoration:none}
+.ls-com .comment a:hover,.ls-com .comment button:hover{color:var(--gold-d)}
+.ls-com [class*="dropdown-menu"]:not(.show){display:none}
+.ls-com .fa,.ls-com .fas,.ls-com .far{display:none}
