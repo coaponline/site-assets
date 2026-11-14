@@ -365,6 +365,7 @@
   /* ---------- put it together ---------- */
   function build() {
     var o = outline();
+    if (!o.cats.length && !o.posts.length) throw new Error('not a layout this script knows (no course outline)');   /* another Kajabi product theme: leave Kajabi's page as it is */
     var pt = $('.product-title h1');
     var prodTitle = txt(pt) || 'Lessons';
     var home = '/products/' + prod;
