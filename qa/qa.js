@@ -9,8 +9,11 @@
     });
   }
   function probe(){
-    var out=[],rs=roots(),y0=null;
-    rs.forEach(function(r){[r].concat([].slice.call(r.querySelectorAll('*'))).forEach(function(el){
+    if(!document.getElementById('qa-still')){var st=document.createElement('style');st.id='qa-still';st.textContent='*,*::before,*::after{animation:none!important;transition:none!important}';document.head.appendChild(st);}
+    [].forEach.call(document.querySelectorAll('[data-reveal],.reveal'),function(e){e.classList.add('in');});
+    var out=[],rs=[];
+    roots().forEach(function(r){ if(r.tagName==='MAIN'){[].forEach.call(r.children,function(c){rs.push(c);});} else rs.push(r); });
+    rs.forEach(function(r){var y0=null;[r].concat([].slice.call(r.querySelectorAll('*'))).forEach(function(el){
       if(el.closest('.pv,.review,[data-site-switch],script,style'))return;
       var b=el.getBoundingClientRect();if(b.width<1||b.height<1)return;
       var cs=getComputedStyle(el);if(cs.visibility==='hidden')return;
