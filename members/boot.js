@@ -429,6 +429,12 @@
       if (parts.comments && slot('comments')) [].slice.call(parts.comments.children).forEach(function (n) { slot('comments').appendChild(n); });
       var ta = main.querySelector('.ls-com textarea'); if (ta) ta.setAttribute('placeholder', 'Ask a question about this lesson');
       var cb = main.querySelector('.ls-com .comments-btn'); if (cb && /post comment/i.test(cb.textContent)) cb.textContent = 'Post';
+      /* Kajabi adds a reply box under a comment when Reply is pressed: same wording as ours */
+      main.addEventListener('focusin', function (e) {
+        var t = e.target; if (!t.matches || !t.matches('.ls-com .comment textarea')) return;
+        if (/say something/i.test(t.getAttribute('placeholder') || '')) t.setAttribute('placeholder', 'Write a reply');
+      });
+      main.addEventListener('input', function (e) { var t = e.target; if (t.matches && t.matches('.ls-com textarea')) t.classList.toggle('has-text', !!t.value); });
     }
 
     d.body.setAttribute('data-area', 'member'); d.body.setAttribute('data-page', 'learn'); d.body.setAttribute('data-nosubnav', '');
