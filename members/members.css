@@ -68,3 +68,7 @@ a.ls-done[aria-pressed="true"]{background:var(--teal);color:#fff}
 .lg-flash:empty{display:none}
 .lg-form [data-kjb-slot="flash"]:empty{display:none}
 .lg-google{justify-content:center}
+
+/* Learn: the masterclass name links to its page, styled as the mock heading */
+.ln-m h3 a{color:inherit;text-decoration:none}
+.ln-m h3 a:hover{color:var(--gold-d)}
