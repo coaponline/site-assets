@@ -17,6 +17,8 @@
     prod = m[1]; catId = m[2] || null; postId = m[3] || null;
     kind = postId ? 'lesson' : catId ? 'module' : 'course';
   }
+  else if (P === '/library') kind = 'library';
+  else if (P === '/login') kind = 'login';
   if (!kind) { uncloak(); return; }
   var LR = prod === 'learning-resources';          /* the Lessons course: its modules are grouped under the mock's shelves */
 
@@ -292,6 +294,72 @@
     return h;
   }
 
+  /* ---------- the library (Kajabi's /library, where every login lands): library.html ---------- */
+  function libraryPage() {
+    /* Kajabi lists what this person owns, 12 to a page: read every page */
+    function grab(doc) {
+      return $$('.product', doc).map(function (pr) {
+        var a = $('.product__title', pr), l = a && a.closest('a'), i = $('.product__image img', pr), bar = $('.progress__inner', pr);
+        return { title: txt(a), href: l ? rel(l.getAttribute('href')) : '', img: i ? i.getAttribute('src') : '', p: bar ? parseInt(bar.style.width, 10) || 0 : null };
+      }).filter(function (x) { return x.href; });
+    }
+    var pages = $$('.pag a.pag__link').map(function (a) { return rel(a.getAttribute('href')); })
+      .filter(function (h, i, arr) { return h && /page=\d+/.test(h) && arr.indexOf(h) === i && !/[?&]page=1\b/.test(h); });
+    var member = fetch('/products/learning-resources', { credentials: 'same-origin' })
+      .then(function (r) { return r.ok && /\/products\/learning-resources\/?$/.test(new URL(r.url).pathname); }).catch(function () { return false; });
+    return Promise.all([member, Promise.all(pages.map(fetchDoc))]).then(function (res) {
+      var isMember = res[0], items = grab(d), seen = {};
+      res[1].forEach(function (doc) { if (doc) items = items.concat(grab(doc)); });
+      items = items.filter(function (x) { if (seen[x.href]) return false; seen[x.href] = 1; return true; });
+      if (!isMember) html.classList.add('lb-cust');
+      var merge = '<a class="lb-merge" href="/products/communities/v2/coaponline/home"><img class="patch" src="' + CDN + 'assets/merge-patch.webp" alt="">' +
+        '<span class="lb-addr"><i data-icon="people"></i>Members\' community</span><b>The Merge</b><span>Talk, shots, the challenge and High Roller.</span></a>';
+      var h = '<div class="wrap"><div class="lb-top"><h1 class="caps">Your library</h1></div>';
+      if (isMember) h += '<div id="doors" class="on" data-who="member"><div class="lb-doors on" data-who="member">' + merge + '</div></div>';
+      h += '<section id="owned" aria-labelledby="lb-own-t"><h2 class="lb-k" id="lb-own-t">Everything you own</h2><ul class="lb-own on" data-who="member">' + items.map(function (x) {
+        var t = nm(x.title), small = x.p == null ? '' : x.p >= 100 ? 'Finished' : x.p > 0 ? x.p + '% watched' : 'Not started';
+        if (/learning-resources/.test(x.href)) small = 'Every lesson';
+        return '<li><a class="lb-p" href="' + esc(x.href) + '">' + (x.img ? '<img src="' + esc(x.img) + '" alt="" loading="lazy">' : '') + (small ? '<small>' + esc(small) + '</small>' : '') + '<b>' + esc(t) + '</b></a></li>';
+      }).join('') + '</ul>' + (items.length ? '' : '<p>Nothing here yet. Anything you buy shows here.</p>') + '</section>';
+      h += '<div class="lb-more on" id="more" data-who="member"><div class="on" data-who="member">' + (isMember
+        ? '<a class="lb-ac" href="' + ROUTE_ACADEMY + '"><span class="lb-route" aria-hidden="true"><div><em>Shoot it</em><i>1</i><i>2</i><i>3</i><i>4</i></div><div><em>Edit it</em><i>5</i><i>6</i><i>7</i><i>8</i></div><div><em>Show it</em><i>9</i><i>10</i><i>11</i><i>12</i></div></span>' +
+          '<span class="lb-tag">Cohort 3 starts Mon 1 February</span><b>The Academy</b><span>12 weeks of feedback on your shots from Rich or Tom.</span></a>'
+        : '<a class="lb-merge" href="' + ROUTE_ACADEMY + '"><img class="patch" src="' + CDN + 'assets/merge-patch.webp" alt=""><span class="lb-tag">Comes with the Academy</span><b>The Merge</b><span>Members\' talk, shots, challenges and High Roller. Yours for life when you join the Academy.</span></a>') +
+        '</div></div>';
+      h += '<div class="lb-foot"><span><b>Something missing?</b> <a class="tlink" href="mailto:team@coaponline.com?subject=Something%20is%20missing%20from%20my%20library">Email us</a> from the address you bought with.</span></div></div>';
+      return h;
+    });
+  }
+
+  /* ---------- login: login.html, with Kajabi's own sign-in form moved in ---------- */
+  function loginPage() {
+    return '<section class="lg-stage"><img src="' + CDN + 'assets/kolab/k-21.webp" alt="F-16s taxiing towards the camera on a wet runway, their landing lights reflected in the water">' +
+      '<a class="credit" href="https://kolab.social/post/31079" target="_blank" rel="noopener">Philip L Jackson, on K&#333;lab</a>' +
+      '<div class="wrap lg-grid"><div class="lg-form"><h1 class="caps h-lg">Log in</h1><div data-kjb-slot="flash"></div><div data-kjb-slot="form"></div>' +
+      '<div class="lg-new"><b>Not a member yet?</b><p>The Academy is the way in. Cohort 3 starts Mon 1 February 2027.</p>' +
+      '<div class="row"><a class="btn dark sm" href="' + ROUTE_ACADEMY + '">See the Academy</a><a class="tlink" href="' + ROUTE_WORKSHOP + '">Free workshop</a></div></div></div>' +
+      '<div class="lg-after"><span class="eyebrow">After you log in</span><p class="lede">You land on your library, with everything you\'ve bought.</p>' +
+      '<ul class="lg-five" aria-label="What\'s in your library"><li><i data-icon="grid"></i>Your courses and guides</li><li><i data-icon="people"></i>The Merge, for members</li><li><i data-icon="flag"></i>Your cohort, for the Academy</li></ul></div>' +
+      '</div></section>';
+  }
+  function loginForm(main) {
+    var f = $('form#new_member_session') || $('form[action*="sign_in"]'); if (!f) throw new Error('no login form');
+    var flash = $$('.alert, .flash, [class*="flash"], .auth__error').filter(function (e) { return !main.contains(e) && txt(e); });
+    flash.forEach(function (e) { e.className = 'lg-flash'; main.querySelector('[data-kjb-slot="flash"]').appendChild(e); });
+    var em = $('#member_email', f), pw = $('#member_password', f), rm = $('#member_remember_me', f), btn = $('button[type="submit"], button', f);
+    $$('label', f).forEach(function (l) { if (/email/i.test(l.textContent) && !$('input', l)) l.textContent = 'Email'; if (/password/i.test(l.textContent) && !$('input', l)) l.textContent = 'Password'; });
+    [em, pw].forEach(function (i) { if (i) { i.className = 'input'; var g = i.closest('.form-group'); if (g) g.className = 'field'; } });
+    if (em) { em.setAttribute('placeholder', 'you@example.com'); em.setAttribute('autocomplete', 'email'); var hint = d.createElement('span'); hint.className = 'hint'; hint.textContent = 'The email you joined with.'; em.insertAdjacentElement('afterend', hint); }
+    if (pw) pw.setAttribute('autocomplete', 'current-password');
+    if (rm) { var rl = rm.closest('label'); if (rl) { rl.className = 'lg-keep'; var sp = $('span', rl); if (sp) sp.textContent = 'Keep me logged in on this device'; var g2 = rl.closest('.form-group'); if (g2) g2.className = 'field lg-keepf'; } }
+    if (btn) { btn.className = 'btn block'; btn.textContent = 'Log in'; }
+    main.querySelector('[data-kjb-slot="form"]').replaceWith(f);
+    var fp = $$('a').filter(function (a) { return /forgot/i.test(a.textContent) && !main.contains(a); })[0];
+    if (fp) { fp.className = 'tlink lg-forgot'; fp.textContent = 'Forgotten it?'; f.insertAdjacentElement('afterend', fp); }
+    var gg = $$('a, button').filter(function (a) { return /google/i.test(a.textContent + ' ' + (a.getAttribute('href') || '')) && !main.contains(a); })[0];
+    if (gg) { gg.className = 'btn block line lg-google'; f.insertAdjacentElement('afterend', gg); }   /* Google sign-in, if it's switched on in Kajabi */
+  }
+
   /* ---------- put it together ---------- */
   function build() {
     var o = outline();
@@ -312,6 +380,18 @@
     };
 
     var main = d.createElement('main'); main.id = 'coap-main';
+    if (kind === 'library' || kind === 'login') {
+      return Promise.resolve(kind === 'library' ? libraryPage() : loginPage()).then(function (inn) {
+        if (kind === 'library') main.className = 'lib';
+        main.innerHTML = inn;
+        [].forEach.call(d.body.children, function (c) { c.setAttribute('data-kjb-hide', ''); });
+        d.body.appendChild(main);
+        if (kind === 'login') loginForm(main);
+        d.body.setAttribute('data-area', kind === 'login' ? 'public' : 'member'); d.body.setAttribute('data-page', kind); d.body.setAttribute('data-nosubnav', '');
+        d.body.classList.add('coap-nl-on');
+        d.title = (kind === 'login' ? 'Log in' : 'Your library') + ' | COAP Online';
+      });
+    }
     var inner = kind === 'course' ? coursePage(o, prodTitle) : Promise.resolve(kind === 'module' ? modulePage(o, here) : lessonPage(o, here, parts));
     return inner.then(function (inn) {
     main.innerHTML = kind === 'course' ? inn : '<div class="el">' + sideHTML(o, here, home, LR ? 'The library' : nm(prodTitle)) + '<div class="el-main">' + inn + '</div></div>';
@@ -376,6 +456,15 @@
     uncloak();
   }
 
+  /* The new public pages are still drafts at these addresses. On launch day they move to /academy, /workshop and so on:
+     change these and PUBLIC below (the same list as kajabi-build/build.py ROUTES). */
+  var ROUTE_ACADEMY = '/new-academy', ROUTE_WORKSHOP = '/new-workshop';
+  var PUBLIC = {
+    'academy.html': ROUTE_ACADEMY, 'workshop-optin.html': ROUTE_WORKSHOP, 'index.html': '/new-home', 'lessons.html': '/new-lessons',
+    'community-preview.html': '/new-community', 'about.html': '/new-about', 'partners.html': '/new-partners', 'guides.html': '/new-guides',
+    'free-props-thanks.html': '/new-free-guide', 'map.html#blog': '/blog', 'map.html#store': '/store', 'map.html#terms': '/privacy-terms', 'map.html': '/new-home',
+    'login.html': '/login', 'signin.html': '/login'
+  };
   window.COAP_SITE = {
     live: true, assets: CDN + 'assets/', member: true,
     routes: {
@@ -385,11 +474,12 @@
       'live.html': '/products/learning-resources', 'course.html': '/products/learning-resources', 'lesson.html': '/products/learning-resources'
     }
   };
+  if (kind === 'login') for (var k in PUBLIC) window.COAP_SITE.routes[k] = PUBLIC[k];
 
   var css = Promise.all([
     addCSS('https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@600;700;800;900&family=Instrument+Serif:ital@0;1&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap'),
     addCSS(CDN + 'site.css?v=' + VER), addCSS(CDN + 'members/el.css?v=' + VER),
-    addCSS(CDN + 'members/' + ({ course: 'learn', module: 'course', lesson: 'lesson' })[kind] + '.css?v=' + VER), addCSS(CDN + 'members/members.css?v=' + VER)
+    addCSS(CDN + 'members/' + ({ course: 'learn', module: 'course', lesson: 'lesson', library: 'library', login: 'login' })[kind] + '.css?v=' + VER), addCSS(CDN + 'members/members.css?v=' + VER)
   ]);
   function start() {
     css.then(function () {

@@ -56,3 +56,15 @@ a.ls-done[aria-pressed="true"]{background:var(--teal);color:#fff}
 .ls-com .comment a:hover,.ls-com .comment button:hover{color:var(--gold-d)}
 .ls-com [class*="dropdown-menu"]:not(.show){display:none}
 .ls-com .fa,.ls-com .fas,.ls-com .far{display:none}
+
+/* login: Kajabi's own sign-in form inside the mock's card */
+.lg-form form{display:grid;gap:18px;margin:0}
+.lg-form form > div:not([class]){display:contents}
+.lg-form .field label{display:block}
+.lg-form .lg-keepf{display:block}
+.lg-keep{display:inline-flex;align-items:center;gap:10px;font-size:16px;font-weight:600;color:var(--soft);cursor:pointer}
+.lg-keep input{width:20px;height:20px;accent-color:var(--gold-d);margin:0}
+.lg-flash{margin:0;padding:12px 16px;border-radius:14px;background:#fdecea;color:#8a1c12;font-weight:700;font-size:16px}
+.lg-flash:empty{display:none}
+.lg-form [data-kjb-slot="flash"]:empty{display:none}
+.lg-google{justify-content:center}
