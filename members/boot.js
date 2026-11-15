@@ -406,6 +406,18 @@
 
   /* ---------- put it together ---------- */
   function build() {
+    /* the ambassadors' send page: drawn whatever the course theme (the Ambassadors course is on Premier) */
+    var send = kind === 'lesson' && d.querySelector('[data-coap-send]');
+    if (send) {
+      var sm = d.createElement('main'); sm.id = 'coap-main';
+      sm.appendChild(send.closest('section') || send);
+      [].forEach.call(d.body.children, function (c) { c.setAttribute('data-kjb-hide', ''); });
+      d.body.appendChild(sm);
+      d.body.setAttribute('data-area', 'member'); d.body.setAttribute('data-page', 'learn'); d.body.setAttribute('data-nosubnav', '');
+      d.body.classList.add('coap-nl-on');
+      d.title = 'Write a deep dive | COAP Online';
+      return Promise.resolve();
+    }
     var o = outline();
     if (!o.cats.length && !o.posts.length) throw new Error('not a layout this script knows (no course outline)');   /* another Kajabi product theme: leave Kajabi's page as it is */
     var pt = $('.product-title h1');
