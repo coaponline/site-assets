@@ -1,11 +1,11 @@
 /* The send page: an ambassador (Steven) writes a Deep Dive or a Slider Sunday, it comes back as a draft lesson.
    Lives in a hidden Kajabi lesson (the "Ambassadors" course) whose body is:
-     <section class="ch-tut wd-page"><div data-coap-send data-endpoint="APPS SCRIPT URL" data-key="SEND KEY" data-author="Steven Wilson"></div></section>
+     <section class="ch-tut wd-page"><div data-coap-send data-endpoint="APPS SCRIPT URL" data-author="Steven Wilson"></div></section>
    boot.js loads this file and members/coap-index.js when it sees [data-coap-send].
    Back end: ops/jobs/deep-dives/apps-script/Code.gs. The draft is made by the Claude routine (ops/jobs/deep-dives/ROUTINE.md). */
 (function () {
   var d = document, root = d.querySelector('[data-coap-send]'); if (!root) return;
-  var END = root.getAttribute('data-endpoint'), KEY = root.getAttribute('data-key'), AUTHOR = root.getAttribute('data-author') || 'Steven Wilson';
+  var END = root.getAttribute('data-endpoint'), AUTHOR = root.getAttribute('data-author') || 'Steven Wilson';
   var INI = AUTHOR.split(/\s+/).slice(0, 2).map(function (w) { return w[0]; }).join('').toUpperCase();
   var IX = window.COAP_INDEX || [], DRAFT = 'coap-wd-draft', LAST = 'coap-wd-last';
   function he(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
@@ -13,9 +13,9 @@
   function $(id) { return d.getElementById(id); }
   /* site.js is loaded first, so its icons are ready */
   function icons(el) { if (!window.COAP || !window.COAP.icon) return; [].forEach.call(el.querySelectorAll('[data-icon]'), function (i) { if (!i.firstChild) i.innerHTML = window.COAP.icon(i.getAttribute('data-icon')); }); }
-  function get(q) { return fetch(END + '?key=' + encodeURIComponent(KEY) + '&' + q).then(function (r) { return r.json(); }); }
+  function get(q) { return fetch(END + '?' + q).then(function (r) { return r.json(); }); }
   /* text/plain keeps it a simple request, which Apps Script accepts from another site */
-  function post(o) { o.key = KEY; return fetch(END, { method: 'POST', body: JSON.stringify(o) }).then(function (r) { return r.json(); }); }
+  function post(o) { return fetch(END, { method: 'POST', body: JSON.stringify(o) }).then(function (r) { return r.json(); }); }
   var store = { get: function (k) { try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch (e) { return null; } },
                 set: function (k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} } };
 
