@@ -71,3 +71,19 @@
 .dd-ask .btn{grid-column:1/-1;justify-self:start}
 @media(min-width:760px){.dd-ask{grid-template-columns:auto 1fr auto}.dd-ask .btn{grid-column:auto}}
 @media(prefers-reduced-motion:reduce){.dd-fig img{transition:none}}
+/* phones: the step number sits beside its heading, and the text and photos use the full width */
+@media(max-width:759px){
+  .dd > .wrap{padding-inline:14px}
+  .dd-mast{padding:20px 18px;gap:18px;border-radius:22px}
+  .dd .tu-wrap{padding-inline:14px;gap:16px}
+  .dd .tu-step{display:block;padding:18px 16px}
+  .dd .tu-n{float:left;width:40px;height:40px;font-size:22px;margin:0 12px 4px 0}
+  .dd .tu-b{display:block}
+  .dd .tu-b > h2{min-height:40px;display:flex;align-items:center;padding-top:2px;font-size:27px}
+  .dd .tu-b > h2 + *{clear:left}
+  .dd .tu-b > * + *{margin-top:12px}
+  .dd .tu-b p,.dd .tu-b li{font-size:17px}
+  .dd .tu-intro{font-size:21px}
+  .dd-adj div{grid-template-columns:96px 1fr;padding:9px 12px}
+  .dd-ask{padding:18px}
+}
