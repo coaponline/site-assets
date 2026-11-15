@@ -539,7 +539,10 @@
   ].concat(kind === 'lesson' ? [addCSS(CDN + 'members/tutorial.css?v=' + VER), addCSS(CDN + 'members/deepdive.css?v=' + VER)] : []));
   function start() {
     css.then(function () {
-      return build().then(function () { kajabiStyles(false); }).then(function () { return addJS(CDN + 'site.js?v=' + VER); }).then(function () { requestAnimationFrame(uncloak); });
+      return build().then(function () { kajabiStyles(false); }).then(function () { return addJS(CDN + 'site.js?v=' + VER); })
+        /* the ambassadors' send page (a hidden lesson): the lesson index, then the page itself */
+        .then(function () { return d.querySelector('[data-coap-send]') ? addJS(CDN + 'members/coap-index.js?v=' + VER).then(function () { return addJS(CDN + 'members/send.js?v=' + VER); }) : null; })
+        .then(function () { requestAnimationFrame(uncloak); });
     }).catch(undo);
   }
   if (d.readyState === 'loading') d.addEventListener('DOMContentLoaded', start); else start();
