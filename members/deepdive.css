@@ -1,0 +1,73 @@
+/* Deep dives (Steven Wilson's Deep Dive Sunday and Slider Sunday) as Kajabi lessons. The lesson body is made by
+   ops/jobs/deep-dives/render.py; boot.js gives it the tutorial layout (tutorial.css has the shared tu- parts). Prefix: dd- */
+/* deep-dive pages: Steven's Deep Dive Sunday and Slider Sunday. Prefix: dd- (plus the tutorial's tu- parts above) */
+.dd > .wrap{max-width:1200px;padding-inline:20px}
+.dd{padding-top:8px}
+.dd .dd-outro{font-size:22px}
+.dd-mast{position:relative;isolation:isolate;overflow:hidden;border-radius:var(--r-l);background:var(--mnight,#0b1118);color:#fff;padding:clamp(22px,3.4vw,40px);display:grid;gap:24px;align-items:center;margin-bottom:8px}
+.dd-mast::after{content:"";position:absolute;z-index:-1;top:-10%;bottom:-10%;left:-6%;width:48%;transform:skewX(-14deg);pointer-events:none;opacity:.18;background:linear-gradient(180deg,transparent 0 8%,var(--mb1,#0f7fa0) 8% 22%,transparent 22% 30%,var(--mb2,#1198b8) 30% 40%,transparent 40%)}
+.dd-mast-t{display:grid;gap:14px;justify-items:start}
+.dd-mast .dd-h{font-size:clamp(44px,6.4vw,88px);line-height:.9;font-style:italic;font-weight:900;transform:skewX(-8deg);transform-origin:left bottom;color:#fff;text-shadow:4px 4px 0 var(--mnight,#0b1118),7px 7px 0 rgba(17,152,184,.5);margin:6px 0 2px}
+.dd-mast .dd-h em{font:inherit;color:var(--mb4,#7cc3e0)}
+.dd-meta{display:flex;flex-wrap:wrap;gap:6px 16px;font-weight:700;font-size:16px;color:#c9d0db;margin:0}
+.dd-meta span{display:inline-flex;align-items:center;gap:7px}
+.dd-meta svg{width:18px;height:18px;color:var(--gold-soft)}
+.dd-by{display:flex;align-items:center;gap:12px;margin-top:4px}
+.dd-av{flex:none;width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(160deg,#232a38,#0b0e14);box-shadow:inset 0 0 0 2px var(--gold);color:var(--gold-soft);font:900 italic 21px/1 var(--cond);letter-spacing:.02em}
+.dd-by b{display:block;font-size:17.5px;color:#fff}
+.dd-by small{display:flex;align-items:center;gap:8px;font-size:14.5px;color:#aab1be;margin-top:3px}
+@media(min-width:980px){.dd-mast{grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:40px}}
+/* before and after: drag across */
+.dd-ba{position:relative;margin:0;border-radius:var(--r);overflow:hidden;background:#000;aspect-ratio:16/10;touch-action:pan-y;user-select:none}
+.dd-ba img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.dd-ba .af{clip-path:inset(0 0 0 var(--x,50%))}
+.dd-ba .ln{position:absolute;top:0;bottom:0;left:var(--x,50%);width:3px;margin-left:-1.5px;background:#fff;box-shadow:0 0 12px rgba(0,0,0,.5);pointer-events:none}
+.dd-ba .ln::after{content:"";position:absolute;top:50%;left:50%;width:46px;height:46px;margin:-23px 0 0 -23px;border-radius:50%;background:var(--gold) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231a1205' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 7l-5 5 5 5M15 7l5 5-5 5'/%3E%3C/svg%3E") center/24px no-repeat;box-shadow:0 4px 14px rgba(0,0,0,.45)}
+.dd-ba .tg{position:absolute;top:12px;padding:6px 11px;border-radius:999px;background:rgba(11,17,24,.72);color:#fff;font:800 13.5px/1 var(--body);letter-spacing:.06em;text-transform:uppercase;pointer-events:none}
+.dd-ba .tg.b{left:12px}.dd-ba .tg.a{right:12px;background:var(--gold);color:#1a1205}
+.dd-ba input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;margin:0}
+.dd-ba input:focus-visible + .ln::after{outline:3px solid #fff;outline-offset:3px}
+.dd-cover{margin:0;border-radius:var(--r);overflow:hidden;background:#000}
+.dd-cover img{width:100%;height:auto;display:block}
+.dd-pair{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0}
+.dd-pair figure{margin:0;position:relative;border-radius:var(--r);overflow:hidden;background:#000}
+.dd-pair img{width:100%;height:100%;aspect-ratio:1;object-fit:cover;display:block}
+/* the body: Steven's steps */
+.dd .tu-intro{font-size:clamp(22px,2.3vw,28px);max-width:30em}
+.dd .tu-b p,.dd .tu-b li{font-size:18px;line-height:1.6}
+.dd .tu-b ul{margin:0;padding-left:1.2em;display:grid;gap:4px}
+.dd-fig{margin:4px 0 0;display:grid;gap:8px}
+.dd-fig a{position:relative;display:block;border-radius:var(--r);overflow:hidden;background:var(--paper);box-shadow:0 0 0 1px rgba(17,20,27,.08)}
+.dd-fig img{width:100%;height:auto;display:block;transition:transform .35s}
+.dd-fig a:hover img{transform:scale(1.015)}
+.dd-fig figcaption{display:flex;align-items:baseline;gap:10px;font-size:15.5px;font-weight:600;color:var(--soft)}
+.dd-fig figcaption i{flex:none;font:800 normal 13px/1 var(--body);letter-spacing:.05em;text-transform:uppercase;color:var(--gold-d);background:var(--gold-tint);padding:5px 8px;border-radius:6px}
+.dd-imgs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.dd-imgs > a:nth-child(odd):last-child{grid-column:span 2}
+.dd-path{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:2px 0}
+.dd-path span{display:inline-flex;align-items:center;min-height:36px;padding:6px 12px;border-radius:10px;background:var(--ink);color:#fff;font-weight:700;font-size:15.5px}
+.dd-path i{font-style:normal;color:var(--gold-d);font-weight:900;font-size:18px}
+.dd-note{margin:0;padding:14px 16px;border-radius:var(--r-s,12px);background:var(--gold-tint);box-shadow:inset 4px 0 0 var(--gold);font-size:17px;line-height:1.55}
+.dd-note b{font-family:var(--cond);font-weight:800;text-transform:uppercase;font-size:19px;margin-right:6px;color:var(--gold-d)}
+.dd-adj{margin:0;display:grid;gap:6px}
+.dd-adj div{display:grid;grid-template-columns:120px 1fr;gap:12px;align-items:baseline;background:var(--white);border-radius:12px;padding:10px 14px}
+.dd-adj dt{font-family:var(--cond);font-weight:800;text-transform:uppercase;font-size:20px;color:var(--ink)}
+.dd-adj dd{margin:0;font-size:16.5px}
+.dd-keys{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px}
+.dd-keys div{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center;background:var(--white);border-radius:14px;padding:10px 12px;box-shadow:var(--sh-s)}
+.dd-keys kbd{display:inline-flex;gap:4px}
+.dd-keys kbd b{min-width:34px;height:34px;padding:0 8px;display:inline-grid;place-items:center;border-radius:8px;background:var(--paper);box-shadow:inset 0 -3px 0 rgba(17,20,27,.14);font:800 15px/1 var(--body);color:var(--ink)}
+.dd-keys span{font-size:15.5px;line-height:1.35;font-weight:600}
+.dd-lsn{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+.dd-lsn a{display:grid;gap:2px;padding:9px 10px;border-radius:12px;text-decoration:none;color:#fff}
+.dd-lsn a:hover{background:rgba(255,255,255,.06)}
+.dd-lsn b{font-size:16px;line-height:1.3}
+.dd-lsn small{font-size:13.5px;font-weight:700;color:var(--gold-soft)}
+.tu-box.night .dd-ln{font-size:14.5px;color:#aab1be;margin:0}
+.dd-end{display:grid;gap:12px}
+.dd-ask{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center;background:var(--night);color:#d6dbe4;border-radius:var(--r-l);padding:22px}
+.dd-ask h2{font-size:clamp(28px,3vw,38px);line-height:1;color:#fff}
+.dd-ask p{margin:4px 0 0;font-size:17px}
+.dd-ask .btn{grid-column:1/-1;justify-self:start}
+@media(min-width:760px){.dd-ask{grid-template-columns:auto 1fr auto}.dd-ask .btn{grid-column:auto}}
+@media(prefers-reduced-motion:reduce){.dd-fig img{transition:none}}

@@ -285,7 +285,7 @@
       h = '<div class="ls-tutw"><div class="ls-tut-top"><a class="tu-back" href="' + esc(group ? group.href : '/products/learning-resources') + '"><i data-icon="prev"></i>' + esc(group ? nm(group.title) : 'Learn') + '</a></div>' +
         '<div data-kjb-slot="body"></div>' +
         '<div class="ls-tut-end"><div class="ls-tut-bar"><span data-kjb-slot="done"></span><nav class="ls-pn2" aria-label="Previous and next lesson">' + pvt + nvt + '</nav></div>' +
-        (parts.comments ? '<section class="ls-com" id="comments" aria-labelledby="ls-com-t"><h2 class="caps" id="ls-com-t">Questions on this tutorial</h2><div data-kjb-slot="comments"></div></section>' : '') + '</div></div>';
+        (parts.comments ? '<section class="ls-com" id="comments" aria-labelledby="ls-com-t"><h2 class="caps" id="ls-com-t">' + (parts.dd ? 'Questions' : 'Questions on this tutorial') + '</h2><div data-kjb-slot="comments"></div></section>' : '') + '</div></div>';
       return h;
     }
     if (parts.video) h += '<div class="el-ph ls-video kv" id="lesson" data-kjb-slot="video"></div>';
@@ -305,6 +305,12 @@
 
   /* ---------- a challenge tutorial's working parts: the Try it slider (the same code as the mock), and Enter ---------- */
   function tutorial(main) {
+    /* deep dives: the before and after you drag across */
+    [].forEach.call(main.querySelectorAll('.dd-ba'), function (f) {
+      var r = f.querySelector('input'); if (!r) return;
+      function set() { f.style.setProperty('--x', r.value + '%'); }
+      r.addEventListener('input', set); set();
+    });
     /* Enter goes to the challenge on Shots. Until Shots is live, it goes to the library. */
     [].forEach.call(main.querySelectorAll('a[href="#enter-challenge"]'), function (a) { a.setAttribute('href', ROUTE_SHOTS); });
     var r = main.querySelector('#try-ev'); if (!r) return;
@@ -419,6 +425,8 @@
     };
     /* a challenge tutorial: the lesson body carries the tutorial's own layout (section.ch-tut), so it gets the whole width */
     parts.tut = !!(parts.body && parts.body.querySelector('section.ch-tut'));
+    /* a deep dive (Steven's Deep Dive Sunday or Slider Sunday): the same wide layout, plus its before and after */
+    parts.dd = !!(parts.body && parts.body.querySelector('section.dd'));
 
     var main = d.createElement('main'); main.id = 'coap-main';
     if (kind === 'library' || kind === 'login') {
@@ -528,7 +536,7 @@
     addCSS('https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@600;700;800;900&family=Instrument+Serif:ital@0;1&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap'),
     addCSS(CDN + 'site.css?v=' + VER), addCSS(CDN + 'members/el.css?v=' + VER),
     addCSS(CDN + 'members/' + ({ course: 'learn', module: 'course', lesson: 'lesson', library: 'library', login: 'login' })[kind] + '.css?v=' + VER), addCSS(CDN + 'members/members.css?v=' + VER)
-  ].concat(kind === 'lesson' ? [addCSS(CDN + 'members/tutorial.css?v=' + VER)] : []));
+  ].concat(kind === 'lesson' ? [addCSS(CDN + 'members/tutorial.css?v=' + VER), addCSS(CDN + 'members/deepdive.css?v=' + VER)] : []));
   function start() {
     css.then(function () {
       return build().then(function () { kajabiStyles(false); }).then(function () { return addJS(CDN + 'site.js?v=' + VER); }).then(function () { requestAnimationFrame(uncloak); });
