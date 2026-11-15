@@ -120,3 +120,7 @@
 .wd-mine .st{font-style:normal;font-weight:700;color:var(--gold-d)}
 .wd-mine .none{color:var(--soft);font-size:15.5px;padding:6px}
 .btn[disabled]{opacity:.55;cursor:wait}
+
+/* the "Loading" line in the lesson body goes once the page is drawn */
+[data-coap-send]:not(:empty) + .wd-nojs{display:none}
+.wd-nojs{max-width:1200px;margin:40px auto;padding:0 20px;font-size:17px;color:var(--soft)}
