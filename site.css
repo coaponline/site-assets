@@ -889,9 +889,9 @@ html.embed .psheet{display:none}
 
 @media(min-width:1020px){.hdr .menu a.m-only{display:none}}
 
-/* Every tab in the logged-in bar carries a badge. The Merge is the patch; the others are gold symbols in a ringed dark disc (Challenges: a flag). */
+/* Every tab in the logged-in bar carries a badge. Each is a gold symbol in a ringed dark disc (The Merge: a house, Challenges: a flag). */
 .hdr nav a:is([href$="home.html"],[data-nav="home.html"])::before,.hdr nav a:is([href$="shots.html"],[data-nav="shots.html"])::before,.hdr nav a:is([href$="learn.html"],[data-nav="learn.html"])::before,.hdr nav a:is([href$="challenge.html"],[data-nav="challenge.html"])::before,.hdr nav a:is([href$="live.html"],[data-nav="live.html"])::before,.hdr nav a:is([href$="high-roller.html"],[data-nav="high-roller.html"])::before,.hdr nav a:is([href$="perks.html"],[data-nav="perks.html"])::before{content:"";width:26px;height:26px;margin:0 8px 0 -4px;background:center/contain no-repeat;flex:none}
-.hdr nav a:is([href$="home.html"],[data-nav="home.html"])::before{width:30px;height:34px;margin-block:-6px;background-image:url("assets/merge-patch.webp")}
+.hdr nav a:is([href$="home.html"],[data-nav="home.html"])::before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23232a38'/%3E%3Cstop offset='1' stop-color='%230b0e14'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='24' cy='24' r='23' fill='url(%23g)'/%3E%3Ccircle cx='24' cy='24' r='19.5' fill='none' stroke='%23d9932b' stroke-width='2'/%3E%3Cpath d='M16.8 22.2v11h14.4v-11L24 16.4z' fill='%23f3c46b'/%3E%3Crect x='21.7' y='26.6' width='4.6' height='6.6' rx='1' fill='%23151a24'/%3E%3Cpath d='M13.2 23.4 24 14.4l10.8 9' fill='none' stroke='%23f3c46b' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
 .hdr nav a:is([href$="learn.html"],[data-nav="learn.html"])::before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23232a38'/%3E%3Cstop offset='1' stop-color='%230b0e14'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='24' cy='24' r='23' fill='url%28%23g%29'/%3E%3Ccircle cx='24' cy='24' r='19.5' fill='none' stroke='%23d9932b' stroke-width='2'/%3E%3Cpath d='M19.5 15.5v17l14-8.5z' fill='%23f3c46b'/%3E%3C/svg%3E")}
 .hdr nav a:is([href$="challenge.html"],[data-nav="challenge.html"])::before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23232a38'/%3E%3Cstop offset='1' stop-color='%230b0e14'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='24' cy='24' r='23' fill='url%28%23g%29'/%3E%3Ccircle cx='24' cy='24' r='19.5' fill='none' stroke='%23d9932b' stroke-width='2'/%3E%3Cpath d='M17.5 13v22' stroke='%23f3c46b' stroke-width='2.6' stroke-linecap='round'/%3E%3Cpath d='M17.5 14.2c3.6-2.2 6.9 1.6 10.6-.4 1.5-.8 2.8-1 4.2-.6v10.6c-1.4-.4-2.7-.2-4.2.6-3.7 2-7-1.8-10.6.4z' fill='%23f3c46b'/%3E%3C/svg%3E")}
 .hdr nav a:is([href$="shots.html"],[data-nav="shots.html"])::before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23232a38'/%3E%3Cstop offset='1' stop-color='%230b0e14'/%3E%3C/linearGradient%3E%3CradialGradient id='l' cx='.42' cy='.38' r='.7'%3E%3Cstop offset='0' stop-color='%233d5a73'/%3E%3Cstop offset='.55' stop-color='%2314202c'/%3E%3Cstop offset='1' stop-color='%230b0e14'/%3E%3C/radialGradient%3E%3C/defs%3E%3Ccircle cx='24' cy='24' r='23' fill='url%28%23g%29'/%3E%3Ccircle cx='24' cy='24' r='19.5' fill='none' stroke='%23d9932b' stroke-width='2'/%3E%3Ccircle cx='24' cy='24' r='13.2' fill='%23f3c46b' fill-opacity='.16'/%3E%3Cpolygon points='24.00,18.80 28.50,21.40 28.50,26.60 24.00,29.20 19.50,26.60 19.50,21.40' fill='url%28%23l%29'/%3E%3Cpath d='M19.50 21.40L32.49 13.90M24.00 18.80L37.00 26.30M28.50 21.40L28.50 36.41M28.50 26.60L15.51 34.10M24.00 29.20L11.00 21.70M19.50 26.60L19.50 11.59' fill='none' stroke='%23f3c46b' stroke-width='2' stroke-linecap='round'/%3E%3Ccircle cx='24' cy='24' r='13.2' fill='none' stroke='%23f3c46b' stroke-width='2.4'/%3E%3Ccircle cx='22.6' cy='22.2' r='1' fill='%23fff' fill-opacity='.85'/%3E%3C/svg%3E")}
@@ -1347,3 +1347,43 @@ html.fx-lock{overflow:hidden}
   .mh.badge-left h1{max-width:12.8em}
   .mh.badge-left::before{left:calc(50% - 600px);transform:translate(0,-50%)}
 }
+
+/* Four phone tabs now Challenges and High Roller have gone (14 Nov) */
+.tabs{grid-template-columns:repeat(4,1fr)}
+/* The bar under the header while a High Roller round is open: gold, not the live red */
+.annc.hr{background:radial-gradient(420px 120px at 8% 50%,rgba(217,147,43,.38),rgba(217,147,43,0) 70%),linear-gradient(100deg,#0b1118,#1a1710 60%,#2a1f0c)}
+.annc.hr .annc-tag{background:var(--gold);color:#1a1205;padding:4px 14px 4px 6px}
+.annc.hr .annc-tag img{width:26px;height:26px;transform:skewX(10deg);filter:drop-shadow(0 1px 1px rgba(0,0,0,.4))}
+.annc.hr .annc-t span{color:#e9d7b4}
+
+/* ---------- 32. Header tabs with pictures, as on the community site (test.community.coaponline.com, 15 Nov) ---------- */
+.hdr nav a.ng::before{display:none!important}
+.hdr nav a.ng,.hdr nav .xdd > button{font-family:var(--cond);font-style:italic;font-weight:800;font-size:19.5px;line-height:1;text-transform:uppercase;letter-spacing:.015em;gap:10px}
+.ng-t{display:inline-block;padding-right:.06em}
+.ng-patch,.ng-prints,.ng-cal,.ng-lesson{display:none;flex:0 0 auto}
+@media(min-width:1020px){
+  .ng-patch,.ng-prints,.ng-lesson{display:block}
+  .ng-cal{display:grid}
+}
+.ng-patch{width:auto;height:42px;margin:-9px -2px -9px -4px;transform:rotate(-6deg);filter:drop-shadow(0 5px 7px rgba(11,17,24,.38));transition:transform .3s cubic-bezier(.3,1.5,.5,1)}
+.hdr nav a.ng:hover .ng-patch{transform:scale(1.06) rotate(-10deg)}
+.ng-prints{position:relative;width:46px;height:36px;margin:-6px -2px -6px -4px}
+.ng-prints img{position:absolute;top:50%;left:50%;width:29px;max-width:none;height:22px;object-fit:cover;background:#fff;border-radius:3px;padding:2px;box-shadow:0 5px 9px -4px rgba(11,17,24,.55);transition:transform .35s cubic-bezier(.3,1.4,.5,1)}
+.ng-prints img:nth-child(1){transform:translate(-78%,-62%) rotate(-13deg)}
+.ng-prints img:nth-child(2){transform:translate(-28%,-56%) rotate(9deg)}
+.ng-prints img:nth-child(3){transform:translate(-52%,-34%) rotate(-3deg)}
+.hdr nav a.ng:hover .ng-prints img:nth-child(1){transform:translate(-90%,-64%) rotate(-18deg)}
+.hdr nav a.ng:hover .ng-prints img:nth-child(2){transform:translate(-16%,-58%) rotate(14deg)}
+.ng-cal{position:relative;overflow:hidden;width:30px;height:33px;margin:-7px -1px -7px -3px;grid-template-rows:11px 1fr;text-align:center;background:#fff;border-radius:5px;transform:rotate(-6deg);box-shadow:0 6px 10px -4px rgba(11,17,24,.55);transition:transform .35s cubic-bezier(.3,1.4,.5,1)}
+.ng-cal small{display:grid;place-items:center;background:var(--gold);color:#1a1205;font:italic 900 8.5px/1 var(--cond);text-transform:uppercase;letter-spacing:.06em}
+.ng-cal b{display:grid;place-items:center;font:italic 900 17px/1 var(--cond);color:var(--mnight,#0b1118);font-variant-numeric:tabular-nums}
+.hdr nav a.ng:hover .ng-cal{transform:rotate(-10deg) scale(1.06)}
+.ng-lesson{position:relative;width:42px;height:30px;margin:-6px -2px -6px -4px;padding:2px;background:#fff;border-radius:5px;transform:rotate(-6deg);box-shadow:0 6px 10px -4px rgba(11,17,24,.55);transition:transform .35s cubic-bezier(.3,1.4,.5,1)}
+.ng-lesson img{display:block;width:100%;height:100%;max-width:none;object-fit:cover;border-radius:3px}
+.ng-play{position:absolute;top:50%;left:50%;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;background:var(--gold);box-shadow:0 2px 5px rgba(11,17,24,.45)}
+.ng-play::after{content:"";position:absolute;top:4px;left:5.2px;border-style:solid;border-width:3px 0 3px 5px;border-color:transparent transparent transparent #1a1205}
+.ng-bar{position:absolute;left:4px;right:4px;bottom:4px;height:2.5px;border-radius:2px;background:rgba(255,255,255,.5)}
+.ng-bar::after{content:"";position:absolute;inset:0 62% 0 0;border-radius:2px;background:var(--gold)}
+.hdr nav a.ng:hover .ng-lesson{transform:rotate(-10deg) scale(1.06)}
+@media(prefers-reduced-motion:reduce){.ng-patch,.ng-prints img,.ng-cal,.ng-lesson{transition:none}}
+.hdr nav .xdd > button::before{display:none!important}

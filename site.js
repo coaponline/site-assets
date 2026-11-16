@@ -90,17 +90,19 @@
   var MEMBER_NAV = [
     { key: 'home',      label: 'The Merge', href: 'home.html',      icon: 'home',     desc: 'This week, the posts and the shots' },
     { key: 'shots',     label: 'Shots',     href: 'shots.html',     icon: 'camera',   desc: 'Every shot members have put up' },
+    /* Events: the same tab as the community site on K\u014dlab (test.community.coaponline.com, 15 Nov). It opens the Live shelf in Learn. */
+    { key: 'live',      label: 'Events',    href: 'learn.html#live', icon: 'calendar', desc: 'The live evenings, with Zoom links' },
     { key: 'learn',     label: 'Learn',     href: 'learn.html',     icon: 'play',     desc: 'Lessons, live evenings and replays' },
-    { key: 'challenge', label: 'Challenges', href: 'challenge.html', icon: 'flag',   desc: 'This month\'s brief, tutorial and shots' },
-    { key: 'high-roller', label: 'High Roller', href: 'high-roller.html', icon: 'trophy', desc: 'The main competition, scored by guest judges' },
-    { key: 'extras',    label: 'Extras',    href: 'perks.html',     icon: 'tag',      desc: 'Member discounts and COAP Wings', kids: [
+    /* No Challenges or High Roller tabs (Tom, 14 Nov): both are rounds, not places. Their briefs and entries sit at the top of Shots,
+       their tutorials in Learn, and an open round shows in the bar under the header. */
+    { key: 'extras',    label: 'Extras',    href: 'perks.html',     icon: 'tag',      desc: 'Member discounts and COAP Wings', also: ['perks', 'wings', 'blog'], kids: [
       { key: 'perks', label: 'Gear Discounts',  href: 'perks.html', icon: 'tag',  desc: 'Member prices at Clifton Cameras' },
-      { key: 'wings', label: 'COAP Wings', href: 'wings.html', icon: 'plane', desc: 'Trips and shoots, with member discounts' }
+      { key: 'wings', label: 'COAP Wings', href: 'wings.html', icon: 'plane', desc: 'Trips and shoots, with member discounts' },
+      { key: 'blog', label: 'Articles', href: 'blog.html', icon: 'book', desc: 'Tutorials and trip reports, free for everyone' }
     ] }
   ];
   var MEMBER_MENU = [
     { key: 'my-academy', label: 'My Academy',     href: 'my-academy.html', icon: 'flag', desc: 'The weekly lesson and brief' },
-    { key: 'high-roller', label: 'High Roller',   href: 'high-roller.html', icon: 'trophy', desc: 'The main competition, scored by guest judges', phone: 1 },
     { key: 'perks',      label: 'Gear Discounts',      href: 'perks.html',      icon: 'tag',  desc: 'Member prices at Clifton Cameras', phone: 1 },
     { key: 'wings',      label: 'COAP Wings',     href: 'wings.html',      icon: 'plane', desc: 'Trips and shoots, with member discounts', phone: 1 },
     { key: 'library',    label: 'Everything you own', href: 'library.html#owned', icon: 'grid', desc: 'Every course and guide you\'ve bought' },
@@ -113,6 +115,7 @@
     layers: '<path d="M12 3 3 8l9 5 9-5-9-5Z"/><path d="m3 13 9 5 9-5"/>',
     bell: '<path d="M6 9a6 6 0 0 1 12 0c0 6 2.5 8 2.5 8h-17S6 15 6 9z"/><path d="M10 20.5a2.2 2.2 0 0 0 4 0"/>',
     home: '<path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v10h13V10"/><path d="M10 20v-5h4v5"/>',
+    book: '<path d="M3 5h5.5A3.5 3.5 0 0 1 12 8.5V20a2.5 2.5 0 0 0-2.5-2.5H3z"/><path d="M21 5h-5.5A3.5 3.5 0 0 0 12 8.5V20a2.5 2.5 0 0 1 2.5-2.5H21z"/>',
     play: '<rect x="3" y="5" width="18" height="14" rx="3"/><path d="M10 9.2v5.6l5-2.8z" fill="currentColor"/>',
     people: '<circle cx="9" cy="8.5" r="3.2"/><path d="M3 19.5c.4-3.3 2.8-5.2 6-5.2s5.6 1.9 6 5.2"/><circle cx="17" cy="9.5" r="2.5"/><path d="M17.5 14.5c2 .3 3.2 1.7 3.5 4"/>',
     camera: '<path d="M4 8h3l1.5-2.5h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.6"/>',
@@ -167,6 +170,7 @@
       if (CFG.routes[href] != null) return CFG.routes[href];
       var i = href.indexOf('#'), file = i < 0 ? href : href.slice(0, i), hash = i < 0 ? '' : href.slice(i);
       if (CFG.routes[file] != null) return CFG.routes[file] + hash;
+      if (file === 'blog.html') return '/blog' + hash;   /* the blog keeps its Kajabi address; pages built before the mock linked to it carry no route for it */
     }
     return base + href;
   }
@@ -192,7 +196,7 @@
   function headerHTML() {
     var member = view !== 'out';
     /* Live sits inside Learn, so the Live page lights up Learn. */
-    var isCur = function (it, forArea) { return area === forArea && (page === it.key || (page === 'live' && it.key === 'learn') || (it.also && it.also.indexOf(page) > -1)); };
+    var isCur = function (it, forArea) { return area === forArea && (page === it.key || (it.also && it.also.indexOf(page) > -1)); };
     var h = '<div class="wrap"><a class="logo" href="' + link(member ? 'home.html' : 'index.html') + '" aria-label="COAP Online, ' + (member ? 'The Merge' : 'home page') + '"><img src="' + asset('logo-coap.png') + '" alt="COAP Online" width="137" height="23"></a>';
     if (member) {
       /* One header for every logged-in person: Kajabi can't vary it by access group, so there is no cohort-only button. */
@@ -200,7 +204,7 @@
       /* No Academy tab. Academy things sit inside Learn, Challenges and The Merge, marked in gold. */
       var nav_ = MEMBER_NAV;
       h += '<nav aria-label="Main">' + nav_.map(function (it) {
-        if (!it.kids) return a(it, isCur(it, 'member'));
+        if (!it.kids) return a(it, isCur(it, 'member'), navArt(it.key) + '<span class="ng-t">' + it.label + '</span>').replace('<a ', '<a class="ng" ');
         /* Extras: a small drop-down. Opens on hover and on click; Kajabi's own nav can hold the same two links as a sub-menu. */
         var on = area === 'member' && it.kids.some(function (k) { return k.key === page; });
         return '<div class="xdd' + (on ? ' on' : '') + '"><button type="button" aria-expanded="false" aria-haspopup="true"' + (on ? ' aria-current="page"' : '') + '>' + it.label + icon('down') + '</button><div class="xdd-m">' +
@@ -229,8 +233,17 @@
     d.querySelectorAll('.xdd.open').forEach(function (x) { if (!btn || x !== btn.parentNode) { x.classList.remove('open'); x.firstChild.setAttribute('aria-expanded', 'false'); } });
     if (btn) { var o = btn.parentNode.classList.toggle('open'); btn.setAttribute('aria-expanded', o ? 'true' : 'false'); }
   });
+  /* The pictures on the header tabs, as on the community site: The Merge patch, a stack of members' shots, a date tile, a lesson. */
+  function navArt(key) {
+    if (key === 'home') return '<img class="ng-patch" src="' + asset('merge-patch.webp') + '" alt="">';
+    if (key === 'shots') return '<span class="ng-prints" aria-hidden="true"><img src="' + asset('kolab/k-05.webp') + '" alt=""><img src="' + asset('kolab/k-20.webp') + '" alt=""><img src="' + asset('kolab/k-12.webp') + '" alt=""></span>';
+    if (key === 'live') { var w = (FACTS['month.workshop'] || 'Thu 11 Feb').split(' '); return '<span class="ng-cal" aria-hidden="true"><small>' + (w[2] || 'Feb').replace(',', '') + '</small><b>' + (w[1] || '11') + '</b></span>'; }
+    if (key === 'learn') return '<span class="ng-lesson" aria-hidden="true"><img src="' + asset('nav-learn-workshop.webp') + '" alt=""><i class="ng-play"></i><i class="ng-bar"></i></span>';
+    return '';
+  }
   function tabsHTML() {
-    var t = MEMBER_NAV.filter(function (it) { return it.key !== 'extras' && it.key !== 'high-roller'; }).map(function (it) { return a(it, area === 'member' && (page === it.key || (page === 'live' && it.key === 'learn') || (it.also && it.also.indexOf(page) > -1)), '<i>' + icon(it.icon) + '</i><span>' + it.label + '</span>'); });
+    /* The phone bar has the community site's four: The Merge, Shots, Events, Learn. Extras sits in the You menu. */
+    var t = MEMBER_NAV.filter(function (it) { return it.key !== 'high-roller' && it.key !== 'extras'; }).map(function (it) { return a(it, area === 'member' && (page === it.key || (it.also && it.also.indexOf(page) > -1)), '<i>' + icon(it.icon) + '</i><span>' + it.label + '</span>'); });
     return t.join('');
   }
   /* One Post button on every page. It asks what you're posting and sends you to the right place. */
@@ -240,7 +253,7 @@
       '<h3 class="caps">What are you posting?</h3>' +
       row('home.html#discussion', 'chat', 'A question or something to say', 'It goes in The Merge, for members only') +
       row('shots.html#enter-feedback', 'camera', 'A shot for feedback', 'Rich, Tom and members comment on it') +
-      row('shots.html#enter-challenge', 'trophy', 'An entry for the challenge', 'Keep it dark, or High Roller') +
+      row('shots.html#enter-challenge', 'flag', 'An entry for the challenge', 'Keep it dark, or High Roller') +
       ((view === 'academy' || view === 'admin') ? row('challenge-academy.html', 'flag', 'This week\'s Academy brief', 'Your cohort only, by ' + FACTS['week.upload']) : '') +
       /* Admins and ambassadors only. In Kajabi: shown to people Kajabi lets create community events. */
       (view === 'admin' ? row('learn.html#new-event', 'calendar', 'A new event', 'A live workshop, a meet-up or anything with a date') : '') + '</div>';
@@ -262,14 +275,14 @@
         '<div><p class="caps">Where your aviation photography <em>comes together.</em></p>' +
         '<button class="find" type="button" data-quickfind>' + icon('search') + '<span>Find a lesson, a replay or a date</span></button></div></div>' +
         '<div class="mf-cols">' +
-        '<div><h4>The Merge</h4><ul>' + L('Discussion', 'home.html#discussion') + L('Shots', 'shots.html') + L('Challenge', 'challenge.html') + L('High Roller', 'high-roller.html') + L('Get feedback', 'shots.html#feedback') + L('Live and replays', 'learn.html#live') + '</ul></div>' +
-        '<div><h4>Learn</h4><ul>' + L('Lessons', 'learn.html') + L('This week\'s tutorial', 'challenge.html#how') + L('Replays', 'learn.html#replays') + L('Guides and podcast', 'learn.html#guides') + (cohort ? L('My Academy', 'my-academy.html') : '') + '</ul></div>' +
+        '<div><h4>The Merge</h4><ul>' + L('Discussion', 'home.html#discussion') + L('Shots', 'shots.html') + L('This month\'s challenge', 'shots.html#challenge') + L('High Roller', 'shots.html#high-roller') + L('Get feedback', 'shots.html#feedback') + L('Live and replays', 'learn.html#live') + '</ul></div>' +
+        '<div><h4>Learn</h4><ul>' + L('Lessons', 'learn.html') + L('Tutorials', 'learn.html#tutorials') + L('Replays', 'learn.html#replays') + L('Steven\'s deep dives', 'learn.html#deep-dives') + L('Guides and podcast', 'learn.html#guides') + (cohort ? L('My Academy', 'my-academy.html') : '') + '</ul></div>' +
         '<div><h4>Yours</h4><ul>' + L('Everything you own', 'library.html#owned') + L('Gear Discounts', 'perks.html') + L('COAP Wings', 'wings.html') + L('Account and billing', 'account.html') + L('Help', 'account.html#help') + '<li><a href="https://kolab.social" target="_blank" rel="noopener">K\u014dlab' + icon('ext') + '</a></li></ul></div>' +
         '</div></div>' + base_ + '</div>';
     }
     return '<div class="wrap"><div class="cols">' +
       '<div class="brand"><img src="' + asset('logo-coap.png') + '" alt="COAP Online" width="143" height="24"><p>The Centre of Aviation Photography. Run by Rich Cooper and Tom Dalton.</p></div>' +
-      '<div><h4>Learn</h4><ul>' + L('The Academy', 'academy.html') + L('Free workshop', 'workshop-optin.html') + L('Learning', 'learning.html') + L('Free weekly tutorials', 'map.html#blog') + '</ul></div>' +
+      '<div><h4>Learn</h4><ul>' + L('The Academy', 'academy.html') + L('Free workshop', 'workshop-optin.html') + L('Learning', 'learning.html') + L('Free weekly tutorials', 'blog.html') + '</ul></div>' +
       '<div><h4>Members</h4><ul>' + L('The Merge', 'community-preview.html') + L('High Roller competition', 'community-preview.html#high-roller') + L('Log in', 'login.html') + '</ul></div>' +
       '<div><h4>COAP</h4><ul>' + L('About', 'about.html') + L('Partners', 'partners.html') + L('Courses and guides', 'map.html#store') + L('Contact', 'about.html#contact') + L('Privacy and terms', 'map.html#terms') + '</ul></div>' +
       '</div>' + base_ + '</div>';
@@ -362,10 +375,17 @@
        Live mode shows it only when COAP_SITE.annc is set: the mock's example evening never shows on the real site. */
     var an = d.querySelector('.annc'); if (an) an.parentNode.removeChild(an);
     var off = false; try { off = sessionStorage.getItem('coap-annc') === '1'; } catch (e) {}
-    if (area === 'member' && view !== 'out' && !off && !(LIVE && !CFG.annc)) hdr.insertAdjacentHTML('afterend',
+    /* One bar at a time. On the day of a live evening it's the countdown (the mock shows it with #live-today on the address).
+       The rest of the time, while a High Roller round is open, it's High Roller. With nothing on, there's no bar. */
+    var liveToday = /live-today/.test(location.hash);
+    if (area === 'member' && view !== 'out' && !off && !(LIVE && !CFG.annc)) hdr.insertAdjacentHTML('afterend', liveToday ?
       '<div class="annc"><div class="wrap"><p class="annc-tag"><i></i>Live in 1 hr 14 min</p>' +
       '<p class="annc-t"><b>Live workshop with Matty</b><span><time data-local datetime="2027-02-11T19:00:00Z">7pm UK</time></span></p>' +
       '<a class="btn sm" href="https://zoom.us/" target="_blank" rel="noopener">' + icon('video') + 'Join on Zoom</a>' +
+      '<button type="button" class="annc-x" data-annc-x aria-label="Hide this">' + icon('close') + '</button></div></div>' :
+      '<div class="annc hr"><div class="wrap"><p class="annc-tag"><img src="' + asset('hr-patch.png') + '" alt="" width="26" height="26">High Roller is open</p>' +
+      '<p class="annc-t"><b>February: night and low light</b><span>Up to 3 shots. Closes Sun 28 Feb, midnight UK</span></p>' +
+      '<a class="btn sm" href="' + link('shots.html#high-roller') + '">' + icon('trophy') + 'Enter High Roller</a>' +
       '<button type="button" class="annc-x" data-annc-x aria-label="Hide this">' + icon('close') + '</button></div></div>');
 
     if (area !== 'owner') {
@@ -551,7 +571,7 @@
   ].map(function (r, i) {
     var id = 'k-' + (i < 10 ? '0' : '') + i;
     /* sim: in the mock, a few shots stand in for ones whose photographer attached the unedited file on Kolab (the feed's beforeImageUrl). */
-    return { n: i, id: id, file: 'kolab/' + id + '.webp', by: r[1], url: KOLAB_POST + r[0], w: r[2], h: r[3], alt: r[4], learn: [3, 18, 5].indexOf(i) >= 0 ? ['Night photography masterclass', 'learn.html#shoot'] : ['The night exposure check', 'challenge.html#how'], sim: [2, 3, 12, 18, 20, 21].indexOf(i) >= 0, sw: [2, 3, 12, 18, 20, 21].indexOf(i) >= 0 ? 'Lightroom' : '' };
+    return { n: i, id: id, file: 'kolab/' + id + '.webp', by: r[1], url: KOLAB_POST + r[0], w: r[2], h: r[3], alt: r[4], learn: [3, 18, 5].indexOf(i) >= 0 ? ['Night photography masterclass', 'learn.html#shoot'] : ['The night exposure check', 'tutorial.html'], sim: [2, 3, 12, 18, 20, 21].indexOf(i) >= 0, sw: [2, 3, 12, 18, 20, 21].indexOf(i) >= 0 ? 'Lightroom' : '' };
   });
   function shotSrc(s) { return s.src || asset(s.file); }
   /* pick('0,3,7-12') gives those shots in that order. No argument gives all 34. */
@@ -603,7 +623,7 @@
   }
   function addTile(el, cls) {
     if (!el.hasAttribute('data-add')) return '';
-    var href = el.getAttribute('data-add') || 'challenge.html';
+    var href = el.getAttribute('data-add') || 'shots.html#enter-challenge';
     var label = el.getAttribute('data-add-label') || 'Add your shot';
     var line = el.getAttribute('data-add-line') || 'Added right here, in a minute or two.';
     return '<a class="addshot ' + (cls || '') + '" href="' + esc(link(href)) + '"><i>' + icon('plus') + '</i><b>' + esc(label) + '</b><span>' + esc(line) + '</span></a>';
@@ -624,7 +644,7 @@
       h = tile(s, false) + '<div class="spot-bar"><div class="who"><span class="eyebrow">' + esc(el.getAttribute('data-label') || 'From the challenge on Kōlab') + '</span>' +
         '<b class="caps" data-spot-by>' + esc(s.by) + '</b></div><div class="acts">' +
         '<a class="btn sm light" data-spot-url href="' + esc(s.url) + '" target="_blank" rel="noopener">See it on Kōlab' + icon('ext') + '</a>' +
-        (el.hasAttribute('data-add') ? '<a class="btn sm" href="' + esc(link(el.getAttribute('data-add') || 'challenge.html')) + '">' + icon('upload') + esc(el.getAttribute('data-add-label') || 'Add your shot') + '</a>' : '') +
+        (el.hasAttribute('data-add') ? '<a class="btn sm" href="' + esc(link(el.getAttribute('data-add') || 'shots.html#enter-challenge')) + '">' + icon('upload') + esc(el.getAttribute('data-add-label') || 'Add your shot') + '</a>' : '') +
         '</div></div>';
       el.innerHTML = h;
       if (shots.length > 1 && !reduce) spotRotate(el);
@@ -804,7 +824,8 @@
     { k: 'Page', a: 'm', i: 'home', t: 'The Merge', s: 'This week, the posts and the shots', h: 'home.html', w: 'home start week community forum posts feed members chat' },
     { k: 'Page', a: 'm', i: 'play', t: 'Lessons', s: '257 lessons on three shelves', h: 'learn.html', w: 'videos tutorials courses library learn watch' },
     { k: 'Page', a: 'm', i: 'camera', t: 'Shots', s: 'The challenge, High Roller, feedback and your shots', h: 'shots.html', w: 'shots photos images upload add enter feedback portfolio kolab challenge high roller' },
-    { k: 'Page', a: 'm', i: 'camera', t: 'Challenge', s: 'This month\'s brief and the gallery on Kōlab', h: 'challenge.html', w: 'kolab upload add shot mission gallery photos' },
+    { k: 'Page', a: 'm', i: 'flag', t: 'This month\'s challenge', s: 'Keep it dark: the brief and the entries, on Shots', h: 'shots.html#challenge', w: 'challenges kolab upload add shot mission gallery photos brief' },
+    { k: 'Lessons', a: 'm', i: 'book', t: 'Tutorials', s: 'Weekly aviation insight, every Tuesday, in Learn', h: 'learn.html#tutorials', w: 'tutorials tutorial tuesday weekly insight challenges past previous lessons' },
     { k: 'Page', a: 'm', i: 'calendar', t: 'Live', s: 'Dates, add to calendar, replays', h: 'learn.html#live', w: 'zoom workshop evening session events' },
     { k: 'Page', a: 'm', i: 'flag', t: 'The Academy', s: 'This week\'s lesson, the 12 weeks and your bonuses', h: 'learn.html#academy', w: 'cohort 90 day weeks brief feedback graduate' },
     { k: 'Page', a: 'm', i: 'tag', t: 'Gear Discounts', s: 'Member prices at Clifton Cameras', h: 'perks.html', w: 'kit camera lens clifton aled price perks sony canon nikon extras' },
@@ -814,8 +835,8 @@
     { k: 'Page', a: 'm', i: 'grid', t: 'Everything you own', s: 'Every course and guide you\'ve bought', h: 'library.html#owned', w: 'purchases products courses guides own the scene night masterclass replays bought' },
     { k: 'Lessons', a: 'm', i: 'play', t: 'Every shelf and module', s: 'The Lessons course: Shoot it, Edit it, Show it', h: 'course.html', w: 'course modules shelves resume carry on continue list' },
     { k: 'Lessons', a: 'm', i: 'play', t: 'Shutter speeds for every pass', s: 'Shoot it, 20 minutes, Rich Cooper', h: 'lesson.html', w: 'shutter speed motion panning lesson video settings card' },
-    { k: 'Lessons', a: 'm', i: 'play', t: 'The night exposure check', s: 'This week\'s tutorial, nine steps', h: 'challenge.html#how', w: 'tutorial tuesday night dark exposure histogram iso keep it dark' },
-    { k: 'Page', a: 'm', i: 'trophy', t: 'High Roller', s: 'The main competition, scored by guest judges', h: 'high-roller.html', w: 'competition contest judges prize enter' },
+    { k: 'Lessons', a: 'm', i: 'book', t: 'The night exposure check', s: 'This month\'s challenge tutorial, nine steps', h: 'tutorial.html', w: 'tutorial tuesday night dark exposure histogram iso keep it dark' },
+    { k: 'Page', a: 'm', i: 'trophy', t: 'High Roller', s: 'This round, the rules and the entries, on Shots', h: 'shots.html#high-roller', w: 'competition contest judges prize enter' },
     { k: 'Page', a: 'm', i: 'chat', t: 'Feedback on a shot', s: 'Put it up on K\u014dlab and mark it Feedback wanted', h: 'home.html#feedback', w: 'critique review help shot' },
     { k: 'Page', a: 'm', i: 'tag', t: 'Discussion', s: 'Questions, kit and meet-ups, in The Merge', h: 'home.html#discussion', w: 'gear tech camera lens' },
     /* pages, logged out */
@@ -854,7 +875,7 @@
     { k: 'Live', a: 'm', i: 'video', t: 'Live workshop with Matty', s: 'Thu 11 Feb, 7pm UK', h: 'learn.html#live', w: 'zoom workshop february motion matty next tonight' },
     { k: 'Live', a: 'm', i: 'chat', t: 'Live feedback with Rich and Tom', s: 'Thu 25 Feb, 7pm UK', h: 'learn.html#live', w: 'zoom review critique february rich tom' },
     { k: 'Live', a: 'm', i: 'video', t: 'Replays', s: 'Every live workshop, up the next day', h: 'learn.html#replays', w: 'recording missed watch again replay' },
-    { k: 'Live', a: 'm', i: 'trophy', t: 'Challenge and High Roller close', s: 'Sun 28 Feb, midnight UK', h: 'challenge.html', w: 'deadline closes closing date' },
+    { k: 'Live', a: 'm', i: 'trophy', t: 'Challenge and High Roller close', s: 'Sun 28 Feb, midnight UK', h: 'shots.html#challenge', w: 'deadline closes closing date' },
     { k: 'Live', a: 'm', i: 'flag', t: 'Academy live evenings', s: 'Eight evenings across the 12 weeks', h: 'learn.html#live', w: 'cohort zoom evening graduation' },
     { k: 'Live', a: 'p', i: 'video', t: 'Free workshop', s: 'Tue 12 to Thu 14 January 2027, 7pm UK', h: 'workshop-optin.html', w: 'zoom live evenings january' },
     { k: 'Live', a: 'p', i: 'flag', t: 'Cohort 3 starts', s: 'Mon 1 February 2027, 50 places', h: 'academy.html', w: 'academy start date' },
