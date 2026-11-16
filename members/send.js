@@ -5,7 +5,7 @@
    Back end: ops/jobs/deep-dives/apps-script/Code.gs. The draft is made by the Claude routine (ops/jobs/deep-dives/ROUTINE.md). */
 (function () {
   var d = document, root = d.querySelector('[data-coap-send]'); if (!root) return;
-  var END = root.getAttribute('data-endpoint'), KEY = root.getAttribute('data-key') || '', AUTHOR = root.getAttribute('data-author') || 'Steven Wilson';
+  var END = root.getAttribute('data-endpoint'), KEY = root.getAttribute('data-key') || root.getAttribute('data-coap-send') || '',   /* the key may sit on either attribute */ AUTHOR = root.getAttribute('data-author') || 'Steven Wilson';
   var INI = AUTHOR.split(/\s+/).slice(0, 2).map(function (w) { return w[0]; }).join('').toUpperCase();
   var IX = window.COAP_INDEX || [], DRAFT = 'coap-wd-draft', LAST = 'coap-wd-last';
   function he(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
