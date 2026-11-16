@@ -1,11 +1,11 @@
-/* The send page: an ambassador (Steven) writes a Deep Dive or a Slider Sunday, it comes back as a draft lesson.
+/* The send page: an ambassador (Steven) writes a Deep Dive or a Slider Sunday, it's built and published as a lesson in Learn (no approval step, Tom 16 Nov 2026).
    Lives in a hidden Kajabi lesson (the "Ambassadors" course) whose body is:
-     <section class="ch-tut wd-page"><div data-coap-send data-endpoint="APPS SCRIPT URL" data-author="Steven Wilson"></div></section>
+     <section class="ch-tut wd-page"><div data-coap-send data-endpoint="APPS SCRIPT URL" data-key="SEND_KEY from the Apps Script" data-author="Steven Wilson"></div></section>
    boot.js loads this file and members/coap-index.js when it sees [data-coap-send].
    Back end: ops/jobs/deep-dives/apps-script/Code.gs. The draft is made by the Claude routine (ops/jobs/deep-dives/ROUTINE.md). */
 (function () {
   var d = document, root = d.querySelector('[data-coap-send]'); if (!root) return;
-  var END = root.getAttribute('data-endpoint'), AUTHOR = root.getAttribute('data-author') || 'Steven Wilson';
+  var END = root.getAttribute('data-endpoint'), KEY = root.getAttribute('data-key') || '', AUTHOR = root.getAttribute('data-author') || 'Steven Wilson';
   var INI = AUTHOR.split(/\s+/).slice(0, 2).map(function (w) { return w[0]; }).join('').toUpperCase();
   var IX = window.COAP_INDEX || [], DRAFT = 'coap-wd-draft', LAST = 'coap-wd-last';
   function he(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
@@ -41,15 +41,15 @@
         '<div class="wd-sug" id="wd-sug" hidden><span>Mentioned in your post:</span></div>' +
         '<div class="wd-cb"><i data-icon="search"></i><input class="wd-in" id="wd-la" type="search" role="combobox" aria-expanded="false" aria-controls="wd-res" aria-autocomplete="list" autocomplete="off" placeholder="Search ' + IX.length + ' lessons, deep dives and articles"><ul class="wd-res" id="wd-res" role="listbox" hidden></ul></div></div>' +
       '<p class="wd-err" id="wd-err" role="alert"></p>' +
-      '<div class="wd-go"><button class="btn" type="button" id="wd-make"><i data-icon="upload"></i>Make my draft</button>' +
-        '<p>Nothing goes live yet. Your draft comes back here for you to check, and Tom gets an email when it\'s ready. Then Tom or Rich publish it.</p></div>' +
+      '<div class="wd-go"><button class="btn" type="button" id="wd-make"><i data-icon="upload"></i>Publish my deep dive</button>' +
+        '<p>It goes live in Learn under Deep dives as soon as it\'s built, usually within ten minutes. If anything needs changing, edit your post and send it again: it updates the same lesson.</p></div>' +
     '</form>' +
-    '<section class="wd-run" id="wd-run" aria-live="polite"><h2 class="caps">Making your draft</h2><p style="margin:0;font-size:16px">You can close this page. It\'ll be here when you come back.</p>' +
-      '<ol class="wd-steps"><li>Sending your post and photos</li><li>Claude is sorting it into steps and placing the photos</li><li>Building the lesson in the COAP layout</li><li>Saving it as a draft in Learn</li></ol></section>' +
+    '<section class="wd-run" id="wd-run" aria-live="polite"><h2 class="caps">Building your deep dive</h2><p style="margin:0;font-size:16px">You can close this page. It\'ll be here when you come back.</p>' +
+      '<ol class="wd-steps"><li>Sending your post and photos</li><li>Claude is sorting it into steps and placing the photos</li><li>Building the lesson in the COAP layout</li><li>Publishing it in Learn</li></ol></section>' +
     '<section class="wd-draft" id="wd-draft" aria-label="Your draft"></section>' +
     '<div class="wd-sent" id="wd-sent" role="status"></div>' +
     '</div><aside class="wd-side"><div class="wd-box"><h2 class="caps">Your posts</h2><ul class="wd-mine" id="wd-mine"><li class="none">Loading…</li></ul></div></aside></div></div>' +
-    '<div class="wd-pv" id="wd-pv" role="dialog" aria-modal="true" aria-label="Your draft"><div class="wd-pv-bar"><span>Your draft, as members will see it</span><button class="btn sm" type="button" id="wd-close">Close</button></div><iframe title="The draft lesson" src="about:blank" id="wd-if"></iframe></div>';
+    '<div class="wd-pv" id="wd-pv" role="dialog" aria-modal="true" aria-label="Your deep dive"><div class="wd-pv-bar"><span>Your deep dive, as members see it</span><button class="btn sm" type="button" id="wd-close">Close</button></div><iframe title="The draft lesson" src="about:blank" id="wd-if"></iframe></div>';
   icons(root);
 
   /* ---- numbers: one more than the highest so far in each series ---- */
@@ -181,8 +181,8 @@
       n++; if (n === 4) stepTo(2); if (n === 9) stepTo(3);
       get('action=status&id=' + encodeURIComponent(id)).then(function (r) {
         var s = r && r.status; if (!s) return;
-        if (s.state === 'ready' || s.state === 'checked' || s.state === 'changes') { clearInterval(poll); run.classList.remove('on'); showDraft(s); }
-        if (s.state === 'failed') { clearInterval(poll); run.classList.remove('on'); $('wd-form').hidden = false; $('wd-err').textContent = 'The draft didn\'t work this time (' + (s.error || 'unknown') + '). Tom has been told. Your post is still here.'; store.set(LAST, null); }
+        if (s.state === 'live' || s.state === 'ready' || s.state === 'checked' || s.state === 'changes') { clearInterval(poll); run.classList.remove('on'); showDraft(s); }
+        if (s.state === 'failed') { clearInterval(poll); run.classList.remove('on'); $('wd-form').hidden = false; $('wd-err').textContent = 'It didn\'t work this time (' + (s.error || 'unknown') + '). Tom has been told. Your post is still here.'; store.set(LAST, null); }
       }).catch(function () {});
       if (n > 180) { clearInterval(poll); }   /* an hour: the email still arrives */
     }, 20000);
@@ -190,17 +190,18 @@
   function showDraft(s) {
     var dr = $('wd-draft');
     dr.innerHTML = '<div class="wd-card">' + (s.previewUrl ? '<img src="' + he(s.previewUrl.replace(/preview\.html$/, '1.jpg')) + '" alt="">' : '') + '<div>' +
-      '<p class="mtag"><b>Draft ready</b><span>#' + he(s.no) + '</span></p><h3 class="caps">' + he(s.card || s.title) + '</h3><ul class="wd-chk">' +
+      '<p class="mtag"><b>' + (s.state === 'live' ? 'Live in Learn' : 'Draft ready') + '</b><span>#' + he(s.no) + '</span></p><h3 class="caps">' + he(s.card || s.title) + '</h3><ul class="wd-chk">' +
       (s.steps ? '<li>' + s.steps.length + ' steps, from your headings: ' + he(s.steps.join(', ')) + '</li>' : '') +
       (s.photos ? '<li>' + s.photos + ' photos placed</li>' : '') +
       (s.lessons && s.lessons.length ? '<li>' + s.lessons.length + ' lesson' + (s.lessons.length > 1 ? 's' : '') + ' linked: ' + he(s.lessons.join(', ')) + '</li>' : '') +
       (s.flags || []).map(function (f) { return '<li class="q">' + he(f) + '</li>'; }).join('') + '</ul>' +
-      '<div class="wd-btns"><button class="btn" type="button" id="wd-open"><i data-icon="ext"></i>Check the draft</button><button class="btn ghost" type="button" id="wd-edit">Change something</button></div></div></div>' +
+      '<div class="wd-btns"><button class="btn" type="button" id="wd-open"><i data-icon="ext"></i>See how it looks</button><button class="btn ghost" type="button" id="wd-edit">Change something</button></div></div></div>' +
       (s.kolab ? '<div class="wd-kolab"><b>For The Merge on Kōlab</b><p>' + he(s.kolab) + '</p><div class="wd-btns"><button class="btn sm ghost" type="button" id="wd-copy">Copy the text</button></div></div>' : '') +
       '<div id="wd-chg" hidden style="display:grid;gap:10px"><label class="wd-lb" for="wd-nt">What should change?</label><textarea class="wd-note" id="wd-nt" placeholder="For example: step 2 should come before step 1, and photo 5 is the wrong one."></textarea>' +
       '<div class="wd-btns"><button class="btn" type="button" id="wd-snd">Send to Tom</button><button class="btn ghost" type="button" id="wd-fix">Edit my post and send it again</button></div></div>' +
       '<div class="wd-go" id="wd-ok"><button class="btn" type="button" id="wd-send"><i data-icon="check"></i>Looks right, send it to Tom and Rich</button><p>They get an email and publish it.</p></div>';
     dr.classList.add('on'); icons(dr);
+    if (s.state === 'live') $('wd-ok').hidden = true;   /* published already: nothing to approve */
     $('wd-open').onclick = function () { $('wd-if').src = s.previewUrl; $('wd-pv').classList.add('on'); };
     $('wd-edit').onclick = function () { $('wd-chg').hidden = false; $('wd-ok').hidden = true; $('wd-nt').focus(); };
     $('wd-fix').onclick = function () { dr.classList.remove('on'); $('wd-form').hidden = false; store.set(LAST, null); };
@@ -227,14 +228,14 @@
     if (!shots.length) { err.textContent = 'Add your photos first.'; return; }
     var b = $('wd-make'); b.disabled = true; b.lastChild.textContent = 'Sending…';
     run.classList.add('on'); $('wd-form').hidden = true; stepTo(0);
-    post({ action: 'send', series: d.querySelector('input[name=ser]:checked').value, no: +$('wd-no').value, title: t.value.trim(), text: x.value,
+    post({ action: 'send', key: KEY, series: d.querySelector('input[name=ser]:checked').value, no: +$('wd-no').value, title: t.value.trim(), text: x.value,
            author: AUTHOR, lessons: picked.map(function (it) { return { t: it.t, w: it.w, u: it.u }; }), photos: shots })
       .then(function (r) {
-        b.disabled = false; b.lastChild.textContent = 'Make my draft';
+        b.disabled = false; b.lastChild.textContent = 'Publish my deep dive';
         if (!r.ok) throw new Error(r.error || 'not sent');
         store.set(LAST, r.id); store.set(DRAFT, null); waiting(r.id);
       })
-      .catch(function (e) { b.disabled = false; b.lastChild.textContent = 'Make my draft'; run.classList.remove('on'); $('wd-form').hidden = false; err.textContent = 'It didn\'t send: ' + e.message + ' Your post is still here, so try again in a minute.'; });
+      .catch(function (e) { b.disabled = false; b.lastChild.textContent = 'Publish my deep dive'; run.classList.remove('on'); $('wd-form').hidden = false; err.textContent = 'It didn\'t send: ' + e.message + ' Your post is still here, so try again in a minute.'; });
   });
 
   /* came back to the page while a draft was being made */
