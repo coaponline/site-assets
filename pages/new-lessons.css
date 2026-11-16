@@ -1,6 +1,6 @@
 
 /* learning.html only. Prefix: lg-. A dark page from top to bottom. */
-body[data-page="learning"]{background:#07090d;color:#d7dce6}
+body[data-page="learning"]{background:#07090d!important;color:#d7dce6}
 body[data-page="learning"] main{overflow:clip}
 
 /* the header sits over the hero, clear at the top and dark glass once you scroll */
