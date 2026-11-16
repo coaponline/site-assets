@@ -81,7 +81,7 @@
 
   var PUBLIC_NAV = [
     { key: 'academy',   label: 'The Academy', href: 'academy.html' },
-    { key: 'lessons',   label: 'Lessons',     href: 'lessons.html' },
+    { key: 'learning',  label: 'Learning',    href: 'learning.html' },
     { key: 'community', label: 'The Merge',   href: 'community-preview.html' },
     { key: 'guides',    label: 'Guides',      href: 'guides.html' },
     { key: 'about',     label: 'About',       href: 'about.html' }
@@ -269,7 +269,7 @@
     }
     return '<div class="wrap"><div class="cols">' +
       '<div class="brand"><img src="' + asset('logo-coap.png') + '" alt="COAP Online" width="143" height="24"><p>The Centre of Aviation Photography. Run by Rich Cooper and Tom Dalton.</p></div>' +
-      '<div><h4>Learn</h4><ul>' + L('The Academy', 'academy.html') + L('Free workshop', 'workshop-optin.html') + L('Lessons', 'lessons.html') + L('Free weekly tutorials', 'map.html#blog') + '</ul></div>' +
+      '<div><h4>Learn</h4><ul>' + L('The Academy', 'academy.html') + L('Free workshop', 'workshop-optin.html') + L('Learning', 'learning.html') + L('Free weekly tutorials', 'map.html#blog') + '</ul></div>' +
       '<div><h4>Members</h4><ul>' + L('The Merge', 'community-preview.html') + L('High Roller competition', 'community-preview.html#high-roller') + L('Log in', 'login.html') + '</ul></div>' +
       '<div><h4>COAP</h4><ul>' + L('About', 'about.html') + L('Partners', 'partners.html') + L('Courses and guides', 'map.html#store') + L('Contact', 'about.html#contact') + L('Privacy and terms', 'map.html#terms') + '</ul></div>' +
       '</div>' + base_ + '</div>';
@@ -821,7 +821,7 @@
     /* pages, logged out */
     { k: 'Page', a: 'p', i: 'flag', t: 'The Academy', s: 'Cohort 3 starts Mon 1 February 2027', h: 'academy.html', w: '90 day course join price cohort feedback' },
     { k: 'Page', a: 'p', i: 'video', t: 'Free workshop', s: 'Three evenings, Tue 12 to Thu 14 January', h: 'workshop-optin.html', w: 'zoom free live register seat' },
-    { k: 'Page', a: 'p', i: 'play', t: 'Lessons', s: 'A look at the library: Shoot it, Edit it, Show it', h: 'lessons.html', w: 'videos tutorials courses library' },
+    { k: 'Page', a: 'p', i: 'play', t: 'Learning', s: 'Inside the library, with the trailer', h: 'learning.html', w: 'videos tutorials courses library' },
     { k: 'Page', a: 'p', i: 'people', t: 'The Merge', s: 'The members\' community, from the outside', h: 'community-preview.html', w: 'community members challenge feedback gallery photos' },
     { k: 'Page', a: 'p', i: 'trophy', t: 'High Roller competition', s: 'Scored by guest judges', h: 'community-preview.html#high-roller', w: 'contest prize enter combat aircraft journal' },
     { k: 'Page', a: 'p', i: 'star', t: 'Partners', s: 'Kōlab, Clifton Cameras, Combat Aircraft Journal', h: 'partners.html', w: 'kolab clifton magazine discounts' },
@@ -847,9 +847,9 @@
     { k: 'Lessons', a: 'm', i: 'print', t: 'Writing masterclass', s: 'Show it: 2 parts, 17 lessons', h: 'learn.html#show', w: 'writing captions magazine article published' },
     { k: 'Lessons', a: 'm', i: 'upload', t: 'Light The Burners Blueprint', s: '13 workbooks, checklists and cheatsheets', h: 'learn.html#guides', w: 'pdf checklist cheat sheet cheatsheet download guide guides workbook blueprint burners shortcuts' },
     { k: 'Lessons', a: 'm', i: 'chat', t: 'The Wingman Podcast', s: '8 episodes', h: 'learn.html#podcast', w: 'audio listen podcast' },
-    { k: 'Lessons', a: 'p', i: 'camera', t: 'Shoot it', s: 'What the shooting lessons cover', h: 'lessons.html#shoot', w: 'settings camera manual night airshow' },
-    { k: 'Lessons', a: 'p', i: 'pen', t: 'Edit it', s: 'Lightroom and Photoshop', h: 'lessons.html#edit', w: 'editing lightroom photoshop raw' },
-    { k: 'Lessons', a: 'p', i: 'print', t: 'Show it', s: 'Print, portfolio, writing', h: 'lessons.html#show', w: 'print portfolio writing published' },
+    { k: 'Lessons', a: 'p', i: 'camera', t: 'Shoot it', s: 'What the shooting lessons cover', h: 'learning.html#shoot', w: 'settings camera manual night airshow' },
+    { k: 'Lessons', a: 'p', i: 'pen', t: 'Edit it', s: 'Lightroom and Photoshop', h: 'learning.html#edit', w: 'editing lightroom photoshop raw' },
+    { k: 'Lessons', a: 'p', i: 'print', t: 'Show it', s: 'Print, portfolio, writing', h: 'learning.html#show', w: 'print portfolio writing published' },
     /* live sessions */
     { k: 'Live', a: 'm', i: 'video', t: 'Live workshop with Matty', s: 'Thu 11 Feb, 7pm UK', h: 'learn.html#live', w: 'zoom workshop february motion matty next tonight' },
     { k: 'Live', a: 'm', i: 'chat', t: 'Live feedback with Rich and Tom', s: 'Thu 25 Feb, 7pm UK', h: 'learn.html#live', w: 'zoom review critique february rich tom' },
