@@ -528,7 +528,7 @@
      change these and PUBLIC below (the same list as kajabi-build/build.py ROUTES). */
   var ROUTE_ACADEMY = '/new-academy', ROUTE_SHOTS = '/library', ROUTE_WORKSHOP = '/new-workshop';
   var PUBLIC = {
-    'academy.html': ROUTE_ACADEMY, 'workshop-optin.html': ROUTE_WORKSHOP, 'index.html': '/new-home', 'lessons.html': '/new-lessons',
+    'academy.html': ROUTE_ACADEMY, 'workshop-optin.html': ROUTE_WORKSHOP, 'index.html': '/new-home', 'lessons.html': '/new-lessons', 'learning.html': '/new-lessons',
     'community-preview.html': '/new-community', 'about.html': '/new-about', 'partners.html': '/new-partners', 'guides.html': '/new-guides',
     'free-props-thanks.html': '/new-free-guide', 'map.html#blog': '/blog', 'map.html#store': '/store', 'map.html#terms': '/privacy-terms', 'map.html': '/new-home',
     'login.html': '/login', 'signin.html': '/login'
