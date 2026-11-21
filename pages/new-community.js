@@ -6,7 +6,7 @@
   var T = [
     ['https://coaponline.github.io/site-assets/assets/rich-face.webp', '<b>Rich</b> replied to your post', 'Bring a wide lens for the hangars'],
     ['star', '<b>7 members</b> found your shot inspiring', 'Keep it dark'],
-    ['https://coaponline.github.io/site-assets/assets/community/av-08.webp', '<b>A member</b> added a shot', 'Keep it dark, on K&#333;lab'],
+    ['https://coaponline.github.io/site-assets/assets/community/av-08.webp', '<b>A member</b> added a shot', 'Keep it dark'],
     ['video', '<b>Live workshop with Matty</b>', 'Starts in 1 hr. Join on Zoom'],
     ['https://coaponline.github.io/site-assets/assets/tom-face.webp', '<b>Tom</b> answered in Help', 'It’s under Live, then Replays'],
     ['https://coaponline.github.io/site-assets/assets/kolab/k-02.webp', '<b>Shot of the week</b> is up', 'Joe Copalman, picked by Rich']

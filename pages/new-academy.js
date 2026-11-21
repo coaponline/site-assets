@@ -77,7 +77,7 @@
      time:['How much time does it take?',TO,['About two hours a week. An hour to watch the lesson, an hour on your shot, and five minutes to upload.','Want to go further? Shoot more, upload more and dig into the library. It\'s all there.'],['miss','week']],
      miss:['What if I miss a week?',RI,['You won\'t fall behind. Every live evening is recorded, and week 8 is a catch-up week.','The 10-Minute Catch-Up Cards put each week on one card, so you\'re back on track in ten minutes.'],['time','bonuses']],
      live:['When are the live evenings?',TO,['There are 8 live evenings across the 12 weeks, at 7pm UK. That\'s 2pm in New York and 8pm in Amsterdam.','Every one is recorded, so you can watch the next day if you can\'t make it.'],['abroad','miss']],
-     upload:['How do I get set up on Kōlab?',TO,['Kōlab is our photo platform. It\'s a free account with the same email, and we set it up together on the kick-off call.'],['where','private']],
+     upload:['How do I add my shots?',TO,['Right here on COAP Online. Our whole community is powered by Kōlab, and we walk through adding your first shot together on the kick-off call.'],['where','private']],
      abroad:['I live outside the UK. Can I join?',RI,['Yes. Everything is online and recorded, and the feedback is written, so it works from anywhere.','You can see prices in pounds, dollars or euros, and the Starter RAW Pack means you can practise even with no airshow nearby.'],['live','airshows']],
      good:['I\'m not good enough yet.',RI,['That\'s exactly who it\'s for. Most people join because they know they could be better and want someone to show them how.','Only Rich, Tom and your cohort see your work, and the feedback is honest and friendly.'],['private','pro']],
      pro:['I\'m already quite experienced.',TO,['Then the feedback is where you\'ll get the most. It\'s about your shots, at your level, every week.','Plenty of experienced photographers join for an honest second opinion and a reason to finish their best work.'],['detail','grad']],
@@ -211,8 +211,8 @@
       var PRA={jets:'An F-16 taking off, panned against autumn trees',props:'A P-51 Mustang air to air above cloud',helis:'An Apache hovering at blue hour',air:'A B-52 taking off, in silhouette',mix:'Two MiG-29s air to air above cloud'};
       var pr=PRA[st.type]?st.type:'mix',dt=g[2].replace('Sun ','');
       var kn='<svg viewBox="0 0 24 24"><path d="M9 6l-5 6 5 6M15 6l5 6-5 6"/></svg>';
-      stage.innerHTML='<div class="pb-r"><div class="pb-hero pb-solo"><div class="pb-one"><img src="https://coaponline.github.io/site-assets/assets/quiz/'+pr+'.webp" alt="'+esc(PRA[pr])+'"><span class="pb-cr">Rich Cooper</span></div>'+
-       '<div class="pb-ov"><small>Your plan is ready</small><h3 class="caps">'+esc(GO[st.goal])+' <span class="gold">by '+esc(dt)+'.</span></h3><p>One of Rich\'s. Yours is next.</p></div></div>'+
+      stage.innerHTML='<div class="pb-r"><div class="pb-hero pb-solo"><div class="pb-one"><img src="https://coaponline.github.io/site-assets/assets/quiz/'+pr+'.webp" alt="'+esc(PRA[pr])+'"></div>'+
+       '<div class="pb-ov"><small>Your plan is ready</small><h3 class="caps">'+esc(GO[st.goal])+' <span class="gold">by '+esc(dt)+'.</span></h3></div></div>'+
        '<div class="pb-3s"><span class="lb">Three steps a week</span>'+tm.map(function(x,i){return '<div><span class="n">'+(i+1)+'</span><b>'+x[1]+'</b><small>'+x[0]+' &middot; '+TT[i]+'</small></div>';}).join('')+'</div>'+
        '<p class="pb-safe">Fall behind? Week 8 is a catch-up week, and everything is recorded.'+(EX[st.pace]?'<br>'+EX[st.pace]:'')+'</p>'+
        '<div class="pb-go"'+(st.c?' hidden':'')+'><button type="button" class="pb-hold"><span>Press and hold: I\'m in</span></button><button type="button" class="pb-re">Start again</button></div>'+
