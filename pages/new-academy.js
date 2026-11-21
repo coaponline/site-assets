@@ -73,7 +73,7 @@
      {t:'Price and paying',q:['deposit','monthly','guarantee','renew','member','grad','gift']},
      {t:'The bonuses',q:['bonuses','bonusend']}];
     var A={
-     week:['What happens each week?',RI,['Every week is the same three steps.','<b>Learn:</b> a new lesson and brief on Monday, about an hour.<br><b>Practise:</b> do the brief with shots you already have, or new ones.<br><b>Get feedback:</b> upload by Sunday, and Rich or Tom reply by Wednesday.'],['time','miss']],
+     week:['What happens each week?',RI,['Every week is the same three steps.','<b>Learn:</b> a new lesson and challenge on Monday, about an hour.<br><b>Practise:</b> do the challenge with shots you already have, or new ones.<br><b>Get feedback:</b> upload by Sunday, and Rich and Tom reply by Wednesday.'],['time','miss']],
      time:['How much time does it take?',TO,['About two hours a week. An hour to watch the lesson, an hour on your shot, and five minutes to upload.','Want to go further? Shoot more, upload more and dig into the library. It\'s all there.'],['miss','week']],
      miss:['What if I miss a week?',RI,['You won\'t fall behind. Every live evening is recorded, and week 8 is a catch-up week.','The 10-Minute Catch-Up Cards put each week on one card, so you\'re back on track in ten minutes.'],['time','bonuses']],
      live:['When are the live evenings?',TO,['There are 8 live evenings across the 12 weeks, at 7pm UK. That\'s 2pm in New York and 8pm in Amsterdam.','Every one is recorded, so you can watch the next day if you can\'t make it.'],['abroad','miss']],
@@ -82,19 +82,19 @@
      good:['I\'m not good enough yet.',RI,['That\'s exactly who it\'s for. Most people join because they know they could be better and want someone to show them how.','Only Rich, Tom and your cohort see your work, and the feedback is honest and friendly.'],['private','pro']],
      pro:['I\'m already quite experienced.',TO,['Then the feedback is where you\'ll get the most. It\'s about your shots, at your level, every week.','Plenty of experienced photographers join for an honest second opinion and a reason to finish their best work.'],['detail','grad']],
      kit:['Is my kit good enough?',RI,['Any camera with manual settings will do. We\'ll show you how to get the most out of what you\'ve got before you think about spending more.'],['airshows','good']],
-     airshows:['There are no airshows near me.',RI,['You don\'t need one. Every brief works with shots you already have, a local airfield or a museum.','And the Starter RAW Pack gives you 24 of my raw files to practise on from day one.'],['bonuses','abroad']],
-     finish:['I\'ve bought courses and never finished them.',TO,['This one has a start date, a cohort working on the same brief, and someone waiting for your shot every Sunday.','If life gets in the way, week 8 is a catch-up week.'],['miss','time']],
+     airshows:['There are no airshows near me.',RI,['You don\'t need one. Every challenge works with shots you already have, a local airfield or a museum.','And the Starter RAW Pack gives you 24 of my raw files to practise on from day one.'],['bonuses','abroad']],
+     finish:['I\'ve bought courses and never finished them.',TO,['This one has a start date, a cohort working on the same challenge, and someone waiting for your shot every Sunday.','If life gets in the way, week 8 is a catch-up week.'],['miss','time']],
      who:['Who is it for?',RI,['Aviation photographers with thousands of shots on their hard drive who want them to look like the ones they admire.','Beginners and experienced photographers both join. The feedback meets you where you are.'],['good','pro']],
-     whofb:['Who gives the feedback?',TO,['Rich or Tom, every week, on your brief. Rich has shot aviation professionally for 30 years, and I\'ve spent 20 years in Lightroom and Photoshop.'],['detail','more']],
+     whofb:['Who gives the feedback?',TO,['Rich and Tom, every week, on your challenge. Rich has shot aviation professionally for 30 years, and I\'ve spent 20 years in Lightroom and Photoshop.'],['detail','more']],
      detail:['How detailed is the feedback?',RI,['It\'s written for your shot: what works, and the one thing to try next. Short enough to act on, and specific enough to make a difference.'],['more','private']],
-     more:['Can I upload more than one shot?',TO,['Yes, as many as you like. Rich or Tom review your brief, your cohort and Matty comment on the rest, and we pick some up in the Academy feedback evenings.'],['detail','private']],
+     more:['Can I upload more than one shot?',TO,['Yes, as many as you like. Rich and Tom review your challenge, your cohort and Matty comment on the rest, and we pick some up in the Academy feedback evenings.'],['detail','private']],
      private:['Will other people see my work?',RI,['Only Rich, Tom and your cohort. It\'s a private space, so you can post the shots you\'re unsure about.'],['good','upload']],
      deposit:['How does the deposit work?',TO,['Pay {dep} today to secure your place, the early-bird price and all four bonuses.','The remaining {bal} balance is due by Sunday 24 January. The deposit is non-refundable, so only pay it if you mean to join.'],['monthly','guarantee'],1],
      monthly:['Can I spread the cost?',TO,['Yes. Pay in three payments of {m3}, with nothing added. It\'s not a subscription, so it ends in April.'],['deposit','renew'],1],
      guarantee:['What if it isn\'t for me?',RI,['Do the first month. If it isn\'t for you, email us within 30 days of the start date and we\'ll refund your course fee. Only the deposit is non-refundable.'],['renew','deposit'],1],
      renew:['Does anything renew?',TO,['No. The lessons and the community are yours for life, and you can follow any future cohort free.'],['grad','guarantee']],
-     member:['I\'m already a member. What\'s the difference?',RI,['Members work monthly: one challenge, Matty\'s workshop, and a live feedback session where we pick shots to review.','The Academy works weekly: a lesson and brief every week in your private space, with written feedback from Tom or me on every one.','Members get {mem} off a place and 48 hours before the public.'],['grad','where']],
-     where:['Where do I post my shots?',TO,['Your weekly brief goes in your private Academy space on Kōlab. That\'s where your feedback comes back too.','The monthly challenge and High Roller are on Kōlab as well, if you want to enter them.'],['private','more']],
+     member:['I\'m already a member. What\'s the difference?',RI,['Members work monthly: one challenge, Matty\'s workshop, and a live feedback session where we pick shots to review.','The Academy works weekly: a lesson and challenge every week in your private space, with written feedback from Tom and me on every one.','Members get {mem} off a place and 48 hours before the public.'],['grad','where']],
+     where:['Where do I post my shots?',TO,['Your weekly challenge goes in your private Academy space on COAP Online. That\'s where your feedback comes back too.','High Roller, our members\' competition, is there as well, if you want to enter.'],['private','more']],
      grad:['I\'ve done the Academy before.',TO,['Welcome back. Graduates can join another cohort, with weekly feedback again, for a one-off {grad} instead of {eb}. There are up to 10 graduate places per cohort.'],['member','renew']],
      gift:['Can I buy it as a present?',RI,['Yes. Buy it in your name, reply to the receipt with their details, and we\'ll move the place over and send you a gift card.'],['deposit','monthly'],1],
      bonuses:['What are the four bonuses?',TO,['Join by Sunday 17 January and you get:<ul><li>A one-to-one archive review</li><li>The 12-Week Planner</li><li>The Starter RAW Pack</li><li>The 10-Minute Catch-Up Cards</li></ul>'],['bonusend','airshows'],1],
@@ -172,8 +172,8 @@
       ['jets','https://coaponline.github.io/site-assets/assets/g5.webp','Fast jets','',"Fast jets it is. Week 2 sorts out your shutter speeds for every pass."],
       ['props','https://coaponline.github.io/site-assets/assets/community/sh-17.webp','Props and warbirds','',"Props it is. Week 2 sorts out your prop blur."],
       ['helis','https://coaponline.github.io/site-assets/assets/g2.webp','Helicopters','',"Helicopters it is. Week 2 sorts out your rotor blur."],
-      ['air','https://coaponline.github.io/site-assets/assets/community/sh-24.webp','Airliners and cargo','',"Airliners it is. Every brief works at your local airport too."],
-      ['mix','https://coaponline.github.io/site-assets/assets/g1.webp','A bit of everything','',"Every brief works for any aircraft, so you're covered."]]},
+      ['air','https://coaponline.github.io/site-assets/assets/community/sh-24.webp','Airliners and cargo','',"Airliners it is. Every challenge works at your local airport too."],
+      ['mix','https://coaponline.github.io/site-assets/assets/g1.webp','A bit of everything','',"Every challenge works for any aircraft, so you're covered."]]},
      {k:'time',t:'When do you usually get time?',c:'c3',o:[
       ['eve','','Weekday evenings','After work, an hour here and there',"Evenings work well: a lesson one night, your shot another."],
       ['wkd','','Weekends','A good chunk on Saturday or Sunday',"Weekends it is. Watch on Saturday, upload by Sunday night."],
@@ -183,7 +183,7 @@
       ['keen','Keen','About 4 hours','Plus a shoot at your local airfield',"Keen it is. You'll be out shooting every month."],
       ['allin','All in','6 hours or more','Plus masterclasses and extra uploads',"All in. You'll get the most from the library as well."]]}];
     var G={shots:['Sharper, cleaner shots',[1,2,3,4],'Sun 28 February','Your first sharp, well-exposed set'],edits:["Edits you're proud of",[5,6,7],'Sun 21 March','Your first finished edit'],seen:['Your work seen',[9,10,11],'Sun 25 April','Your best shot printed and online'],comps:['Competitions and magazines',[9,10,11,12],'Sun 25 April','Your first competition entry']};
-    var P={steady:['Steady · about 2 hours a week',['The lesson and your brief every week','Week 8 to catch up on anything you missed']],keen:['Keen · about 4 hours a week',['The lesson and your brief every week','A shoot at your local airfield or museum each month','Extra uploads for your cohort to comment on']],allin:['All in · 6 hours or more',['The lesson and your brief every week','A shoot at your local airfield or museum each month','A library masterclass alongside each month','Every live evening, live rather than on replay']]};
+    var P={steady:['Steady · about 2 hours a week',['The lesson and your challenge every week','Week 8 to catch up on anything you missed']],keen:['Keen · about 4 hours a week',['The lesson and your challenge every week','A shoot at your local airfield or museum each month','Extra uploads for your cohort to comment on']],allin:['All in · 6 hours or more',['The lesson and your challenge every week','A shoot at your local airfield or museum each month','A library masterclass alongside each month','Every live evening, live rather than on replay']]};
     var TY={jets:['Fast jets','Light The Burners Blueprint'],props:['Props and warbirds','Own The Show'],helis:['Helicopters','Own The Show'],air:['Airliners and cargo','Own The Scene'],mix:['A bit of everything','Own The Scene']};
     var TM={eve:[['Monday evening','Learn'],['Wednesday evening','Practise'],['Sunday','Get feedback']],wkd:[['Saturday morning','Learn'],['Saturday or Sunday','Practise'],['Sunday evening','Get feedback']],bits:[['On your phone, in short bits','Learn'],['Two quiet half-hours','Practise'],['By Sunday','Get feedback']]};
     var TN={eve:'Weekday evenings',wkd:'Weekends',bits:'Bits and pieces'};
@@ -208,16 +208,15 @@
       var tl=[['Mon 1 Feb','<b>Kick-off.</b> Meet your cohort, live',0],[g[2],'<b>'+g[3]+'</b>, your big milestone',1],['Mon 22 Mar','<b>Catch-up week.</b> Breathe, and finish anything you missed',0],['Thu 29 Apr','<b>Graduation night.</b> Your portfolio, reviewed live',0]];
       var GO={shots:'sharper, cleaner shots',edits:"edits you're proud of",seen:'your best shot on the wall',comps:'your first competition entry'};
       var TT=['1 hour','1 hour','5 min'],EX={steady:'',keen:'Want more? You picked Keen, so add a shoot at your local airfield each month.',allin:'Want more? You picked All in, so add a library masterclass each month too.'};
-      var PR={jets:['sw-bucc-b','sw-bucc-a'],props:['sw-bucc-b','sw-bucc-a'],helis:['sw-apache-b','sw-apache-a'],air:['sw-a350-b','sw-a350-a'],mix:['sw-bucc-b','sw-bucc-a']};
-      var pr=st.goal==='shots'?['sw-2023','sw-tornado-a']:PR[st.type],dt=g[2].replace('Sun ','');
+      var PRA={jets:'An F-16 taking off, panned against autumn trees',props:'A P-51 Mustang air to air above cloud',helis:'An Apache hovering at blue hour',air:'A B-52 taking off, in silhouette',mix:'Two MiG-29s air to air above cloud'};
+      var pr=PRA[st.type]?st.type:'mix',dt=g[2].replace('Sun ','');
       var kn='<svg viewBox="0 0 24 24"><path d="M9 6l-5 6 5 6M15 6l5 6-5 6"/></svg>';
-      stage.innerHTML='<div class="pb-r"><div class="pb-hero"><div class="cmp pb-cmp"><img src="https://coaponline.github.io/site-assets/assets/'+pr[1]+'.webp" alt="A finished edit"><img class="before" src="https://coaponline.github.io/site-assets/assets/'+pr[0]+'.webp" alt="The raw file"><span class="t l">You now</span><span class="t r">You by '+esc(dt)+'</span><span class="bar"></span><span class="knob">'+kn+'</span><input type="range" min="0" max="100" value="50" aria-label="Drag to compare now with your result"></div>'+
-       '<div class="pb-ov"><small>Your plan is ready</small><h3 class="caps">'+esc(GO[st.goal])+' <span class="gold">by '+esc(dt)+'.</span></h3><p>'+(st.goal==='shots'?'Steve\'s shots, before and after the Academy.':'Steve\'s raw file, and his edit after the Academy.')+' Yours is next.</p></div></div>'+
+      stage.innerHTML='<div class="pb-r"><div class="pb-hero pb-solo"><div class="pb-one"><img src="https://coaponline.github.io/site-assets/assets/quiz/'+pr+'.webp" alt="'+esc(PRA[pr])+'"><span class="pb-cr">Rich Cooper</span></div>'+
+       '<div class="pb-ov"><small>Your plan is ready</small><h3 class="caps">'+esc(GO[st.goal])+' <span class="gold">by '+esc(dt)+'.</span></h3><p>One of Rich\'s. Yours is next.</p></div></div>'+
        '<div class="pb-3s"><span class="lb">Three steps a week</span>'+tm.map(function(x,i){return '<div><span class="n">'+(i+1)+'</span><b>'+x[1]+'</b><small>'+x[0]+' &middot; '+TT[i]+'</small></div>';}).join('')+'</div>'+
        '<p class="pb-safe">Fall behind? Week 8 is a catch-up week, and everything is recorded.'+(EX[st.pace]?'<br>'+EX[st.pace]:'')+'</p>'+
        '<div class="pb-go"'+(st.c?' hidden':'')+'><button type="button" class="pb-hold"><span>Press and hold: I\'m in</span></button><button type="button" class="pb-re">Start again</button></div>'+
        '<div class="pb-done"'+(st.c?'':' hidden')+'><span class="pb-st">You\'re in</span><p><b>One step left.</b> '+(document.body.getAttribute('data-state')==='early'?'Join the waitlist and you\'ll hear before places open. You start on Monday 1 February.':'Secure your place before the 50 go. You start on Monday 1 February.')+'</p><a class="btn" href="#price">'+(document.body.getAttribute('data-state')==='early'?'Get early-bird access':'Secure my place for just '+esc(curDep()))+'</a></div></div>';
-      var cm=stage.querySelector('.pb-cmp'),rg=cm.querySelector('input');rg.addEventListener('input',function(){cm.dataset.done=1;cm.style.setProperty('--p',rg.value+'%');});
       if(!reduce){cm.style.setProperty('--p','100%');setTimeout(function(){var t0=null;function f(ts){if(!t0){t0=ts;}var k=Math.min(1,(ts-t0)/1600),e=1-Math.pow(1-k,3);if(!cm.dataset.done){cm.style.setProperty('--p',(100-80*e)+'%');}if(k<1){requestAnimationFrame(f);}}requestAnimationFrame(f);},500);}
       var hold=stage.querySelector('.pb-hold'),t0=0,raf=0;
       function done(){st.c=true;save();banner();stage.querySelector('.pb-go').hidden=true;var d=stage.querySelector('.pb-done');d.hidden=false;
@@ -235,16 +234,4 @@
     banner();
   })();
   document.querySelectorAll('.cmp input').forEach(function(r){r.addEventListener('input',function(){var c=r.parentNode;c.dataset.done=1;c.style.setProperty('--p',r.value+'%');});});
-})();
-
-;
-
-/* the bar marks the section you're reading */
-(function () {
-  if (!('IntersectionObserver' in window)) return;
-  var links = [].slice.call(document.querySelectorAll('.acbar .secs a'));
-  var io = new IntersectionObserver(function (es) {
-    es.forEach(function (e) { if (e.isIntersecting) links.forEach(function (a) { a.classList.toggle('on', a.getAttribute('href') === '#' + e.target.id); }); });
-  }, { rootMargin: '-40% 0px -55% 0px' });
-  links.forEach(function (a) { var t = document.querySelector(a.getAttribute('href')); if (t) io.observe(t); });
 })();

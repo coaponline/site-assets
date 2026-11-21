@@ -67,10 +67,7 @@
   /* The Own The series: one list for the shop shelf, the Learn shelf and the "guide for this lesson" card.
      checkout: the GBP Kajabi offer. New guides get theirs when the offer is made in Kajabi (empty = "Coming soon" in the mock). */
   var GUIDES = [
-    { key: 'edit',  t: 'Own The Edit',  s: 'Editing', line: 'Every edit from the card to the finished file, with fifteen recipes and the new Lightroom tools.', pages: 89, isNew: 1, checkout: '', topics: 'edit editing lightroom masks mask colour raw develop sliders recipe denoise' },
-    { key: 'dials', t: 'Own The Dials', s: 'Camera settings', line: 'Set your camera up once, then the settings to start from for every kind of flying.', pages: 44, isNew: 1, checkout: '', topics: 'settings exposure iso aperture autofocus metering manual camera dials' },
-    { key: 'pan',   t: 'Own The Pan',   s: 'Panning', line: 'Sharp aircraft with moving props, rotors and backgrounds, from the swing to the edit.', pages: 41, isNew: 1, checkout: '', topics: 'panning pan shutter prop props rotor helicopter blur motion' },
-    { key: 'print', t: 'Own The Print', s: 'Export and print', line: 'From the edit to the wall: file types, colour spaces, export settings and printing.', pages: 42, isNew: 1, checkout: '', topics: 'print export colour space sharpening crop watermark magazine' },
+    { key: 'settings', t: 'Own The Settings', s: 'Camera settings', line: 'Set your camera up once, then the settings to start from for every kind of flying.', pages: 46, isNew: 1, checkout: '', topics: 'settings exposure iso aperture autofocus metering manual camera dials' },
     { key: 'scene', t: 'Own The Scene', s: 'Composition', line: 'Ten composition techniques, what each one is and when to use it, with aviation examples.', pages: 40, checkout: 'https://www.coaponline.com/offers/8zXKRMKu/checkout', topics: 'composition framing thirds lines background' },
     { key: 'show',  t: 'Own The Show',  s: 'Airshows', line: 'Getting the best out of an airshow: kit, settings, where to stand and what to look for.', pages: 52, checkout: 'https://www.coaponline.com/offers/2dh277PM/checkout', topics: 'airshow show crowdline display spotting' },
     { key: 'night', t: 'Own The Night', s: 'Night shoots', line: 'Aviation photography after dark, with a checklist for the night itself.', pages: 0, checkout: 'https://www.coaponline.com/offers/fjm7JvJ6/checkout', topics: 'night dark tripod long exposure dusk low light starburst' }
@@ -535,39 +532,39 @@
   var KOLAB_POST = 'https://kolab.social/post/';
   var KOLAB = [
     [31171, "Jason Prior", 1080, 813, "An Apache helicopter head-on against broken cloud"],
-    [31183, "Phil Colborne", 1080, 720, "A Gloster Meteor reflected in standing water under a storm sky, in black and white"],
-    [31081, "Joe Copalman", 1080, 720, "A Lightning jet on the ground under forked lightning"],
+    [35342, "Daniël Monnik", 1080, 720, "A night photograph by Daniël Monnik, from High Roller: November"],
+    [36397, "James Goggin", 1080, 656, "A night photograph by James Goggin, from High Roller: November"],
     [31053, "Dave Kingston", 1080, 717, "A Mustang at night with its propeller drawn as a ring of light"],
-    [31152, "Steven Wilson", 1080, 607, "A Hind helicopter in silhouette against an orange sunset"],
-    [31099, "David Foote", 1080, 720, "A polished twin-engined propeller aircraft seen head-on"],
+    [35318, "High N Dry", 1080, 608, "A night photograph by High N Dry, from High Roller: November"],
+    [36351, "Steven Wilson", 1080, 640, "A night photograph by Steven Wilson, from High Roller: November"],
     [31540, "BartoszJonski", 1080, 660, "An F-35 turning away with its afterburner lit"],
     [31105, "Kees Den Otter", 1080, 608, "An F-35 bursting through a cloud of its own vapour"],
-    [31169, "Dave Griffiths", 1080, 776, "A Vulcan bomber reflected in a puddle under a heavy sky"],
+    [35560, "Kev Baxter", 1080, 764, "A night photograph by Kev Baxter, from High Roller: November"],
     [31078, "Simon Cook", 1080, 720, "An F-16 from behind, throwing up spray on a wet runway"],
-    [31004, "Stanimir Stoev", 1080, 720, "A line of F-16s on the flight line"],
+    [36585, "Kees Den Otter", 1080, 608, "A night photograph by Kees Den Otter, from High Roller: November"],
     [30967, "Daniela Z", 1080, 720, "A display team trailing smoke across a sunset"],
-    [32018, "Ryszard Jonski", 1080, 696, "An F-35 head-on at night"],
+    [36616, "Matt Adamski", 1080, 714, "A night photograph by Matt Adamski, from High Roller: November"],
     [31116, "Nick Bollion", 1080, 720, "A Tornado low over trees under heavy cloud"],
-    [30985, "Artur", 1080, 720, "Four delta-winged jets firing flares against cloud"],
+    [35330, "Hans Scholtens", 1080, 608, "A night photograph by Hans Scholtens, from High Roller: November"],
     [31172, "Robert Coomer", 1080, 660, "A Hornet reflected in still water at sunset"],
     [31124, "Andrew Critchell", 1080, 717, "A silver Spitfire running up under a dark sky"],
-    [31064, "Nick Morales", 1080, 864, "An airliner crossing below a red moon in orange cloud"],
-    [30951, "Lee Hurst", 1080, 720, "A propeller aircraft at night lit in blue, its propeller a ring of light"],
-    [31130, "Timothy Homan", 1080, 720, "A polished silver twin reflected in water beside a red tractor"],
-    [31199, "Robert Arts", 1080, 718, "An F-16 taxiing at night"],
-    [31079, "Philip L Jackson", 1080, 720, "F-16s taxiing on a wet runway with their lights reflected"],
-    [31060, "Robin Trewinnard", 1080, 864, "A Harrier head-on on a wet deck under a blue dusk sky"],
+    [35261, "Daniël Monnik", 1080, 772, "A night photograph by Daniël Monnik, from High Roller: November"],
+    [35614, "Steven Wilson", 1080, 608, "A night photograph by Steven Wilson, from High Roller: November"],
+    [36196, "Niall Grant", 1080, 608, "A night photograph by Niall Grant, from High Roller: November"],
+    [36637, "Matt Adamski", 1080, 720, "A night photograph by Matt Adamski, from High Roller: November"],
+    [35854, "Joseph Evans", 1080, 608, "A night photograph by Joseph Evans, from High Roller: November"],
+    [35556, "Kev Baxter", 1080, 764, "A night photograph by Kev Baxter, from High Roller: November"],
     [31122, "Niall Grant", 1080, 608, "The wreck of a DC-3 on a black beach at dusk"],
     [31144, "Bob Sharples", 1080, 688, "A naval helicopter hovering over a cliff edge"],
-    [30964, "Anirudh Arun", 1080, 755, "A Hornet taking off with a mountain castle behind it"],
+    [35734, "Alan Bland", 1080, 720, "A night photograph by Alan Bland, from High Roller: November"],
     [31049, "Jeff Krueger", 1080, 586, "A Blue Angels Hornet at take-off with the background blurred"],
     [30959, "Rich Colbourne", 1080, 764, "A B-52 low over an airshow crowd"],
-    [31071, "Lagowczak", 1080, 772, "An F-16 banking against bright cloud"],
+    [36513, "avgar idan", 1080, 720, "A night photograph by avgar idan, from High Roller: November"],
     [31098, "Nick Barker", 1080, 710, "Two Red Arrows crossing with red and blue smoke"],
-    [30971, "Jacob", 1080, 720, "A Corsair with its wings folded in a hangar"],
+    [35266, "Anirudh Arun", 1080, 540, "A night photograph by Anirudh Arun, from High Roller: November"],
     [32854, "Davy", 1080, 720, "A Merlin helicopter against dark cloud"],
     [31164, "Antonio Godinho", 1080, 607, "French display team jets lined up on the apron"],
-    [31148, "Mark Seabrook", 1080, 720, "A Phantom in a yellow and blue scheme outside a shelter"]
+    [35267, "Anirudh Arun", 1080, 450, "A night photograph by Anirudh Arun, from High Roller: November"],
   ].map(function (r, i) {
     var id = 'k-' + (i < 10 ? '0' : '') + i;
     /* sim: in the mock, a few shots stand in for ones whose photographer attached the unedited file on Kolab (the feed's beforeImageUrl). */
@@ -612,7 +609,7 @@
 
   /* ---------- galleries ----------
      <div data-gallery="wall|filmstrip|mosaic|spotlight" data-shots="0,3,7-12" data-limit="9"
-          data-add="challenge.html" data-add-label="Add your shot" data-kolab="331" data-label="Shot of the week">
+          data-add="challenge.html" data-add-label="Add your shot" data-kolab="341" data-label="Shot of the week">
        ...fallback markup for when script is off...
      </div> */
   function tile(s, lazy) {
