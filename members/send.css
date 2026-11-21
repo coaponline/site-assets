@@ -124,3 +124,4 @@
 /* the "Loading" line in the lesson body goes once the page is drawn */
 [data-coap-send]:not(:empty) + .wd-nojs{display:none}
 .wd-nojs{max-width:1200px;margin:40px auto;padding:0 20px;font-size:17px;color:var(--soft)}
+.wd-ser label[hidden],.wd-f[hidden]{display:none}

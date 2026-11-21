@@ -1,4 +1,6 @@
 /* The send page: an ambassador (Steven) writes a Deep Dive or a Slider Sunday, it's built and published as a lesson in Learn (no approval step, Tom 16 Nov 2026).
+   He can also choose "Blog post": the same page sends an article that's built and published on the public COAP blog (ops/jobs/blog/ROUTINE.md, Tom 21 Nov 2026).
+   The Blog option only shows once the back end says it can take one (?action=ping), so an older back end can never file an article as a deep dive.
    Lives in a hidden Kajabi lesson (the "Ambassadors" course) whose body is:
      <section class="ch-tut wd-page"><div data-coap-send data-endpoint="APPS SCRIPT URL" data-key="SEND_KEY from the Apps Script" data-author="Steven Wilson"></div></section>
    boot.js loads this file and members/coap-index.js when it sees [data-coap-send].
@@ -22,46 +24,81 @@
   var link = d.createElement('link'); link.rel = 'stylesheet'; link.href = (window.COAP_CDN || 'https://coaponline.github.io/site-assets/') + 'members/send.css?v=' + Math.floor(Date.now() / 6e5); d.head.appendChild(link);
 
   root.innerHTML =
-    '<div class="wd"><div class="wd-top"><h2 class="caps" style="font-size:clamp(44px,6vw,76px);line-height:.9;font-style:italic;font-weight:900;transform:skewX(-8deg);transform-origin:left bottom">Write a <em style="font:inherit;color:var(--gold-d)">deep dive</em></h2>' +
+    '<div class="wd"><div class="wd-top"><h2 class="caps" style="font-size:clamp(44px,6vw,76px);line-height:.9;font-style:italic;font-weight:900;transform:skewX(-8deg);transform-origin:left bottom">Write a <em id="wd-hd" style="font:inherit;color:var(--gold-d)">deep dive</em></h2>' +
     '<div class="wd-me"><span class="wd-av" aria-hidden="true">' + he(INI) + '</span><span><b>' + he(AUTHOR) + '</b><i class="tier amb">Ambassador</i></span></div></div>' +
     '<div class="wd-cols"><div style="display:grid;gap:18px">' +
     '<form class="wd-form" id="wd-form" onsubmit="return false">' +
       '<div class="wd-f"><span class="wd-lb">Which one?</span><div class="wd-ser" role="radiogroup" aria-label="Which series">' +
         '<label><input type="radio" name="ser" value="dd" checked>Deep Dive Sunday <b id="wd-ndd">#</b></label>' +
-        '<label><input type="radio" name="ser" value="ss">Slider Sunday <b id="wd-nss">#</b></label></div>' +
-        '<p class="wd-help">The number fills itself in. <button type="button" class="tlink" id="wd-nch" style="background:none;border:0;padding:0;font:inherit;cursor:pointer">Change it</button></p>' +
+        '<label><input type="radio" name="ser" value="ss">Slider Sunday <b id="wd-nss">#</b></label>' +
+        '<label id="wd-blab" hidden><input type="radio" name="ser" value="blog">Blog post</label></div>' +
+        '<p class="wd-help" id="wd-nh">The number fills itself in. <button type="button" class="tlink" id="wd-nch" style="background:none;border:0;padding:0;font:inherit;cursor:pointer">Change it</button></p>' +
         '<input class="wd-in" id="wd-no" type="number" min="1" max="999" hidden aria-label="Number"></div>' +
+      '<div class="wd-f" id="wd-ty" hidden><span class="wd-lb">What kind of article?</span><div class="wd-ser" role="radiogroup" aria-label="What kind of article">' +
+        '<label><input type="radio" name="ty" value="tutorial" checked>Tutorial</label><label><input type="radio" name="ty" value="trip">Trip report</label><label><input type="radio" name="ty" value="kit">Kit and opinion</label></div>' +
+        '<p class="wd-help">Blog posts are public: anyone can read them, and they show up in Google.</p></div>' +
       '<div class="wd-f"><label for="wd-t">Title</label><input class="wd-in" id="wd-t" autocomplete="off" placeholder="For example: Point Color and range masks"></div>' +
       '<div class="wd-f"><label for="wd-x">Your post <small>Write it the way you always do</small></label><textarea class="wd-ta" id="wd-x" spellcheck="true" placeholder="Paste or write your post here."></textarea>' +
-        '<p class="wd-help">Put each heading on its own line. Write "Refer to Image 3" where a photo goes, and the photo will sit right there in the lesson.</p><p class="wd-saved" id="wd-saved" aria-live="polite"></p></div>' +
+        '<p class="wd-help" id="wd-xh">Put each heading on its own line. Write "Refer to Image 3" where a photo goes, and the photo will sit right there in the lesson.</p><p class="wd-saved" id="wd-saved" aria-live="polite"></p></div>' +
       '<div class="wd-f"><span class="wd-lb">Photos <small id="wd-pc">No photos yet</small></span><ul class="wd-ph" id="wd-ph"></ul>' +
         '<label class="wd-drop" id="wd-drop"><input type="file" accept="image/*" multiple id="wd-file"><span>Drop your photos here, or click to choose them</span><small>Add them in order. Drag to change the order.</small></label>' +
-        '<p class="wd-help">Photo 1 is the After and photo 2 the Before. Together they make the drag-across slider at the top of the lesson. You don\'t need to write "Image 1" on the photos.</p></div>' +
-      '<div class="wd-f"><span class="wd-lb">Lessons it goes with <small>Every COAP lesson, deep dive and article</small></span><div class="wd-lsn" id="wd-lsn"></div>' +
+        '<p class="wd-help" id="wd-phh">Photo 1 is the After and photo 2 the Before. Together they make the drag-across slider at the top of the lesson. You don\'t need to write "Image 1" on the photos.</p></div>' +
+      '<div class="wd-f" id="wd-lf"><span class="wd-lb">Lessons it goes with <small>Every COAP lesson, deep dive and article</small></span><div class="wd-lsn" id="wd-lsn"></div>' +
         '<div class="wd-sug" id="wd-sug" hidden><span>Mentioned in your post:</span></div>' +
         '<div class="wd-cb"><i data-icon="search"></i><input class="wd-in" id="wd-la" type="search" role="combobox" aria-expanded="false" aria-controls="wd-res" aria-autocomplete="list" autocomplete="off" placeholder="Search ' + IX.length + ' lessons, deep dives and articles"><ul class="wd-res" id="wd-res" role="listbox" hidden></ul></div></div>' +
       '<p class="wd-err" id="wd-err" role="alert"></p>' +
       '<div class="wd-go"><button class="btn" type="button" id="wd-make"><i data-icon="upload"></i>Publish my deep dive</button>' +
-        '<p>It goes live in Learn under Deep dives as soon as it\'s built, usually within ten minutes. If anything needs changing, edit your post and send it again: it updates the same lesson.</p></div>' +
+        '<p id="wd-gn">It goes live in Learn under Deep dives as soon as it\'s built, usually within ten minutes. If anything needs changing, edit your post and send it again: it updates the same lesson.</p></div>' +
     '</form>' +
-    '<section class="wd-run" id="wd-run" aria-live="polite"><h2 class="caps">Building your deep dive</h2><p style="margin:0;font-size:16px">You can close this page. It\'ll be here when you come back.</p>' +
+    '<section class="wd-run" id="wd-run" aria-live="polite"><h2 class="caps" id="wd-rh">Building your deep dive</h2><p style="margin:0;font-size:16px">You can close this page. It\'ll be here when you come back.</p>' +
       '<ol class="wd-steps"><li>Sending your post and photos</li><li>Claude is sorting it into steps and placing the photos</li><li>Building the lesson in the COAP layout</li><li>Publishing it in Learn</li></ol></section>' +
     '<section class="wd-draft" id="wd-draft" aria-label="Your draft"></section>' +
     '<div class="wd-sent" id="wd-sent" role="status"></div>' +
     '</div><aside class="wd-side"><div class="wd-box"><h2 class="caps">Your posts</h2><ul class="wd-mine" id="wd-mine"><li class="none">Loading…</li></ul></div></aside></div></div>' +
-    '<div class="wd-pv" id="wd-pv" role="dialog" aria-modal="true" aria-label="Your deep dive"><div class="wd-pv-bar"><span>Your deep dive, as members see it</span><button class="btn sm" type="button" id="wd-close">Close</button></div><iframe title="The draft lesson" src="about:blank" id="wd-if"></iframe></div>';
+    '<div class="wd-pv" id="wd-pv" role="dialog" aria-modal="true" aria-label="Your deep dive"><div class="wd-pv-bar"><span id="wd-pvt">Your deep dive, as members see it</span><button class="btn sm" type="button" id="wd-close">Close</button></div><iframe title="The draft lesson" src="about:blank" id="wd-if"></iframe></div>';
   icons(root);
 
+  /* ---- deep dive or blog post: the same form, with different words ---- */
+  var TXT = {
+    dd: { hd: 'deep dive', btn: 'Publish my deep dive', rh: 'Building your deep dive', pvt: 'Your deep dive, as members see it', tp: 'For example: Point Color and range masks',
+          xh: 'Put each heading on its own line. Write "Refer to Image 3" where a photo goes, and the photo will sit right there in the lesson.',
+          phh: 'Photo 1 is the After and photo 2 the Before. Together they make the drag-across slider at the top of the lesson. You don\'t need to write "Image 1" on the photos.',
+          gn: 'It goes live in Learn under Deep dives as soon as it\'s built, usually within ten minutes. If anything needs changing, edit your post and send it again: it updates the same lesson.',
+          steps: ['Sending your post and photos', 'Claude is sorting it into steps and placing the photos', 'Building the lesson in the COAP layout', 'Publishing it in Learn'] },
+    blog: { hd: 'blog post', btn: 'Publish my blog post', rh: 'Building your blog post', pvt: 'Your blog post, in the new article design', tp: 'For example: How to focus in the dark',
+          xh: 'Put each heading on its own line. Write "Image 3" where a photo goes, and the photo will sit right there in the article.',
+          phh: 'Photo 1 is the main photograph at the top of the article. Only send photographs you took yourself.',
+          gn: 'It goes live on the COAP blog as soon as it\'s built, usually within ten minutes. If anything needs changing, edit your post and send it again with the same title: it updates the same article.',
+          steps: ['Sending your post and photos', 'Claude is sorting it and placing the photos', 'Building the article in the COAP layout', 'Publishing it on the blog'] }
+  };
+  function isBlog() { return d.querySelector('input[name=ser]:checked').value === 'blog'; }
+  function mode() {
+    var b = isBlog(), T = TXT[b ? 'blog' : 'dd'];
+    $('wd-hd').textContent = T.hd; $('wd-make').lastChild.textContent = T.btn; $('wd-rh').textContent = T.rh; $('wd-pvt').textContent = T.pvt;
+    $('wd-t').placeholder = T.tp; $('wd-xh').textContent = T.xh; $('wd-phh').textContent = T.phh; $('wd-gn').textContent = T.gn;
+    $('wd-run').querySelectorAll('li').forEach(function (li, i) { li.textContent = T.steps[i]; });
+    $('wd-ty').hidden = !b; $('wd-lf').hidden = b; $('wd-nh').hidden = b; if (b) $('wd-no').hidden = true;
+    if (typeof renumber === 'function') renumber();
+  }
+  /* the Blog option appears only when the back end can take a blog post */
+  get('action=ping').then(function (r) { if (r && r.ok && r.blog) { $('wd-blab').hidden = false; loadBlog(); } }).catch(function () {});
+
   /* ---- numbers: one more than the highest so far in each series ---- */
-  var mine = [], next = { dd: 25, ss: 2 };
+  var mine = [], blogs = [], next = { dd: 25, ss: 2 };
   function setNo() {
     $('wd-ndd').textContent = '#' + next.dd; $('wd-nss').textContent = '#' + next.ss;
-    var s = d.querySelector('input[name=ser]:checked').value; if ($('wd-no').hidden) $('wd-no').value = next[s];
+    var s = d.querySelector('input[name=ser]:checked').value; if ($('wd-no').hidden && next[s]) $('wd-no').value = next[s];
   }
-  d.querySelectorAll('input[name=ser]').forEach(function (r) { r.addEventListener('change', function () { $('wd-no').hidden = true; setNo(); }); });
+  d.querySelectorAll('input[name=ser]').forEach(function (r) { r.addEventListener('change', function () { $('wd-no').hidden = true; setNo(); mode(); }); });
+  function loadBlog() { get('action=mine&kind=blog').then(function (r) { blogs = ((r && r.posts) || []).filter(function (p) { return p.kind === 'blog'; }); drawMine(); }).catch(function () {}); }
   $('wd-nch').addEventListener('click', function () { $('wd-no').hidden = false; $('wd-no').focus(); });
   function drawMine() {
-    $('wd-mine').innerHTML = mine.length ? mine.slice().reverse().map(function (p) {
+    var KIND = { tutorial: 'Tutorial', trip: 'Trip report', kit: 'Kit and opinion' };
+    var bl = blogs.slice().reverse().map(function (p) {
+      return '<li><a href="' + he(p.kajabiSlug ? '/blog/' + p.kajabiSlug : '#') + '">' + (p.cover ? '<img src="' + he(p.cover) + '" alt="">' : '<span></span>') +
+        '<span><small>Blog: ' + he(KIND[p.type] || 'Article') + '</small><b>' + he(p.card) + '</b><em>' + he(p.date || '') + '. <i class="' + (p.state === 'live' ? 'ok' : 'st') + '">' + (p.state === 'live' ? 'Live' : 'Draft') + '</i></em></span></a></li>';
+    }).join('');
+    $('wd-mine').innerHTML = (mine.length || blogs.length) ? bl + mine.slice().reverse().map(function (p) {
       return '<li><a href="' + he(p.lessonId ? '/products/learning-resources/categories/2161117943/posts/' + p.lessonId : '#') + '">' + (p.cover ? '<img src="' + he(p.cover) + '" alt="">' : '<span></span>') +
         '<span><small>' + (p.series === 'ss' ? 'Slider Sunday #' : 'Deep Dive #') + p.no + '</small><b>' + he(p.card) + '</b><em>' + he(p.date || '') + '. <i class="' + (p.state === 'live' ? 'ok' : 'st') + '">' + (p.state === 'live' ? 'Live' : 'Draft') + '</i></em></span></a></li>';
     }).join('') : '<li class="none">Your deep dives will show here.</li>';
@@ -86,7 +123,8 @@
       shots.push(el.getAttribute('data-src'));
       el.querySelector('b').textContent = i + 1;
       var tag = el.querySelector('i'); if (tag) tag.remove();
-      if (i < 2) { var n = d.createElement('i'); n.className = i === 0 ? 'a' : ''; n.textContent = i === 0 ? 'After' : 'Before'; el.insertBefore(n, el.querySelector('.x')); }
+      var bm = isBlog();
+      if (i < (bm ? 1 : 2)) { var n = d.createElement('i'); n.className = i === 0 ? 'a' : ''; n.textContent = bm ? 'Main' : i === 0 ? 'After' : 'Before'; el.insertBefore(n, el.querySelector('.x')); }
     });
     $('wd-pc').textContent = shots.length ? shots.length + (shots.length === 1 ? ' photo' : ' photos') : 'No photos yet';
   }
@@ -181,7 +219,7 @@
       n++; if (n === 4) stepTo(2); if (n === 9) stepTo(3);
       get('action=status&id=' + encodeURIComponent(id)).then(function (r) {
         var s = r && r.status; if (!s) return;
-        if (s.state === 'live' || s.state === 'ready' || s.state === 'checked' || s.state === 'changes') { clearInterval(poll); run.classList.remove('on'); showDraft(s); }
+        if (s.state === 'live' || s.state === 'held' || s.state === 'ready' || s.state === 'checked' || s.state === 'changes') { clearInterval(poll); run.classList.remove('on'); showDraft(s); }
         if (s.state === 'failed') { clearInterval(poll); run.classList.remove('on'); $('wd-form').hidden = false; $('wd-err').textContent = 'It didn\'t work this time (' + (s.error || 'unknown') + '). Tom has been told. Your post is still here.'; store.set(LAST, null); }
       }).catch(function () {});
       if (n > 180) { clearInterval(poll); }   /* an hour: the email still arrives */
@@ -190,7 +228,7 @@
   function showDraft(s) {
     var dr = $('wd-draft');
     dr.innerHTML = '<div class="wd-card">' + (s.previewUrl ? '<img src="' + he(s.previewUrl.replace(/preview\.html$/, '1.jpg')) + '" alt="">' : '') + '<div>' +
-      '<p class="mtag"><b>' + (s.state === 'live' ? 'Live in Learn' : 'Draft ready') + '</b><span>#' + he(s.no) + '</span></p><h3 class="caps">' + he(s.card || s.title) + '</h3><ul class="wd-chk">' +
+      '<p class="mtag"><b>' + (s.state === 'live' ? (s.kind === 'blog' ? 'Live on the blog' : 'Live in Learn') : (s.state === 'held' ? 'With Tom to check' : 'Draft ready')) + '</b><span>' + (s.kind === 'blog' ? 'Blog' : '#' + he(s.no)) + '</span></p><h3 class="caps">' + he(s.card || s.title) + '</h3><ul class="wd-chk">' +
       (s.steps ? '<li>' + s.steps.length + ' steps, from your headings: ' + he(s.steps.join(', ')) + '</li>' : '') +
       (s.photos ? '<li>' + s.photos + ' photos placed</li>' : '') +
       (s.lessons && s.lessons.length ? '<li>' + s.lessons.length + ' lesson' + (s.lessons.length > 1 ? 's' : '') + ' linked: ' + he(s.lessons.join(', ')) + '</li>' : '') +
@@ -201,7 +239,7 @@
       '<div class="wd-btns"><button class="btn" type="button" id="wd-snd">Send to Tom</button><button class="btn ghost" type="button" id="wd-fix">Edit my post and send it again</button></div></div>' +
       '<div class="wd-go" id="wd-ok"><button class="btn" type="button" id="wd-send"><i data-icon="check"></i>Looks right, send it to Tom and Rich</button><p>They get an email and publish it.</p></div>';
     dr.classList.add('on'); icons(dr);
-    if (s.state === 'live') $('wd-ok').hidden = true;   /* published already: nothing to approve */
+    if (s.state === 'live' || s.state === 'held') $('wd-ok').hidden = true;   /* published already: nothing to approve */
     $('wd-open').onclick = function () { $('wd-if').src = s.previewUrl; $('wd-pv').classList.add('on'); };
     $('wd-edit').onclick = function () { $('wd-chg').hidden = false; $('wd-ok').hidden = true; $('wd-nt').focus(); };
     $('wd-fix').onclick = function () { dr.classList.remove('on'); $('wd-form').hidden = false; store.set(LAST, null); };
@@ -226,16 +264,17 @@
     if (!t.value.trim()) { err.textContent = 'Give it a title first.'; t.focus(); return; }
     if (x.value.trim().length < 80) { err.textContent = 'Your post looks very short. Paste the whole thing in.'; x.focus(); return; }
     if (!shots.length) { err.textContent = 'Add your photos first.'; return; }
-    var b = $('wd-make'); b.disabled = true; b.lastChild.textContent = 'Sending…';
+    var b = $('wd-make'), blog = isBlog(), LBL = TXT[blog ? 'blog' : 'dd'].btn; b.disabled = true; b.lastChild.textContent = 'Sending…';
     run.classList.add('on'); $('wd-form').hidden = true; stepTo(0);
-    post({ action: 'send', key: KEY, series: d.querySelector('input[name=ser]:checked').value, no: +$('wd-no').value, title: t.value.trim(), text: x.value,
+    post(blog ? { action: 'send', kind: 'blog', key: KEY, type: d.querySelector('input[name=ty]:checked').value, title: t.value.trim(), text: x.value, author: AUTHOR, photos: shots }
+              : { action: 'send', key: KEY, series: d.querySelector('input[name=ser]:checked').value, no: +$('wd-no').value, title: t.value.trim(), text: x.value,
            author: AUTHOR, lessons: picked.map(function (it) { return { t: it.t, w: it.w, u: it.u }; }), photos: shots })
       .then(function (r) {
-        b.disabled = false; b.lastChild.textContent = 'Publish my deep dive';
+        b.disabled = false; b.lastChild.textContent = LBL;
         if (!r.ok) throw new Error(r.error || 'not sent');
         store.set(LAST, r.id); store.set(DRAFT, null); waiting(r.id);
       })
-      .catch(function (e) { b.disabled = false; b.lastChild.textContent = 'Publish my deep dive'; run.classList.remove('on'); $('wd-form').hidden = false; err.textContent = 'It didn\'t send: ' + e.message + ' Your post is still here, so try again in a minute.'; });
+      .catch(function (e) { b.disabled = false; b.lastChild.textContent = LBL; run.classList.remove('on'); $('wd-form').hidden = false; err.textContent = 'It didn\'t send: ' + e.message + ' Your post is still here, so try again in a minute.'; });
   });
 
   /* came back to the page while a draft was being made */
