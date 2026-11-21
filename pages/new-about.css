@@ -28,6 +28,7 @@ html.js .ab-cmp[data-reveal].in::after{left:50%}
 @media(prefers-reduced-motion:reduce){html.js .ab-cmp[data-reveal] .raw{clip-path:inset(0 50% 0 0)}html.js .ab-cmp[data-reveal]::after{left:50%}}
 .ab-matty{background:var(--white);padding-block:26px 0}
 .ab-matty .note{max-width:760px}
+.ab-shots{display:flex;gap:8px;margin:20px 0 12px;max-width:560px}.ab-shots a{display:block;min-width:0;border-radius:10px;overflow:hidden;transition:transform .2s}.ab-shots a:hover{transform:translateY(-3px)}.ab-shots img{display:block;width:100%;height:auto}
 
 /* Rich's photographs */
 .ab-work{display:grid;grid-template-columns:1fr 1fr;gap:8px}
